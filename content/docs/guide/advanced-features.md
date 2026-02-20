@@ -1,463 +1,169 @@
 ---
 title: "Advanced Features"
 weight: 4
-draft: true
 ---
 
-# Advanced Features
-
-TableTest provides powerful features for comprehensive testing: value sets for testing multiple inputs, external table files for large datasets, parameter resolvers for dependency injection, and escape sequences for special characters.
+TableTest provides features beyond the basics for expressing comprehensive examples: value sets for testing multiple inputs, comments for organising tables, external files for large datasets, parameter resolvers for dependency injection, and escape sequences for special characters.
 
 ## Value Sets
 
-Value sets allow you to test multiple inputs with the same expected outcome, expressed compactly within a single row.
-
-### Basic Value Sets
-
-Use curly braces to define a set of values for a column:
+Value sets let you test multiple inputs with the same expected outcome, expressed compactly within a single row. When a cell contains a set (enclosed in curly braces) and the corresponding parameter is *not* declared as a `Set` type, TableTest expands it into separate test invocations — one per element.
 
 ```java
 @TableTest("""
-    Scenario         | Year               | Is Leap Year?
-    Leap years       | {2000, 2004, 2008} | true
-    Non-leap years   | {2001, 2100, 2200} | false
+    Scenario                              | Example years      | Is leap year?
+    Years not divisible by 4              | {2001, 2002, 2003} | false
+    Years divisible by 4                  | {2004, 2008, 2012} | true
+    Years divisible by 100 but not by 400 | {2100, 2200, 2300} | false
+    Years divisible by 400                | {2000, 2400, 2800} | true
     """)
-void testLeapYear(int year, boolean isLeapYear) {
-    assertEquals(isLeapYear, Year.isLeap(year));
+public void testLeapYear(Year year, boolean expectedResult) {
+    assertEquals(expectedResult, year.isLeap(), "Year " + year);
 }
 ```
 
-This table produces **6 test executions**:
-- `testLeapYear[Leap years: 2000]`
-- `testLeapYear[Leap years: 2004]`
-- `testLeapYear[Leap years: 2008]`
-- `testLeapYear[Non-leap years: 2001]`
-- `testLeapYear[Non-leap years: 2100]`
-- `testLeapYear[Non-leap years: 2200]`
+This table produces **12 test executions** — three per row, one for each value in the set. With scenario names, the display name includes both the scenario and the actual value used, making it easy to pinpoint failures.
 
-### Multiple Value Sets
+### Cartesian Product
 
-When multiple columns contain value sets, TableTest generates the **Cartesian product** - all combinations:
+When multiple columns contain value sets, TableTest generates the Cartesian product — all combinations of values:
 
 ```java
 @TableTest("""
-    Numbers      | Operators | Results
-    {1, 2}       | {+, *}    | {2, 3, 2, 4}
+    Scenario       | x         | y       | even sum?
+    Even plus even | {2, 4, 6} | {8, 10} | true
+    Odd plus even  | {1, 3, 5} | {6, 8}  | false
     """)
-void testOperations(int number, String operator, int result) {
-    // Generates 4 executions:
-    // 1, +, 2
-    // 1, *, 2
-    // 2, +, 3
-    // 2, *, 4
+void testEvenOddSums(int x, int y, boolean expectedResult) {
+    boolean isEvenSum = (x + y) % 2 == 0;
+    assertEquals(expectedResult, isEvenSum);
 }
 ```
 
-**Warning:** Cartesian products grow quickly. `{1, 2, 3}` × `{a, b, c}` × `{x, y, z}` = 27 executions.
+Each row above produces 6 test executions (3 x-values times 2 y-values). Use value sets judiciously — the number of test cases grows multiplicatively with each additional set.
 
-### Value Sets with Collections
+### Sets as Parameters
 
-Value sets can contain collections:
+When the parameter *is* declared as a `Set` type, the entire set is passed as a single argument without expansion:
 
 ```java
 @TableTest("""
-    Lists            | Sum
-    {[1,2], [3,4,5]} | {3, 12}
+    Values       | Size?
+    {1, 2, 3}    | 3
+    {a, b, c, d} | 4
+    {}           | 0
     """)
-void testSum(List<Integer> list, int sum) {
-    // 2 executions:
-    // [1, 2], 3
-    // [3, 4, 5], 12
+void testSetParameter(Set<String> values, int expectedSize) {
+    assertEquals(expectedSize, values.size());
 }
 ```
 
-### Benefits of Value Sets
+## Comments and Blank Lines
 
-**Conciseness:** Express multiple related test cases in one row instead of duplicating logic across many rows.
+Lines starting with `//` (ignoring leading whitespace) are treated as comments and ignored. Blank lines are also ignored. Both can be used to organise and annotate your tables.
 
-**Clarity:** Group inputs by their expected outcome, making patterns visible.
-
-**Coverage:** Easy to add more test cases without expanding the table vertically.
-
-**Before (repetitive):**
 ```java
 @TableTest("""
-    Scenario | Year | Leap?
-    2000     | 2000 | true
-    2004     | 2004 | true
-    2008     | 2008 | true
-    2012     | 2012 | true
-    """)
-```
+    String         | Length?
 
-**After (concise):**
-```java
-@TableTest("""
-    Scenario    | Year               | Leap?
-    Leap years  | {2000,2004,2008,2012} | true
+    Hello world    | 11
+
+    // The next row is currently disabled
+    // "World, hello" | 12
+
+    // Special characters must be quoted
+    '|'            | 1
+    '[:]'          | 3
     """)
+void testComment(String string, int expectedLength) {
+    assertEquals(expectedLength, string.length());
+}
 ```
 
 ## External Table Files
 
-For large datasets, store tables in external files and reference them:
+For large datasets, store the table in an external file using the `resource` attribute. The file is located as a resource relative to the test class and is typically stored in the test `resources` directory.
+
+By default, the file is assumed to use UTF-8 encoding. Specify a different encoding with the `encoding` attribute if needed.
 
 ```java
-@TableTest(resource = "/test-data/large-dataset.txt")
-void testWithExternalFile(String input, String expected) {
-    assertEquals(expected, process(input));
+@TableTest(resource = "/external.table")
+void testExternalTable(int a, int b, int sum) {
+    assertEquals(sum, a + b);
 }
-```
 
-### File Format
-
-External files use the same pipe-delimited format:
-
-**test-data/large-dataset.txt:**
-```
-Scenario | Input | Expected
-Case 1   | foo   | FOO
-Case 2   | bar   | BAR
-Case 3   | baz   | BAZ
-...
-(hundreds more rows)
-```
-
-### Benefits
-
-**Readability:** Keep test methods focused, not cluttered with massive inline tables.
-
-**Reusability:** Share table files across multiple test methods or classes.
-
-**Version Control:** Large tables in separate files create cleaner diffs and easier reviews.
-
-**Data Management:** Edit large datasets with specialized tools or scripts.
-
-### File Location
-
-Place test data files in `src/test/resources`:
-
-```
-src/
-  test/
-    resources/
-      test-data/
-        users.txt
-        transactions.txt
-    java/
-      com/example/
-        MyTest.java
-```
-
-Reference with classpath-relative paths:
-
-```java
-@TableTest(resource = "/test-data/users.txt")
+@TableTest(resource = "/custom-encoding.table", encoding = "ISO-8859-1")
+void testExternalTableWithCustomEncoding(String string, int expectedLength) {
+    assertEquals(expectedLength, string.length());
+}
 ```
 
 ## Parameter Resolvers
 
-TableTest integrates with JUnit's `ParameterResolver` system, allowing dependency injection into test methods.
+TableTest methods can receive additional arguments provided by JUnit `ParameterResolver` extensions (such as `TestInfo`, `TestReporter`, etc.). These resolver-provided parameters **must be declared last**, after all table columns.
 
-### Built-in Resolvers
-
-Standard JUnit resolvers work automatically:
+If the table includes a scenario name column and you use parameter resolvers, the scenario column now requires an explicit parameter with the `@Scenario` annotation:
 
 ```java
 @TableTest("""
-    Input | Expected
-    hello | HELLO
-    world | WORLD
+    Scenario | value | double?
+    Zero     | 0     | 0
+    Two      | 2     | 4
     """)
-void test(String input, String expected, TestInfo testInfo) {
-    // testInfo injected by JUnit, not from table
-    System.out.println("Running: " + testInfo.getDisplayName());
-    assertEquals(expected, input.toUpperCase());
+void testDoubleValue(@Scenario String scenario, int value,
+                     int expectedResult, TestInfo info) {
+    assertEquals(expectedResult, 2 * value);
+    assertNotNull(info);
 }
 ```
-
-Supported injection types:
-- `TestInfo`
-- `TestReporter`
-- `RepetitionInfo`
-
-### Custom Resolvers
-
-Create custom parameter resolvers for dependency injection:
-
-```java
-public class DatabaseResolver implements ParameterResolver {
-    @Override
-    public boolean supportsParameter(ParameterContext parameterContext,
-                                   ExtensionContext extensionContext) {
-        return parameterContext.getParameter().getType() == Database.class;
-    }
-
-    @Override
-    public Object resolveParameter(ParameterContext parameterContext,
-                                  ExtensionContext extensionContext) {
-        return new Database("jdbc:h2:mem:test");
-    }
-}
-
-@ExtendWith(DatabaseResolver.class)
-class MyTest {
-    @TableTest("""
-        Query          | Count
-        SELECT * ...   | 5
-        """)
-    void test(String query, int count, Database db) {
-        // db injected by DatabaseResolver
-        assertEquals(count, db.execute(query).size());
-    }
-}
-```
-
-### Mixing Table Data and Injection
-
-Parameters without matching columns are resolved via JUnit:
-
-```java
-@TableTest("""
-    Input | Expected
-    1     | 2
-    """)
-void test(String input, String expected,
-          TestInfo info,      // Injected
-          Database db) {      // Injected
-    // Only 'input' and 'expected' come from table
-}
-```
-
-TableTest tries to match parameters to table columns first. Unmatched parameters fall back to JUnit resolution.
 
 ## Escape Sequences
 
-Handle special characters in table cells using escape sequences.
+Escape sequence handling varies depending on the programming language.
 
-### Java Escape Sequences
+### Java Text Blocks
 
-In Java text blocks, use standard Java escapes:
+In Java text blocks, all Java escape sequences (`\t`, `\"`, `\\`, `\uXXXX`, etc.) are processed by the Java compiler before TableTest receives the values:
 
 ```java
 @TableTest("""
-    Input
-    "hello\nworld"   // Newline
-    "tab\there"      // Tab
-    "quote\\"char"   // Escaped quote
+    Scenario                                | Input      | Length?
+    Tab character processed by compiler     | a\tb       | 3
+    Quote marks processed by compiler       | Say \"hi\" | 8
+    Backslash processed by compiler         | path\\file | 9
+    Unicode character processed by compiler | \u0041B    | 2
+    Octal character processed by compiler   | \101B      | 2
     """)
-void test(String input) {
-    // Standard Java escaping
+void testEscapeSequences(String input, int expectedLength) {
+    assertEquals(expectedLength, input.length());
 }
 ```
 
 ### Kotlin Raw Strings
 
-Kotlin raw strings require different escaping:
+Using Kotlin raw strings, escape sequences are **not** processed. They remain as literal backslash characters:
 
 ```kotlin
-@TableTest("""
-    Input
-    "hello
-    world"           // Newline (literal)
-    "quote""char"    // Escaped quote (double quote)
+@TableTest(
+    """
+    Scenario                                    | Input      | Length?
+    Tab character NOT processed by compiler     | a\tb       | 4
+    Quote marks NOT processed by compiler       | Say \"hi\" | 10
+    Backslash NOT processed by compiler         | path\\file | 10
+    Unicode character NOT processed by compiler | \u0041B    | 7
+    Octal character NOT processed by compiler   | \101B      | 5
     """)
-fun test(input: String) {
-    // Kotlin raw string rules
+fun testEscapeSequences(input: String, expectedLength: Int) {
+    assertEquals(expectedLength, input.length)
 }
 ```
 
-### Quoting Special Characters
+### External Files
 
-Quote values containing table delimiters:
+Table files are read as raw text independent of the programming language, meaning escape sequences are **not** processed and remain literal.
 
-```java
-@TableTest("""
-    Value
-    "pipe | character"     // Contains pipe
-    "comma, value"         // Contains comma
-    "colon: value"         // Contains colon
-    "bracket [value]"      // Contains brackets
-    """)
-void test(String value) {
-    // Quotes prevent parsing as special syntax
-}
-```
-
-## Null Handling
-
-### Explicit Null
-
-Use the `null` keyword:
-
-```java
-@TableTest("""
-    Input  | Output
-    hello  | HELLO
-    null   | null
-    """)
-void test(String input, String output) {
-    assertEquals(output, input == null ? null : input.toUpperCase());
-}
-```
-
-### Empty Cell as Null
-
-Empty cells become `null` for non-primitive types:
-
-```java
-@TableTest("""
-    Value
-    present
-            // Empty cell
-    """)
-void test(String value) {
-    // Row 2: value == null
-}
-```
-
-**Important:** Primitive types (`int`, `boolean`, etc.) cannot be null. Use wrapper types (`Integer`, `Boolean`) for nullable parameters.
-
-### Null vs Empty Collections
-
-Distinguish between `null` and empty:
-
-```java
-@TableTest("""
-    List  | Description
-    []    | Empty list
-    null  | Null reference
-    """)
-void test(List<Integer> list, String description) {
-    if (list == null) {
-        assertEquals("Null reference", description);
-    } else if (list.isEmpty()) {
-        assertEquals("Empty list", description);
-    }
-}
-```
-
-## Comments and Organization
-
-### Inline Comments
-
-Lines starting with `//` are ignored:
-
-```java
-@TableTest("""
-    Scenario | Value
-
-    // Positive test cases
-    Small    | 5
-    Large    | 100
-
-    // Negative test cases
-    Negative | -5
-
-    // Edge cases
-    Zero     | 0
-    """)
-```
-
-### Blank Lines
-
-Use blank lines to visually group related test cases:
-
-```java
-@TableTest("""
-    Scenario | Value
-
-    Basic cases
-    Simple   | 1
-    Medium   | 50
-
-    Edge cases
-    Minimum  | 0
-    Maximum  | 100
-    """)
-```
-
-Comments and blank lines don't affect execution - they're purely for organization and readability.
-
-## Display Names
-
-### Test Display Names
-
-Customize how tests appear in reports using `@DisplayName`:
-
-```java
-@DisplayName("Discount Calculation Tests")
-@TableTest("""
-    Purchases | Discount
-    5         | 10%
-    15        | 20%
-    """)
-void testDiscount(int purchases, String discount) {
-    // ...
-}
-```
-
-Output:
-```
-✓ Discount Calculation Tests[5]
-✓ Discount Calculation Tests[15]
-```
-
-### Scenario Column Customization
-
-Change which column provides scenario descriptions:
-
-```java
-@TableTest(value = """
-    Input | Description     | Expected
-    5     | Small number    | 10
-    100   | Large number    | 200
-    """,
-    scenarioColumn = "Description")
-```
-
-Or disable scenario names:
-
-```java
-@TableTest(value = """...""", scenarioColumn = "")
-```
-
-## Performance Considerations
-
-### Large Tables
-
-For tables with hundreds of rows:
-- Consider external files for maintainability
-- Use value sets to reduce row count
-- Monitor test execution time
-
-### Value Set Cartesian Products
-
-Be mindful of combinatorial explosion:
-
-```java
-// Generates 1000 executions!
-{1..10} × {1..10} × {1..10}
-```
-
-If you need comprehensive coverage, ensure test execution is fast or consider parameterized generation strategies.
-
-### External File Caching
-
-TableTest caches external files per test run. Multiple test methods referencing the same file share one file read.
-
-## Best Practices
-
-**Use value sets for related cases:** Group inputs with identical expected outcomes.
-
-**Extract large tables:** Keep test methods readable by moving large datasets to external files.
-
-**Comment generously:** Explain complex scenarios and edge cases with inline comments.
-
-**Test resolvers independently:** Custom parameter resolvers are regular JUnit extensions - test them separately.
-
-**Handle nulls explicitly:** Don't rely on empty cell interpretation - use `null` keyword for clarity.
+If you need special characters in Kotlin or external table files, use actual characters instead of escape sequences, or use Kotlin regular strings for simple cases.
 
 ## Next Steps
 
-See all these features in action: [Realistic Example →](/docs/guide/realistic-example/)
+See all these features in action: [Realistic Example](/docs/guide/realistic-example/)
