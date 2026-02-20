@@ -4,8 +4,6 @@ weight: 4
 bookCollapseSection: false
 ---
 
-# TableTest Ecosystem
-
 TableTest provides a suite of tools to enhance your data-driven testing workflow. Each tool serves a specific purpose and can be used independently or together.
 
 ## Core Library
