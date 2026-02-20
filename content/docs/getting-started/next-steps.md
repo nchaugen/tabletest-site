@@ -14,7 +14,10 @@ Work through the User Guide to understand TableTest deeply:
 1. **[Basic Usage](/docs/guide/basic-usage/)** — Table syntax, column mapping, scenario names
 2. **[Common Mistakes](/docs/guide/common-mistakes/)** — Pitfalls to avoid and how to fix them
 
-For topics beyond the basics — value formats, type conversion, value sets, and external table files — see the [User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md).
+3. **[Value Formats](/docs/guide/value-formats/)** — Lists, sets, maps, nested structures, and quoting rules
+4. **[Type Conversion](/docs/guide/type-conversion/)** — Built-in and custom `@TypeConverter` methods
+5. **[Advanced Features](/docs/guide/advanced-features/)** — Value sets, external files, parameter resolvers
+6. **[Realistic Example](/docs/guide/realistic-example/)** — Complete worked example
 
 ### Explore the Ecosystem
 
@@ -67,15 +70,15 @@ void testNegativeInput(int input) {
 A: Use external files with the `resource` attribute:
 
 ```java
-@TableTest(resource = "/test-data/large-dataset.txt")
+@TableTest(resource = "/test-data/large-dataset.table")
 ```
 
-See the [User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md) for details.
+See [Advanced Features](/docs/guide/advanced-features/#external-table-files) for details.
 
 ## Get Help
 
 - **GitHub Issues:** [Report bugs or request features](https://github.com/nchaugen/tabletest/issues)
-- **Documentation:** Browse the [User Guide](/docs/guide/) for published guides, or the [full User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md)
+- **Documentation:** Browse the [User Guide](/docs/guide/) or the [full User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md)
 - **Examples:** Check the repository for [example projects](https://github.com/nchaugen/tabletest/tree/main/examples)
 
 ## Contributing

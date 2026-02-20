@@ -18,8 +18,10 @@ Deeper coverage of TableTest features with practical examples.
 - [Features Overview](/docs/guide/features/) — Quick tour of collections, type conversion, value sets, and more
 - [Basic Usage](/docs/guide/basic-usage/) — Table syntax, column mapping, scenario names
 - [Common Mistakes](/docs/guide/common-mistakes/) — Pitfalls to avoid
-
-For value formats, type conversion, and advanced features, see the [User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md).
+- [Value Formats](/docs/guide/value-formats/) — Single values, lists, sets, maps, and nesting
+- [Type Conversion](/docs/guide/type-conversion/) — Built-in and custom `@TypeConverter` methods
+- [Advanced Features](/docs/guide/advanced-features/) — Value sets, external files, parameter resolvers
+- [Realistic Example](/docs/guide/realistic-example/) — Complete worked example with custom types
 
 ## Tools
 
