@@ -1,7 +1,6 @@
 ---
 title: "Realistic Example"
 weight: 5
-draft: true
 ---
 
 # Realistic Example: Discount Calculation System
@@ -49,9 +48,10 @@ public record PercentageDiscount(int value) implements Comparable<PercentageDisc
 
 ### Custom Type Conversion
 
-Create a factory method to convert strings like "10%" to `PercentageDiscount`:
+Create a converter method annotated with `@TypeConverter` to convert strings like "10%" to `PercentageDiscount`:
 
 ```java
+@TypeConverter
 public static PercentageDiscount parseDiscount(String input) {
     if (input == null || input.isBlank()) {
         return new PercentageDiscount(0);
@@ -162,6 +162,7 @@ public class DiscountCalculator {
 Create a notation for relative timestamps:
 
 ```java
+@TypeConverter
 public static LocalDate parseRelativeDate(String input) {
     // "T" means "today"
     // "T-30d" means "30 days ago"
@@ -201,6 +202,7 @@ Define a purchase record:
 ```java
 public record Purchase(String id, LocalDate date) {}
 
+@TypeConverter
 public static Purchase parsePurchase(String input) {
     // Format: "id:date" e.g., "P1:T-10d"
     String[] parts = input.split(":");
@@ -221,12 +223,11 @@ Test the 30-day window logic:
     Some expired              | [P1:T-5d, P2:T-35d, P3:T-40d, P4:T-50d]          | 0%
     Just qualifying           | [P1:T-1d, P2:T-2d, P3:T-3d, P4:T-4d, P5:T-29d]   | 10%
     Just outside window       | [P1:T-31d, P2:T-32d, P3:T-35d, P4:T-40d]         | 0%
-    Mixed recent and expired  | [P1:T-5d, P2:T-10d, P3:T-35d, P4:T-40d]          | 0%
-    High volume recent        | [P1:T-1d, P2:T-5d, P3:T-10d, P4:T-15d, P5:T-20d, | 10%
-                              |  P6:T-25d, P7:T-28d, P8:T-29d, P9:T-30d]         |
+    Mixed recent and expired  | [P1:T-5d, P2:T-10d, P3:T-35d, P4:T-40d]                               | 0%
+    High volume recent        | [P1:T-1d, P2:T-5d, P3:T-10d, P4:T-15d, P5:T-20d, P6:T-25d, P7:T-29d] | 10%
     """)
-void testDiscountWithTimeWindow(List<Purchase> purchases, PercentageDiscount discount,
-                                TestInfo testInfo) {
+void testDiscountWithTimeWindow(@Scenario String scenario, List<Purchase> purchases,
+                                PercentageDiscount discount, TestInfo testInfo) {
     Clock fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
     DiscountCalculator calculator = new DiscountCalculator(fixedClock);
 
@@ -289,7 +290,7 @@ Each iteration builds on the previous, maintaining working tests throughout.
 - **Type safety:** Can't accidentally pass a discount where a count is expected
 - **Validation:** Enforces 0-100 range
 - **Clarity:** `PercentageDiscount` is more expressive than `int`
-- **Custom conversion:** Factory methods make tables readable
+- **Custom conversion:** `@TypeConverter` methods make tables readable
 
 ### 5. Tables as Documentation
 
@@ -317,17 +318,20 @@ public class DiscountCalculatorTest {
     private final DiscountCalculator calculator =
         new DiscountCalculator(Clock.systemDefaultZone());
 
-    // Factory methods
+    // Custom converter methods
+    @TypeConverter
     public static PercentageDiscount parseDiscount(String input) {
         String digits = input.replace("%", "").trim();
         return new PercentageDiscount(Integer.parseInt(digits));
     }
 
+    @TypeConverter
     public static Purchase parsePurchase(String input) {
         String[] parts = input.split(":");
         return new Purchase(parts[0], parseRelativeDate(parts[1]));
     }
 
+    @TypeConverter
     public static LocalDate parseRelativeDate(String input) {
         if (input.equals("T")) return LocalDate.now();
         if (input.startsWith("T-") && input.endsWith("d")) {
@@ -370,7 +374,7 @@ public class DiscountCalculatorTest {
 ## Key Takeaways
 
 1. **Custom types enhance clarity** - `PercentageDiscount` and `Purchase` make intent explicit
-2. **Factory methods enable custom conversion** - `parseDiscount`, `parsePurchase` make tables readable
+2. **`@TypeConverter` methods enable custom conversion** - `parseDiscount`, `parsePurchase` make tables readable
 3. **Value sets increase coverage** - Test multiple values per tier without code duplication
 4. **Readable notation matters** - `T-30d` is clearer than absolute dates
 5. **Inject dependencies** - Pass `Clock` to enable testable temporal logic
@@ -378,6 +382,6 @@ public class DiscountCalculatorTest {
 
 ## Next Steps
 
-For formal specifications and detailed rules, see the [Reference](/docs/reference/) section.
+For the complete specification of all features, see the [User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md).
 
 For more examples, check the [TableTest repository](https://github.com/nchaugen/tabletest/tree/main/examples).
