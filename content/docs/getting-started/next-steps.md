@@ -12,12 +12,10 @@ Congratulations! You've written your first TableTest. Here's where to go from he
 Work through the User Guide to understand TableTest deeply:
 
 1. **[Basic Usage](/docs/guide/basic-usage/)** — Table syntax, column mapping, scenario names
-2. **[Common Mistakes](/docs/guide/common-mistakes/)** — Pitfalls to avoid and how to fix them
-
-3. **[Value Formats](/docs/guide/value-formats/)** — Lists, sets, maps, nested structures, and quoting rules
-4. **[Type Conversion](/docs/guide/type-conversion/)** — Built-in and custom `@TypeConverter` methods
-5. **[Advanced Features](/docs/guide/advanced-features/)** — Value sets, external files, parameter resolvers
-6. **[Realistic Example](/docs/guide/realistic-example/)** — Complete worked example
+2. **[Value Formats](/docs/guide/value-formats/)** — Lists, sets, maps, nested structures, and quoting rules
+3. **[Type Conversion](/docs/guide/type-conversion/)** — Built-in and custom `@TypeConverter` methods
+4. **[Advanced Features](/docs/guide/advanced-features/)** — Value sets, external files, parameter resolvers
+5. **[Realistic Example](/docs/guide/realistic-example/)** — Complete worked example
 
 ### Explore the Ecosystem
 
@@ -74,6 +72,32 @@ A: Use external files with the `resource` attribute:
 ```
 
 See [Advanced Features](/docs/guide/advanced-features/#external-table-files) for details.
+
+**Q: I get a conversion error but my values look correct?**
+A: Check that every parameter has a matching column. If the table has fewer columns than parameters, TableTest will try to map the scenario column as a value:
+
+```java
+@TableTest("""
+    Scenario | A | B
+    Test     | 2 | 3
+    """)
+void test(int a, int b, int sum) {  // 'sum' has no matching column!
+```
+
+TableTest only treats the first column as a scenario name when there is exactly one more column than parameters.
+
+**Q: How do I handle values that can't be converted to the parameter type?**
+A: Ensure values in the table match the parameter types, or provide a custom `@TypeConverter` method. For example, `"abc"` cannot be converted to `int`:
+
+```java
+@TableTest("""
+    Number
+    abc
+    """)
+void test(int number) {  // Can't convert "abc" to int!
+```
+
+See [Type Conversion](/docs/guide/type-conversion/) for how to write custom converters.
 
 ## Get Help
 

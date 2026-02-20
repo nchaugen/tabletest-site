@@ -17,7 +17,6 @@ New to TableTest? Start here to understand table-driven testing and write your f
 Deeper coverage of TableTest features with practical examples.
 
 - [Basic Usage](/docs/guide/basic-usage/) — Table syntax, column mapping, scenario names
-- [Common Mistakes](/docs/guide/common-mistakes/) — Pitfalls to avoid
 - [Value Formats](/docs/guide/value-formats/) — Single values, lists, sets, maps, and nesting
 - [Type Conversion](/docs/guide/type-conversion/) — Built-in and custom `@TypeConverter` methods
 - [Advanced Features](/docs/guide/advanced-features/) — Value sets, external files, parameter resolvers
