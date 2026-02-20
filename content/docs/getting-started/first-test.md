@@ -133,4 +133,4 @@ When you run this test, TableTest will:
 
 ## Next Steps
 
-You now know the basics! Let's explore [what to learn next&nbsp;→](/docs/getting-started/next-steps/)
+You now know the basics! See [what else TableTest can do&nbsp;→](/docs/getting-started/features/) or jump straight to [Next Steps&nbsp;→](/docs/getting-started/next-steps/)

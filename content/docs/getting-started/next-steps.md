@@ -1,6 +1,6 @@
 ---
 title: "Next Steps"
-weight: 4
+weight: 5
 ---
 
 Congratulations! You've written your first TableTest. Here's where to go from here based on what you want to learn.

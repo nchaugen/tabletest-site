@@ -1,9 +1,9 @@
 ---
 title: "Features Overview"
-weight: 0
+weight: 4
 ---
 
-A quick tour of what TableTest can do. Each section shows a brief example — for full details, see the [User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md).
+A quick tour of what TableTest can do beyond the basics. Each section shows a brief example — follow the links to the [User Guide](/docs/guide/) for full details.
 
 ## Table Format
 
@@ -123,4 +123,4 @@ This keeps test methods concise and makes it easy to share table data across tes
 
 ---
 
-This overview covers the highlights. For the full reference — including null values, comments, escape sequences, and explicit argument conversion — see the [User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md).
+This overview covers the highlights. Dive deeper in the [User Guide](/docs/guide/) — starting with [Value Formats](/docs/guide/value-formats/).

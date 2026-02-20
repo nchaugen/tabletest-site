@@ -9,13 +9,13 @@ New to TableTest? Start here to understand table-driven testing and write your f
 1. [What is TableTest?](/docs/getting-started/introduction/)
 2. [Installation](/docs/getting-started/installation/)
 3. [Your First Test](/docs/getting-started/first-test/)
-4. [Next Steps](/docs/getting-started/next-steps/)
+4. [Features Overview](/docs/getting-started/features/) — See what else TableTest can do
+5. [Next Steps](/docs/getting-started/next-steps/)
 
 ## User Guide
 
 Deeper coverage of TableTest features with practical examples.
 
-- [Features Overview](/docs/guide/features/) — Quick tour of collections, type conversion, value sets, and more
 - [Basic Usage](/docs/guide/basic-usage/) — Table syntax, column mapping, scenario names
 - [Common Mistakes](/docs/guide/common-mistakes/) — Pitfalls to avoid
 - [Value Formats](/docs/guide/value-formats/) — Single values, lists, sets, maps, and nesting
