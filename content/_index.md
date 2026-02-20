@@ -17,8 +17,7 @@ layout: hextra-home
 </div>
 
 <div class="hx:mb-6">
-{{< hextra/hero-button text="Get Started" link="docs/getting-started/introduction" >}}
-{{< hextra/hero-button text="How it works" link="docs/guide" style="background: transparent !important; border: 1px solid currentColor; color: inherit;" >}}
+{{< hextra/hero-button text="Learn more" link="docs/getting-started/introduction" >}}
 </div>
 
 <style>
