@@ -16,7 +16,7 @@ Custom converters take priority, allowing you to override built-in conversion wh
 
 ## Built-in Conversion
 
-Out of the box, TableTest converts single values to many standard types using JUnit's built-in type converters. See the [JUnit documentation](https://junit.org/junit5/docs/current/user-guide/index.html#writing-tests-parameterized-tests-argument-conversion-implicit) for the full list.
+Out of the box, TableTest converts single values to many standard types using JUnit's built-in type converters. See the [JUnit documentation](https://docs.junit.org/current/writing-tests/parameterized-classes-and-tests.html#argument-conversion-implicit) for the full list.
 
 ```java
 @TableTest("""
