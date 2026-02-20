@@ -11,13 +11,14 @@ layout: hextra-home
 
 <div class="hx:mb-12">
 {{< hextra/hero-subtitle >}}
-  Express system behaviour through readable tables.&nbsp;<br class="sm:hx-block hx-hidden" />
+  Make business rules explicit, not buried in code.&nbsp;<br class="sm:hx-block hx-hidden" />
   One method, multiple scenarios.
 {{< /hextra/hero-subtitle >}}
 </div>
 
 <div class="hx:mb-6">
 {{< hextra/hero-button text="Get Started" link="docs/getting-started/introduction" >}}
+{{< hextra/hero-button text="How it works" link="docs/guide" style="background: transparent !important; border: 1px solid currentColor; color: inherit;" >}}
 </div>
 
 <style>
@@ -92,28 +93,28 @@ void leapYear(int year, boolean leap) {
 <div class="hx:w-full hx:max-w-screen-xl">
 {{< hextra/feature-grid >}}
   {{< hextra/feature-card
-    title="Add Test Cases, Not Methods"
-    subtitle="Each row is a test case. Add scenarios by adding rows — no more copying test methods and changing values."
+    title="Tests as Documentation"
+    subtitle="The table format makes test scenarios readable by anyone on the team. Business rules are explicit, not buried in code."
   >}}
   {{< hextra/feature-card
-    title="See Coverage at a Glance"
-    subtitle="Scannable tables reveal which cases you've covered and which you've missed. Spot gaps instantly."
-    image="leap-year-coverage-table.png"
-    imageClass="hx:absolute hx:max-w-none hx:top-[40%] hx:left-[24px] hx:w-[180%] hx:sm:w-[110%] hx:dark:opacity-80"
-    style="background: radial-gradient(ellipse at 50% 80%,rgba(194,97,254,0.15),hsla(0,0%,100%,0));"
-    class="hx:aspect-auto hx:md:aspect-[1.1/1] hx:max-md:min-h-[340px]"
+    title="Effortless Coverage"
+    subtitle="Scannable tables reveal coverage gaps at a glance. Adding a scenario is just adding a row."
   >}}
   {{< hextra/feature-card
-    title="Rich IDE Support"
-    subtitle="The IntelliJ plugin formats tables, highlights syntax, and catches errors as you type."
-    image="intellij-plugin-light.png"
-    imageClass="hx:absolute hx:max-w-none hx:top-[40%] hx:left-[24px] hx:w-[180%] hx:sm:w-[110%] hx:dark:opacity-80"
-    style="background: radial-gradient(ellipse at 50% 80%,rgba(142,218,252,0.15),hsla(0,0%,100%,0));"
-    class="hx:aspect-auto hx:md:aspect-[1.1/1] hx:max-md:min-h-[340px]"
+    title="Rich Tool Support"
+    subtitle="IntelliJ plugin for formatting and syntax highlighting, plus a CLI formatter and test reporter."
   >}}
   {{< hextra/feature-card
-    title="Complete Ecosystem"
-    subtitle="Formatter, test reporter, Spring Boot and Quarkus support. Works with Java 21+ and Kotlin."
+    title="Built on JUnit"
+    subtitle="A JUnit extension, not a separate framework. Use the same assertions, mocking frameworks, and test utilities you already know."
+  >}}
+  {{< hextra/feature-card
+    title="Java and Kotlin"
+    subtitle="Write table-driven tests in either language. Same annotation, same table format."
+  >}}
+  {{< hextra/feature-card
+    title="Ready for Production"
+    subtitle="Works with your existing test runner and build tool. Supports Spring Boot and Quarkus."
   >}}
 {{< /hextra/feature-grid >}}
 </div>

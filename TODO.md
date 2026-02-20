@@ -19,3 +19,8 @@ Progress tracker for the website evolution plan (see PLAN.md).
 - [ ] **Stage 5:** Review and publish reference pages (annotation, value-syntax, conversion-rules)
 - [ ] **Stage 5:** Review and publish tool detail pages (library, intellij-plugin, reporter, formatter)
 - [ ] **Stage 6:** CI script to pull documentation from tool repos
+
+## Ideas
+- [ ] Verify examples as runnable tests
+- [ ] Page with example tables for visitors curious about how TableTests look like. Link from front page. 
+
