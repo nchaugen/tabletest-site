@@ -5,14 +5,14 @@ layout: hextra-home
 
 <div class="hx:mt-6 hx:mb-6">
 {{< hextra/hero-headline >}}
-  Table-Driven Testing for JUnit
+  Tests That Document Your Application
 {{< /hextra/hero-headline >}}
 </div>
 
 <div class="hx:mb-12">
 {{< hextra/hero-subtitle >}}
-  Write readable, maintainable tests with tables.<br class="sm:hx-block hx-hidden" />
-  One test method, multiple scenarios.<br class="sm:hx-block hx-hidden" />
+  Express system behaviour through readable tables.&nbsp;<br class="sm:hx-block hx-hidden" />
+  One method, multiple scenarios.
 {{< /hextra/hero-subtitle >}}
 </div>
 
@@ -20,39 +20,84 @@ layout: hextra-home
 {{< hextra/hero-button text="Get Started" link="docs/getting-started/introduction" >}}
 </div>
 
+<div class="hx:w-full hx:max-w-screen-xl hx:mx-auto hx:px-6 hx:mt-16 hx:mb-16">
+
+<div class="hx:grid hx:grid-cols-1 md:hx:grid-cols-2 hx:gap-6">
+
+<div>
+<h3 class="hx:text-lg hx:font-semibold hx:mb-3 hx:text-gray-500 dark:hx:text-gray-400">Before — repetitive test methods</h3>
+
+```java
+@Test
+void notDivisibleBy4() {
+    assertFalse(Year.isLeap(2001));
+}
+
+@Test
+void divisibleBy4() {
+    assertTrue(Year.isLeap(2004));
+}
+
+@Test
+void divisibleBy100ButNotBy400() {
+    assertFalse(Year.isLeap(2100));
+}
+
+@Test
+void divisibleBy400() {
+    assertTrue(Year.isLeap(2000));
+}
+```
+
+</div>
+<div>
+<h3 class="hx:text-lg hx:font-semibold hx:mb-3 hx:text-emerald-600 dark:hx:text-emerald-400">After — one method, one table</h3>
+
+```java
+@TableTest("""
+    Scenario                        | Year | Leap?
+    Not divisible by 4              | 2001 | false
+    Divisible by 4                  | 2004 | true
+    Divisible by 100 but not by 400 | 2100 | false
+    Divisible by 400                | 2000 | true
+    """)
+void leapYear(int year, boolean leap) {
+    assertEquals(leap, Year.isLeap(year));
+}
+```
+
+</div>
+</div>
+
+<p class="hx:text-center hx:text-gray-500 dark:hx:text-gray-400 hx:mt-6 hx:text-sm">Same coverage. Less code. Add test cases by adding rows.</p>
+
+</div>
+
 <div class="hx:w-full hx:max-w-screen-xl">
 {{< hextra/feature-grid >}}
   {{< hextra/feature-card
-    title="Less Test Code"
-    subtitle="Replace repetitive test methods with readable tables. Clearly express the rules in the software."
-    class="hx:aspect-auto hx:md:aspect-[1.1/1] hx:max-md:min-h-[340px]"
-    style="background: radial-gradient(ellipse at 50% 80%,rgba(194,97,254,0.15),hsla(0,0%,100%,0));"
-    image="leap-year-table.png"
-    imageClass="hx:absolute hx:max-w-none hx:top-[40%] hx:left-[24px] hx:w-[180%] hx:sm:w-[110%] hx:dark:opacity-80"
+    title="Add Test Cases, Not Methods"
+    subtitle="Each row is a test case. Add scenarios by adding rows — no more copying test methods and changing values."
   >}}
   {{< hextra/feature-card
-    title="Better Coverage"
-    subtitle="Add test cases by adding rows, not writing methods. Easily spot which tests are missing."
-    class="hx-aspect-auto md:hx-aspect-[1.1/1] max-md:hx-min-h-[340px]"
-    style="background: radial-gradient(ellipse at 50% 80%,rgba(255,216,77,0.15),hsla(0,0%,100%,0));"
+    title="See Coverage at a Glance"
+    subtitle="Scannable tables reveal which cases you've covered and which you've missed. Spot gaps instantly."
     image="leap-year-coverage-table.png"
     imageClass="hx:absolute hx:max-w-none hx:top-[40%] hx:left-[24px] hx:w-[180%] hx:sm:w-[110%] hx:dark:opacity-80"
+    style="background: radial-gradient(ellipse at 50% 80%,rgba(194,97,254,0.15),hsla(0,0%,100%,0));"
+    class="hx:aspect-auto hx:md:aspect-[1.1/1] hx:max-md:min-h-[340px]"
   >}}
   {{< hextra/feature-card
-    title="Clear Documentation"
-    subtitle="Understand and verify system behaviour at a glance. Publish live documentation. "
-    class="hx-aspect-auto md:hx-aspect-[1.1/1] max-lg:hx-min-h-[340px]"
-    style="background: radial-gradient(ellipse at 50% 80%,rgba(142,218,252,0.15),hsla(0,0%,100%,0));"
-    image="discount-tier-table.png"
+    title="Rich IDE Support"
+    subtitle="The IntelliJ plugin formats tables, highlights syntax, and catches errors as you type."
+    image="intellij-plugin-light.png"
     imageClass="hx:absolute hx:max-w-none hx:top-[40%] hx:left-[24px] hx:w-[180%] hx:sm:w-[110%] hx:dark:opacity-80"
+    style="background: radial-gradient(ellipse at 50% 80%,rgba(142,218,252,0.15),hsla(0,0%,100%,0));"
+    class="hx:aspect-auto hx:md:aspect-[1.1/1] hx:max-md:min-h-[340px]"
   >}}
   {{< hextra/feature-card
-    title="Advanced Features"
-    subtitle="Automatic conversion to parameter types with built-in and custom mapping functions. Easily test all value combinations using cartesian product expansion."
-  >}}
-  {{< hextra/feature-card
-    title="Use either Kotlin or Java"
-    subtitle="Add one dependency to your project. Works with Kotlin, Java 21+, JUnit 5.11+, Spring Boot, and Quarkus."
+    title="Complete Ecosystem"
+    subtitle="Formatter, test reporter, Spring Boot and Quarkus support. Works with Java 21+ and Kotlin."
   >}}
 {{< /hextra/feature-grid >}}
 </div>

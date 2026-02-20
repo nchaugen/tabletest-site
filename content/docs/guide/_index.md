@@ -1,0 +1,33 @@
+---
+title: "User Guide"
+weight: 2
+bookCollapseSection: false
+---
+
+The User Guide covers TableTest features with practical examples.
+
+## Contents
+
+### [Basic Usage](/docs/guide/basic-usage/)
+
+Learn the fundamentals: table syntax, column mapping, scenario names, and how tables execute as tests.
+
+### [Common Mistakes](/docs/guide/common-mistakes/)
+
+Avoid common pitfalls when writing table-driven tests.
+
+More topics — including value formats, type conversion, and advanced features — are covered in the [User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md).
+
+## Prerequisites
+
+This guide assumes you've completed [Getting Started](/docs/getting-started/). You should:
+
+- Have TableTest installed and configured
+- Understand the `@TableTest` annotation
+- Have written at least one simple test
+
+If not, start with [Getting Started →](/docs/getting-started/)
+
+---
+
+Ready? Begin with [Basic Usage →](/docs/guide/basic-usage/)

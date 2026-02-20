@@ -18,23 +18,24 @@ markup:
 
 menu:
   main:
-    - name: Docs
+    - name: Documentation
       pageRef: /docs
       weight: 1
-    - name: About
-      pageRef: /about
-      weight: 2
     - name: Search
-      weight: 4
+      weight: 2
       params:
         type: search
     - name: GitHub
-      weight: 5
+      weight: 3
       url: "https://github.com/nchaugen/tabletest"
       params:
         icon: github
 
 params:
+  currentVersion: "1.0.0"
+  currentTableTestVersion: "1.0.0"
+  currentJUnitVersion: "6.0.3"
+
   navbar:
     displayTitle: true
     displayLogo: true
@@ -44,6 +45,7 @@ params:
       link: /
       width: 20
       height: 10
+
   banner:
 #    key: 'announcement-xxx'
 #    message: |
@@ -58,6 +60,6 @@ params:
     base: "https://github.com/nchaugen/tabletest-site/edit/main/content"
 
 outputs:
-  home: [html, llms]
+  home: [html, rss, llms]
   page: [html]
   section: [html, rss]
