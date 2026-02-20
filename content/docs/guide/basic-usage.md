@@ -309,4 +309,8 @@ void test(Integer value) {  // Not int - Integer allows null
 
 ## Next Steps
 
-Now that you understand the basics, explore the full [User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md) to learn about value formats, type conversion, and advanced features.
+Now that you understand the basics:
+
+- **[Value Formats](/docs/guide/value-formats/)** — Lists, sets, maps, nested structures, and quoting rules
+- **[Type Conversion](/docs/guide/type-conversion/)** — Built-in and custom `@TypeConverter` methods
+- **[Advanced Features](/docs/guide/advanced-features/)** — Value sets, external files, parameter resolvers
