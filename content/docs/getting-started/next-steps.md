@@ -18,11 +18,7 @@ For topics beyond the basics — value formats, type conversion, value sets, and
 
 ### Explore the Ecosystem
 
-TableTest provides tools that enhance your development workflow:
-
-- **[IntelliJ Plugin](https://plugins.jetbrains.com/plugin/27334-tabletest)** — Automatic formatting, syntax highlighting, validation
-- **[Formatter](https://github.com/nchaugen/tabletest-formatter)** — Command-line tool for consistent table formatting
-- **[Reporter](https://github.com/nchaugen/tabletest-reporter)** — Generate documentation from your tests
+TableTest provides [tools](/docs/tools/) that enhance your development workflow — an IntelliJ plugin for auto-formatting and syntax highlighting, a formatter for CI/CD enforcement, and a reporter for generating documentation from your tests.
 
 ## Quick Tips
 

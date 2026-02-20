@@ -29,10 +29,21 @@ Draft pages have `draft: true` in front matter. They exist but are not published
 
 ## Related Repositories
 
-- [tabletest](https://github.com/nchaugen/tabletest) — Core library (group ID: `org.tabletest`, artifact: `tabletest-junit`)
-- [tabletest-formatter](https://github.com/nchaugen/tabletest-formatter) — CLI formatter
-- [tabletest-reporter](https://github.com/nchaugen/tabletest-reporter) — Test reporter
+All repos are cloned locally as sibling directories — read source files from disk rather than fetching from GitHub.
+
+| Repo | Local path | Key docs |
+|------|-----------|----------|
+| [tabletest](https://github.com/nchaugen/tabletest) | `../tabletest/` | `README.md`, `USERGUIDE.md` |
+| [tabletest-formatter](https://github.com/nchaugen/tabletest-formatter) | `../tabletest-formatter/` | `README.md`, `FEATURES.md` |
+| [tabletest-reporter](https://github.com/nchaugen/tabletest-reporter) | `../tabletest-reporter/` | `README.md`, `FEATURES.md` |
+| [tabletest-intellij](https://github.com/nchaugen/tabletest-intellij) | `../tabletest-intellij/` | `README.md`, `FEATURES.md` |
+
+- Core library: group ID `org.tabletest`, artifact `tabletest-junit`
 - IntelliJ plugin: [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/27334-tabletest)
+
+## Git Commit Messages
+
+- Omit `Co-Authored-By` attribution footer
 
 ## Content Guidelines
 

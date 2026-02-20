@@ -8,6 +8,10 @@ The User Guide covers TableTest features with practical examples.
 
 ## Contents
 
+### [Features Overview](/docs/guide/features/)
+
+A quick tour of what TableTest can do — collections, type conversion, value sets, and more.
+
 ### [Basic Usage](/docs/guide/basic-usage/)
 
 Learn the fundamentals: table syntax, column mapping, scenario names, and how tables execute as tests.

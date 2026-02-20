@@ -15,7 +15,14 @@ New to TableTest? Start here to understand table-driven testing and write your f
 
 Deeper coverage of TableTest features with practical examples.
 
+- [Features Overview](/docs/guide/features/) — Quick tour of collections, type conversion, value sets, and more
 - [Basic Usage](/docs/guide/basic-usage/) — Table syntax, column mapping, scenario names
 - [Common Mistakes](/docs/guide/common-mistakes/) — Pitfalls to avoid
 
 For value formats, type conversion, and advanced features, see the [User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md).
+
+## Tools
+
+TableTest provides an ecosystem of tools for your development workflow.
+
+- [Tools Overview](/docs/tools/) — IntelliJ plugin, formatter, and reporter
