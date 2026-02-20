@@ -1,129 +1,86 @@
 ---
 title: "Type Conversion"
 weight: 3
-draft: true
 ---
 
-# Type Conversion
-
-TableTest converts string values from table cells to method parameter types. Understanding conversion rules helps you work with custom types and complex data effectively.
+TableTest converts values from table cells to the types required by test method parameters. Understanding the conversion strategy helps you work with custom types and complex data effectively.
 
 ## Conversion Strategy
 
 TableTest uses a two-tier conversion approach:
 
-1. **Type converter methods** - Custom conversion logic
-2. **JUnit implicit converters** - Built-in type conversion
+1. **Custom converter methods** — annotated with `@TypeConverter` in your test class or external sources
+2. **JUnit built-in converters** — standard type conversion as a fallback
 
-This strategy prioritizes custom conversion while falling back to JUnit's robust conversion system.
+Custom converters take priority, allowing you to override built-in conversion when needed.
 
-## Automatic Conversion
+## Built-in Conversion
 
-Most standard Java types convert automatically without additional configuration:
-
-### Primitives and Wrappers
+Out of the box, TableTest converts single values to many standard types using JUnit's built-in type converters. See the [JUnit documentation](https://junit.org/junit5/docs/current/user-guide/index.html#writing-tests-parameterized-tests-argument-conversion-implicit) for the full list.
 
 ```java
 @TableTest("""
-    Int | Long  | Double | Boolean | Char
-    42  | 1000  | 3.14   | true    | A
-    -5  | -2000 | -1.5   | false   | Z
+    Number | Text | Date       | Class
+    1      | abc  | 2025-01-20 | java.lang.Integer
     """)
-void test(int i, long l, double d, boolean b, char c) {
-    // Automatic conversion
+void singleValues(short number, String text, LocalDate date, Class<?> type) {
+    // All converted automatically
 }
 ```
 
-Supported: `int`, `long`, `short`, `byte`, `float`, `double`, `boolean`, `char`, and wrapper types.
-
-### Strings
-
-Strings work without conversion:
+Built-in conversion also applies to elements in lists and sets, and to values in maps, when the test method parameter is a parameterised type. Map keys remain `String` type and are not converted.
 
 ```java
 @TableTest("""
-    Text
-    hello
-    world
+    Grades                                       | Highest Grade?
+    [Alice: [95, 87, 92], Bob: [78, 85, 90]]     | 95
+    [Charlie: [98, 89, 91], David: [45, 60, 70]] | 98
     """)
-void test(String text) {
-    // Direct mapping
+void testParameterizedTypes(Map<String, List<Integer>> grades,
+                            int expectedHighestGrade) {
+    // Nested values converted recursively
 }
 ```
 
-### Enums
+## Custom Converter Methods
 
-Enum constants match by name:
-
-```java
-enum Status { PENDING, ACTIVE, CLOSED }
-
-@TableTest("""
-    Status
-    PENDING
-    ACTIVE
-    CLOSED
-    """)
-void test(Status status) {
-    // Converted to enum constant
-}
-```
-
-### Temporal Types
-
-Common date/time types:
-
-```java
-@TableTest("""
-    Date       | Time     | DateTime
-    2024-01-15 | 14:30:00 | 2024-01-15T14:30:00
-    """)
-void test(LocalDate date, LocalTime time, LocalDateTime dateTime) {
-    // ISO-8601 format
-}
-```
-
-Supported: `LocalDate`, `LocalTime`, `LocalDateTime`, `Instant`, `ZonedDateTime`, and more.
-
-## Factory Methods
-
-For types without automatic conversion, define **type converter methods** - public static methods that convert strings to your type. Annotate the methods with `@TypeConverter`.
-
-### Basic Factory Method
+When you need to convert to a type that isn't covered by built-in conversion, define a custom converter method annotated with `@TypeConverter`.
 
 ```java
 public class DiscountTest {
     @TableTest("""
-        Purchases | Discount
+        Purchases | Discount?
         5         | 10%
         15        | 20%
         40        | 40%
         """)
     void testDiscount(int purchases, Discount discount) {
-        // parseDiscount converts "10%" → Discount(10)
+        assertEquals(discount, calculator.calculateDiscount(purchases));
     }
 
     @TypeConverter
     public static Discount parseDiscount(String input) {
-        String digits = input.substring(0, input.length() - 1); // Remove '%'
+        String digits = input.replace("%", "").trim();
         return new Discount(Integer.parseInt(digits));
     }
 }
 ```
 
-### Type Converter Method Rules
+### Converter Method Rules
 
-A valid type converter method must be:
+A valid custom converter method must:
 
-1. **Public in a public class** - Accessible to TableTest
-2. **Static** - No instance required
-3. **Single parameter** - Takes one argument (usually `String`)
-4. **Returns target type** - Produces the parameter type
-5. **Annotated** - With `@TypeConverter`
+1. Be annotated with `@TypeConverter`
+2. Be a `public static` method in a `public` class
+3. Accept exactly one parameter
+4. Return an object of the target parameter type
+5. Be the only `@TypeConverter` method matching the above criteria in the class
 
-### Type Converter Method Variants
+There is no specific naming pattern — any method fulfilling these requirements will be used.
 
-**Accept any convertible type:**
+### Converter Parameter Types
+
+The converter parameter doesn't have to be `String`. It can be any type that TableTest knows how to convert. TableTest will recursively convert the parsed value to match the converter's parameter type.
 
 ```java
 @TypeConverter
@@ -132,231 +89,102 @@ public static Temperature fromCelsius(double celsius) {
 }
 
 @TableTest("""
-    Celsius | Fahrenheit
+    Celsius | Fahrenheit?
     0.0     | 32.0
     100.0   | 212.0
     """)
 void test(Temperature celsius, double fahrenheit) {
-    // built-in conversion converts String → double
+    // Built-in conversion converts String → double
     // fromCelsius converts double → Temperature
 }
 ```
 
-The type converter parameter doesn't have to be `String` - it can be any type TableTest knows how to convert.
+### Overriding Built-in Conversion
 
-
-## External Type Converter Sources
-
-If type converter methods aren't in the test class, specify external sources with `@TypeConverterSources`:
+Since custom converters take priority over built-in conversion, you can override the built-in conversion for specific types:
 
 ```java
-@TypeConverterSources(MyConverters.class)
-class MyTest {
-    @TableTest("""
-        Value
-        special-value
-        """)
-    void test(CustomType value) {
-        // Uses converter from MyConverters class
-    }
+@TableTest("""
+    This Date  | Other Date | Is Before?
+    today      | tomorrow   | true
+    today      | yesterday  | false
+    2024-02-29 | 2024-03-01 | true
+    """)
+void testIsBefore(LocalDate thisDate, LocalDate otherDate, boolean expectedIsBefore) {
+    assertEquals(expectedIsBefore, thisDate.isBefore(otherDate));
+}
+
+@TypeConverter
+public static LocalDate parseLocalDate(String input) {
+    return switch (input) {
+        case "yesterday" -> LocalDate.parse("2025-06-06");
+        case "today" -> LocalDate.parse("2025-06-07");
+        case "tomorrow" -> LocalDate.parse("2025-06-08");
+        default -> LocalDate.parse(input);
+    };
+}
+```
+
+## Custom Converter Sources
+
+To reuse converter methods across test classes, use the `@TypeConverterSources` annotation to list classes containing converters:
+
+```java
+@TypeConverterSources({SharedConverters.class, MoreConverters.class})
+public class ExampleTest {
+    // TableTest methods can use converters from the listed classes
 }
 ```
 
 ## Collections with Custom Types
 
-Type converters work with collections:
+Custom converters work with collections — TableTest applies the converter to each element:
 
 ```java
 @TypeConverter
 public static Discount parseDiscount(String input) {
-    String digits = input.substring(0, input.length() - 1);
+    String digits = input.replace("%", "").trim();
     return new Discount(Integer.parseInt(digits));
 }
 
 @TableTest("""
-    Discounts        | Best
+    Discounts        | Best?
     [10%, 20%, 30%]  | 30%
     [5%, 15%]        | 15%
     """)
 void test(List<Discount> discounts, Discount best) {
-    // Each element converted via parseDiscount
     assertEquals(best, DiscountCalculator.selectBest(discounts));
 }
 ```
 
-TableTest applies the type converter to each element.
+## Kotlin Converters
 
-## Nested Conversion
+For tests written in Kotlin, there are two locations to declare `@TypeConverter` methods local to the test class:
 
-Complex nested structures convert recursively:
+1. In the **companion object** of the test class, using `@JvmStatic` in addition to `@TypeConverter`
+2. At **package level** in the file containing the test class
 
-```java
-@TypeConverter
-public static Price parsePrice(String input) {
-    return new Price(Double.parseDouble(input.replace("$", "")));
-}
-
-@TableTest("""
-    Product Prices                                | Total
-    [apple: [$1.50, $1.25], banana: [$0.75]]      | $3.50
-    [coffee: [$3.00, $5.00], tea: [$2.50, $3.00]] | $13.50
-    """)
-void test(Map<String, List<Price>> prices, Price total) {
-    // Keys: String (automatic)
-    // Values: List<Price> (via built-in and parsePrice)
-    assertEquals(total, PriceCalculator.calculateTotal(prices));
-}
-```
-
-## Value Sets and Conversion
-
-Type converters work with [value sets](/docs/guide/advanced-features/#value-sets):
-
-```java
-@TypeConverter
-public static EmailAddress parseEmail(String input) {
-    return new EmailAddress(input);
-}
-
-@TableTest("""
-    Scenario       | Emails                            | Is Valid?
-    Valid emails   | {alice@example.com, bob@test.org} | true
-    Invalid emails | {admin@, @site.com}               | false
-    """)
-void test(EmailAddress email, boolean expectedValidity) {
-    // Each email converted via parseEmail
-    assertEquals(expectedValidity, EmailValidator.isValid(email));
-}
-```
-
-## Conversion Errors
-
-When conversion fails, TableTest provides clear error messages:
-
-```java
-@TableTest("""
-    Number
-    abc      // Can't convert to int
-    """)
-void test(int number) {
-    // Error: "Could not convert 'abc' to type int"
-}
-```
-
-Error messages include:
-- The problematic value
-- The target type
-- The conversion method that failed
-
-## Best Practices
-
-### Descriptive Factory Names
-
-Use clear, intention-revealing names:
-
-```java
-// Good
-public static Temperature fromCelsius(double c) { ... }
-public static Discount fromPercentage(String s) { ... }
-
-// Less clear
-public static Temperature create(double d) { ... }
-public static Discount parse(String s) { ... }
-```
-
-### Handle Edge Cases
-
-Factory methods should handle expected edge cases gracefully:
-
-```java
-public static Discount parseDiscount(String input) {
-    if (input == null || input.isEmpty()) {
-        return Discount.NONE;
-    }
-    if (input.equals("FREE")) {
-        return Discount.FULL;
-    }
-    String digits = input.replace("%", "").trim();
-    return new Discount(Integer.parseInt(digits));
-}
-```
-
-### Fail Fast
-
-When conversion can't succeed, throw descriptive exceptions:
-
-```java
-public static Temperature fromCelsius(double celsius) {
-    if (celsius < -273.15) {
-        throw new IllegalArgumentException(
-            "Temperature below absolute zero: " + celsius);
-    }
-    return new Temperature(celsius);
-}
-```
-
-### Test Factory Methods
-
-Factory methods are regular Java methods - test them separately:
-
-```java
-@Test
-void testParseDiscount() {
-    assertEquals(new Discount(10), parseDiscount("10%"));
-    assertEquals(new Discount(0), parseDiscount("0%"));
-    assertThrows(IllegalArgumentException.class,
-        () -> parseDiscount("invalid"));
-}
-```
-
-## Language-Specific Features
-
-### Java Factory Methods
-
-Use standard static methods:
-
-```java
-public static MyType fromString(String input) {
-    return new MyType(input);
-}
-```
-
-### Kotlin Factory Methods
-
-Use companion object functions:
+Dedicated converter source classes in Kotlin should be declared as `object` with methods annotated with both `@JvmStatic` and `@TypeConverter`:
 
 ```kotlin
-class MyType(val value: String) {
-    companion object {
-        @JvmStatic
-        fun fromString(input: String): MyType {
-            return MyType(input)
-        }
+object KotlinTypeConverterSource {
+    @JvmStatic
+    @TypeConverter
+    fun toStudentGrades(input: Map<String, List<Int>>): StudentGrades {
+        // implementation
     }
 }
 ```
 
-The `@JvmStatic` annotation is required for TableTest to find the method.
+Usage:
 
-## Troubleshooting
-
-**Factory method not found:**
-- Ensure method is `public static`
-- Check method name follows conventions
-- Verify parameter and return types match
-- Use `@FactorySources` if method is in another class
-
-**Conversion fails:**
-- Check input format matches factory expectations
-- Verify factory handles null and edge cases
-- Test factory method independently
-- Review error message for specific cause
-
-**Ambiguous conversion:**
-- Multiple factories can convert the same type
-- TableTest tries them in order until one succeeds
-- If ambiguity causes problems, use `@ConvertWith` for explicitness
+```kotlin
+@TypeConverterSources(KotlinTypeConverterSource::class)
+class ExampleTest {
+    // TableTest methods
+}
+```
 
 ## Next Steps
 
-Explore powerful testing techniques: [Advanced Features →](/docs/guide/advanced-features/)
+Explore value sets, external table files, and more: [Advanced Features](/docs/guide/advanced-features/)
