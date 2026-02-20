@@ -20,9 +20,25 @@ layout: hextra-home
 {{< hextra/hero-button text="Get Started" link="docs/getting-started/introduction" >}}
 </div>
 
-<div class="hx:w-full hx:max-w-screen-xl hx:mx-auto hx:px-6 hx:mt-16 hx:mb-16">
+<style>
+.before-after-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+@media (min-width: 938px) {
+  .before-after-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.before-after-grid > div {
+  min-width: 0;
+}
+</style>
 
-<div class="hx:grid hx:grid-cols-1 md:hx:grid-cols-2 hx:gap-6">
+<div style="margin: 4rem 0; width: 100%;">
+
+<div class="before-after-grid">
 
 <div>
 <h3 class="hx:text-lg hx:font-semibold hx:mb-3 hx:text-gray-500 dark:hx:text-gray-400">Before — repetitive test methods</h3>
@@ -69,7 +85,7 @@ void leapYear(int year, boolean leap) {
 </div>
 </div>
 
-<p class="hx:text-center hx:text-gray-500 dark:hx:text-gray-400 hx:mt-6 hx:text-sm">Same coverage. Less code. Add test cases by adding rows.</p>
+<p style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem;" class="hx-text-gray-500 dark:hx-text-gray-400">Same coverage. Less code. Add test cases by adding rows.</p>
 
 </div>
 
