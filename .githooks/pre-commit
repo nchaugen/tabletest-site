@@ -9,4 +9,12 @@ if git diff --cached --name-only | grep -q '^examples/'; then
         echo "Formatting errors found. Run './gradlew spotlessApply' in examples/ to fix."
         exit 1
     fi
+
+    echo "Running tests on examples..."
+    ./gradlew test 2>&1
+    if [ $? -ne 0 ]; then
+        echo ""
+        echo "Tests failed. Fix the failing tests in examples/ before committing."
+        exit 1
+    fi
 fi
