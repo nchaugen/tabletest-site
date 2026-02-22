@@ -166,12 +166,12 @@ class BasicUsageKtTest {
     // #region string-values
     @TableTest(
         """
-        Value              | Length?
-        hello              | 5
-        hello world        | 11
-        "hello | world"    | 13
-        "'"                | 1
-        '"'                | 1
+        Value           | Length?
+        hello           | 5
+        hello world     | 11
+        "hello | world" | 13
+        "'"             | 1
+        '"'             | 1
         """
     )
     fun stringValues(value: String, expectedLength: Int) {

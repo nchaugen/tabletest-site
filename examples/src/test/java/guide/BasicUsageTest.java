@@ -145,12 +145,12 @@ public class BasicUsageTest {
 
     // #region string-values
     @TableTest("""
-        Value              | Length?
-        hello              | 5
-        hello world        | 11
-        "hello | world"    | 13
-        "'"                | 1
-        '"'                | 1
+        Value           | Length?
+        hello           | 5
+        hello world     | 11
+        "hello | world" | 13
+        "'"             | 1
+        '"'             | 1
         """)
     void stringValues(String value, int expectedLength) {
         assertEquals(expectedLength, value.length());
