@@ -249,4 +249,4 @@ Apache License 2.0 - Free for personal and commercial use.
 
 ---
 
-**Next:** Enhance your development experience with the [IntelliJ Plugin →](/docs/tools/intellij-plugin/)
+**Next:** Enhance your development experience with the [IntelliJ Plugin →](/docs/tools/intellij-plugin/) or the [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=tabletest.tabletest)

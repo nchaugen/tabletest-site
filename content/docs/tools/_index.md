@@ -27,6 +27,16 @@ IDE support for working with TableTest tables inside IntelliJ IDEA. The plugin p
 
 **Available on:** [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/27334-tabletest) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-intellij)
 
+## VS Code Extension
+
+IDE support for working with TableTest tables inside Visual Studio Code. The extension provides syntax highlighting, automatic column alignment, and cell value normalisation for lists, sets, and maps.
+
+- **Auto-formatting** — format tables via `Format Document` or the `TableTest: Format All Tables in Document` command
+- **Syntax highlighting** — distinct colours for headers, delimiters, values, and comments
+- **Language injection** — automatic TableTest language support in `@TableTest` annotations in Java and Kotlin
+
+**Available on:** [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=tabletest.tabletest) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-vscode)
+
 ## Formatter
 
 A formatting tool for consistent table layout across your codebase. Formats tables in Java files, Kotlin files, and standalone `.table` files.
@@ -64,5 +74,6 @@ All tools are open source under Apache Licence 2.0:
 
 - [tabletest](https://github.com/nchaugen/tabletest) — Core library
 - [tabletest-intellij](https://github.com/nchaugen/tabletest-intellij) — IntelliJ plugin
+- [tabletest-vscode](https://github.com/nchaugen/tabletest-vscode) — VS Code extension
 - [tabletest-formatter](https://github.com/nchaugen/tabletest-formatter) — Formatting tool
 - [tabletest-reporter](https://github.com/nchaugen/tabletest-reporter) — Documentation generator

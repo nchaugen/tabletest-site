@@ -89,14 +89,12 @@ Run your tests. If you see three passing test executions, TableTest is correctly
 
 ## IDE Support
 
-For an enhanced development experience, consider installing the [TableTest IntelliJ Plugin](https://plugins.jetbrains.com/plugin/27334-tabletest), which provides:
+For an enhanced development experience, consider installing the IDE plugin for your editor:
 
-- Automatic table formatting
-- Syntax highlighting
-- Visual feedback for invalid syntax
-- Code assistance
+- **IntelliJ IDEA** — [TableTest IntelliJ Plugin](https://plugins.jetbrains.com/plugin/27334-tabletest)
+- **VS Code** — [TableTest VS Code Extension](https://marketplace.visualstudio.com/items?itemName=tabletest.tabletest)
 
-Install from the [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/27334-tabletest).
+Both provide automatic table formatting and syntax highlighting. The IntelliJ plugin additionally offers visual feedback for invalid syntax.
 
 ## Next Steps
 

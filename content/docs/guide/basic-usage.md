@@ -69,7 +69,7 @@ Pipes (`|`) separate columns. Pipes are only used between columns, not at the st
 | A | B | C |    // five columns (null, "A", "B", "C", null)
 ```
 
-Consistent formatting improves readability. The [IntelliJ plugin](https://plugins.jetbrains.com/plugin/27334-tabletest) and the [Formatter](https://github.com/nchaugen/tabletest-formatter) handle this automatically.
+Consistent formatting improves readability. The [IntelliJ plugin](https://plugins.jetbrains.com/plugin/27334-tabletest), [VS Code extension](https://marketplace.visualstudio.com/items?itemName=tabletest.tabletest), and [Formatter](https://github.com/nchaugen/tabletest-formatter) handle this automatically.
 
 
 ## Scenario Names

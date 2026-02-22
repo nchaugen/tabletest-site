@@ -19,7 +19,7 @@ Work through the User Guide to understand TableTest deeply:
 
 ### Explore the Ecosystem
 
-TableTest provides [tools](/docs/tools/) that enhance your development workflow — an IntelliJ plugin for auto-formatting and syntax highlighting, a formatter for CI/CD enforcement, and a reporter for generating documentation from your tests.
+TableTest provides [tools](/docs/tools/) that enhance your development workflow — an IntelliJ plugin and VS Code extension for auto-formatting and syntax highlighting, a formatter for CI/CD enforcement, and a reporter for generating documentation from your tests.
 
 ## Quick Tips
 
@@ -43,7 +43,7 @@ The scenario column is your documentation. Make descriptions clear:
 
 ### Install the IDE Plugin
 
-The [IntelliJ plugin](https://plugins.jetbrains.com/plugin/27334-tabletest) saves significant time by automatically formatting tables, highlighting syntax, and catching errors as you type.
+The [IntelliJ plugin](https://plugins.jetbrains.com/plugin/27334-tabletest) and [VS Code extension](https://marketplace.visualstudio.com/items?itemName=tabletest.tabletest) save significant time by automatically formatting tables and highlighting syntax.
 
 ## Common Questions
 

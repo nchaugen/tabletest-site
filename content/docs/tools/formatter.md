@@ -10,7 +10,7 @@ The TableTest Formatter is a command-line tool and build plugin that ensures con
 
 ## Overview
 
-Formatter automatically aligns and formats TableTest tables according to consistent rules. While the [IntelliJ plugin](/docs/tools/intellij-plugin/) provides real-time formatting in your IDE, Formatter enables batch processing and CI/CD integration for entire projects.
+Formatter automatically aligns and formats TableTest tables according to consistent rules. While the [IntelliJ plugin](/docs/tools/intellij-plugin/) and [VS Code extension](https://marketplace.visualstudio.com/items?itemName=tabletest.tabletest) provide real-time formatting in your IDE, Formatter enables batch processing and CI/CD integration for entire projects.
 
 ## Why Use Formatter?
 
@@ -278,9 +278,9 @@ Automatic formatting before commits prevents formatting issues from reaching the
 
 Set formatting rules in your build configuration and share across the team. Everyone uses the same settings.
 
-### Combine with IntelliJ Plugin
+### Combine with IDE Plugins
 
-Use the plugin for real-time formatting during development, and Formatter for batch operations and CI validation.
+Use the [IntelliJ plugin](/docs/tools/intellij-plugin/) or [VS Code extension](https://marketplace.visualstudio.com/items?itemName=tabletest.tabletest) for real-time formatting during development, and Formatter for batch operations and CI validation.
 
 ## Troubleshooting
 

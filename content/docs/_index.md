@@ -26,4 +26,4 @@ Deeper coverage of TableTest features with practical examples.
 
 TableTest provides an ecosystem of tools for your development workflow.
 
-- [Tools Overview](/docs/tools/) — IntelliJ plugin, formatter, and reporter
+- [Tools Overview](/docs/tools/) — IntelliJ plugin, VS Code extension, formatter, and reporter
