@@ -3,5 +3,9 @@ public/
 resources/
 .hugo_build.lock
 
+# Examples build
+examples/.gradle/
+examples/build/
+
 # Editor
 .vscode/

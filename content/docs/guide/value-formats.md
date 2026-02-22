@@ -11,18 +11,14 @@ Single values can appear with or without quotes. Surrounding single (`'`) or dou
 
 Empty values are represented by adjacent quote pairs (`""` or `''`).
 
-```java
-@TableTest("""
-    Value                  | Length?
-    Hello, world!          | 13
-    "cat file.txt | wc -l" | 20
-    "[]"                   | 2
-    ''                     | 0
-    """)
-void testString(String value, int expectedLength) {
-    assertEquals(expectedLength, value.length());
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/ValueFormatsTest.java" id="single-values" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/ValueFormatsKtTest.kt" id="single-values" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 When single values appear as elements inside collections (lists, sets, or maps), the characters `,`, `:`, `]`, and `}` also require quoting.
 
@@ -30,34 +26,27 @@ When single values appear as elements inside collections (lists, sets, or maps),
 
 Lists are enclosed in square brackets with comma-separated elements. Lists can contain single values or compound values (nested lists, sets, or maps). Empty lists are represented by `[]`.
 
-```java
-@TableTest("""
-    List      | Size? | Sum?
-    []        | 0     | 0
-    [1]       | 1     | 1
-    [3, 2, 1] | 3     | 6
-    """)
-void integerList(List<Integer> list, int expectedSize, int expectedSum) {
-    assertEquals(expectedSize, list.size());
-    assertEquals(expectedSum, list.stream().mapToInt(Integer::intValue).sum());
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/ValueFormatsTest.java" id="lists" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/ValueFormatsKtTest.kt" id="lists" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Sets
 
 Sets are enclosed in curly braces with comma-separated elements. Sets can contain single values or compound values. Empty sets are represented by `{}`.
 
-```java
-@TableTest("""
-    Set              | Size?
-    {1, 2, 3, 2, 1}  | 3
-    {Hello, Hello}   | 1
-    {}               | 0
-    """)
-void testSet(Set<String> set, int expectedSize) {
-    assertEquals(expectedSize, set.size());
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/ValueFormatsTest.java" id="sets" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/ValueFormatsKtTest.kt" id="sets" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 {{% details title="Sets vs Value Sets" closed="true" %}}
 
@@ -69,59 +58,40 @@ Curly braces have a dual role in TableTest. When the test parameter is declared 
 
 Maps use square brackets with comma-separated key-value pairs, where colons separate keys and values. Keys must be unquoted single values and cannot contain `,`, `:`, `|`, `[`, `]`, `{`, or `}`. Values can be single (unquoted or quoted) or compound (list, set, or map). Empty maps are represented by `[:]`.
 
-```java
-@TableTest("""
-    Map                        | Size?
-    [one: 1, two: 2, three: 3] | 3
-    [:]                        | 0
-    """)
-void testMap(Map<String, Integer> map, int expectedSize) {
-    assertEquals(expectedSize, map.size());
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/ValueFormatsTest.java" id="maps" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/ValueFormatsKtTest.kt" id="maps" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Nested Structures
 
 Lists, sets, and maps can be nested to create complex data structures. TableTest converts nested values recursively using generic type information from the test method parameter.
 
-```java
-@TableTest("""
-    Student grades                                                  | Highest grade? | Average grade? | Pass count?
-    [Alice: [95, 87, 92], Bob: [78, 85, 90], Charlie: [98, 89, 91]] | 98             | 89.4           | 3
-    [David: [45, 60, 70], Emma: [65, 70, 75], Frank: [82, 78, 60]]  | 82             | 67.2           | 2
-    [:]                                                             | 0              | 0.0            | 0
-    """)
-void testNestedParameterizedTypes(
-    Map<String, List<Integer>> studentGrades,
-    int expectedHighestGrade,
-    double expectedAverageGrade,
-    int expectedPassCount
-) {
-    Students students = fromGradesMap(studentGrades);
-    assertEquals(expectedHighestGrade, students.highestGrade());
-    assertEquals(expectedAverageGrade, students.averageGrade(), 0.1);
-    assertEquals(expectedPassCount, students.passCount());
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/ValueFormatsTest.java" id="nested" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/ValueFormatsKtTest.kt" id="nested" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Null Values
 
 Blank cells translate to `null` for all parameter types except primitives. For primitives, a blank cell causes an exception as they cannot represent `null`.
 
-```java
-@TableTest("""
-    String | Integer | List | Map | Set
-           |         |      |     |
-    """)
-void blankConvertsToNull(String string, Integer integer, List<?> list,
-                         Map<String, ?> map, Set<?> set) {
-    assertNull(string);
-    assertNull(integer);
-    assertNull(list);
-    assertNull(map);
-    assertNull(set);
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/ValueFormatsTest.java" id="null-values" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/ValueFormatsKtTest.kt" id="null-values" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 There is no `null` keyword — simply leave the cell blank.
 

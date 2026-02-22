@@ -11,18 +11,21 @@ Let's write a complete table-driven test from scratch. We'll test a simple calcu
 
 First, create a simple calculator class:
 
-```java
-public class Calculator {
-    public int add(int a, int b) {
-        return a + b;
-    }
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/getting_started/FirstTestTest.java" id="calculator" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/getting_started/FirstTestKtTest.kt" id="calculator" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Create the Test Class
 
 Create a JUnit test class and import the necessary classes:
 
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
 ```java
 import org.tabletest.junit.TableTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,24 +36,33 @@ public class CalculatorTest {
     // Tests will go here
 }
 ```
+{{< /tab >}}
+{{< tab >}}
+```kotlin
+import org.tabletest.junit.TableTest
+import kotlin.test.assertEquals
+
+class CalculatorTest {
+    private val calculator = Calculator()
+
+    // Tests will go here
+}
+```
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Write Your First TableTest
 
 Add a test method with the `@TableTest` annotation:
 
-```java
-@TableTest("""
-    Scenario              | A  | B  | Sum?
-    Two positive numbers  | 2  | 3  | 5
-    Positive and negative | 5  | -3 | 2
-    Two negative numbers  | -4 | -6 | -10
-    Zero and positive     | 0  | 7  | 7
-    """)
-public void testAddition(int a, int b, int expectedSum) {
-    int result = calculator.add(a, b);
-    assertEquals(expectedSum, result);
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/getting_started/FirstTestTest.java" id="test-addition" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/getting_started/FirstTestKtTest.kt" id="test-addition" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 Let's break this down:
 
@@ -68,18 +80,37 @@ Two positive numbers  | 2 | 3 | 5
 
 **Method Parameters**
 
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
 ```java
 public void testAddition(int a, int b, int expectedSum)
 ```
+{{< /tab >}}
+{{< tab >}}
+```kotlin
+fun testAddition(a: Int, b: Int, expectedSum: Int)
+```
+{{< /tab >}}
+{{< /tabs >}}
 
 The method parameters match the table columns (except the scenario column) based on order. TableTest automatically converts string values to the parameter types.
 
 **The Assertion**
 
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
 ```java
 int result = calculator.add(a, b);
 assertEquals(expectedSum, result);
 ```
+{{< /tab >}}
+{{< tab >}}
+```kotlin
+val result = calculator.add(a, b)
+assertEquals(expectedSum, result)
+```
+{{< /tab >}}
+{{< /tabs >}}
 
 Standard JUnit assertions. The test logic executes once per table row.
 

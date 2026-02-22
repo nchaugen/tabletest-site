@@ -22,5 +22,6 @@ Progress tracker for the website evolution plan (see PLAN.md).
 
 ## Ideas
 - [ ] Verify examples as runnable tests
+- [ ] Provide both Kotlin and Java examples
 - [ ] Page with example tables for visitors curious about how TableTests look like. Link from front page. 
 

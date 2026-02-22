@@ -13,7 +13,7 @@ A TableTest table consists of:
 2. **Data rows** – Test cases (subsequent rows)
 3. **Pipe delimiters** – Separate columns
 
-```java
+```
 @TableTest("""
     Column1 | Column2 | Column3
     value1  | value2  | value3
@@ -25,29 +25,25 @@ A TableTest table consists of:
 
 The first row defines column names. Columns map to method parameters by order, so you can use readable header names with whitespace and punctuation:
 
-```java
-@TableTest("""
-    Input Value | Result?
-    5           | 10
-    """)
-void test(int input, int expected) {
-    // First column maps to 'input' parameter
-    // Second column maps to 'expected' parameter
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="header-row" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="header-row" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 If there is one additional column than parameters, TableTest will use the leftmost column as the scenario column. In this situation, mapping to parameters will start from the second column:
 
-```java
-@TableTest("""
-    Scenario | Input Value | Result?
-    Doubles  | 5           | 10
-    """)
-void test(int input, int expected) {
-    // Second column maps to 'input' parameter
-    // Third column maps to 'expected' parameter
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="header-row-scenario" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="header-row-scenario" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 See [Scenario Names](#scenario-names) section below for more details.
 
@@ -55,20 +51,14 @@ See [Scenario Names](#scenario-names) section below for more details.
 
 Each data row represents one test execution. A table with 3 data rows produces 3 test executions.
 
-```java
-@TableTest("""
-    Value | Result
-    1     | 2
-    3     | 6
-    5     | 10
-    """)
-void testDouble(int value, int result) {
-    // Executes 3 times:
-    // 1. value=1, result=2
-    // 2. value=3, result=6
-    // 3. value=5, result=10
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="data-rows" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="data-rows" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Pipe Delimiters
 
@@ -90,17 +80,14 @@ TableTest supports providing a description for each row through a *scenario colu
 
 When the table contains one additional column than parameters, the leftmost column implicitly becomes the scenario column. The header name for this column can be anything you like.
 
-```java
-@TableTest("""
-    Situation    | Input | Expected
-    Small number | 5     | 10
-    Large number | 100   | 200
-    Zero         | 0     | 0
-    """)
-void testDouble(int input, int expected) {
-    assertEquals(expected, input * 2);
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="implicit-scenario" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="implicit-scenario" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 Scenario names appear in test reports, making it easy to identify problematic cases:
 ```
@@ -115,47 +102,41 @@ Scenario names appear in test reports, making it easy to identify problematic ca
 
 If you want another column to be the scenario column, you need to provide a parameter for all columns and annotate it with `@Scenario`:
 
-```java
-@TableTest(value = """
-    Input | Description     | Expected
-    5     | Small number    | 10
-    100   | Large number    | 200
-    """)
-void test(int input, @Scenario String description, int expected) {
-    // 'Description' is now the scenario column
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="explicit-scenario" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="explicit-scenario" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Scenario Column When Using JUnit-Supplied Parameters
 
 If your test method has additional parameters supplied by JUnit like `TestInfo` or `@TempDir`, you will need to provide a parameter for the scenario column and annotate it with `@Scenario`, even if it is the leftmost one. The TableTest parameters must come first:
 
-```java
-@TableTest("""
-    Scenario     | Input | Expected
-    Small number | 5     | 10
-    Large number | 100   | 200
-    Zero         | 0     | 0
-    """)
-void testDouble(@Scenario String scenario, int input, int expected, @TempDir Path tempDir) {
-    // 'Scenario' is now the scenario column
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="junit-params" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="junit-params" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### No Scenario Column
 
 When there is no implicit or explicit scenario column, TableTest will use the column values as a test description.
 
-```java
-@TableTest(value = """
-    Input | Expected
-    5     | 10
-    100   | 200
-    """)
-void testDouble(int input, int expected) {
-    // No scenario column
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="no-scenario" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="no-scenario" >}}
+{{< /tab >}}
+{{< /tabs >}}
+
 When running this test:
 ```
 ✓ ExampleTest
@@ -169,22 +150,14 @@ When running this test:
 
 Use comments and blank lines to organize tables:
 
-```java
-@TableTest("""
-    Scenario              | Input | Expected
-
-    // Positive numbers
-    Small positive        | 5     | 10
-    Large positive        | 100   | 200
-
-    // Negative numbers
-    Small negative        | -5    | -10
-    Large negative        | -100  | -200
-
-    // Edge cases
-    Zero                  | 0     | 0
-    """)
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="comments-blank-lines" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="comments-blank-lines" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 - **Blank lines** – Ignored, use for visual grouping
 - **Comments** – Lines starting with `//` are ignored
@@ -197,39 +170,27 @@ TableTests are JUnit parameterized tests under the hood. They follow the standar
 
 Each data row triggers one method invocation:
 
-```java
-@TableTest("""
-    Scenario | Value
-    First    | 1
-    Second   | 2
-    Third    | 3
-    """)
-void test(int value) {
-    System.out.println("Value: " + value);
-}
-
-// Output:
-// Value: 1
-// Value: 2
-// Value: 3
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="one-execution-per-row" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="one-execution-per-row" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Independent Executions
 
 Each execution is independent. State doesn't carry over between rows:
 
-```java
-private int counter = 0;
-
-@TableTest("""
-    Scenario | Value
-    First    | 1
-    Second   | 2
-    """)
-void test(int value) {
-    assertEquals(1, ++counter);  // counter will initialise to 0 for each row
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="independent-executions" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="independent-executions" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 **Best practice:** Keep tests stateless. Each row should be independently verifiable.
 
@@ -247,15 +208,14 @@ JUnit lifecycle methods (`@BeforeEach`, `@AfterEach`) run for each row.
 
 TableTest automatically converts simple string values to common types:
 
-```java
-@TableTest("""
-    Scenario | String  | Int | Long | Double | Boolean
-    Example  | hello   | 42  | 1000 | 3.14   | true
-    """)
-void test(String s, int i, long l, double d, boolean b) {
-    // Automatic conversion
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="simple-values" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="simple-values" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 Supported primitive types:
 - `int`, `long`, `short`, `byte`
@@ -264,42 +224,35 @@ Supported primitive types:
 - `char`
 - Wrapper types: `Integer`, `Long`, etc.
 
-TableTest supports all the [type converters built-in to JUnit](https://docs.junit.org/current/writing-tests/parameterized-classes-and-tests.html#argument-conversion-implicit). 
+TableTest supports all the [type converters built-in to JUnit](https://docs.junit.org/current/writing-tests/parameterized-classes-and-tests.html#argument-conversion-implicit).
 
 ### String Values
 
 Strings don't need quotes unless they contain special characters:
 
-```java
-@TableTest("""
-    Value
-    hello
-    hello world
-    // Quotes needed below - contains pipe
-    "hello | world"
-    // Quotes needed below - contains single quote
-    "'"
-    // Quotes needed below - contains double quote
-    '"' 
-    """)
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="string-values" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="string-values" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ### Null Values
 
 An empty cell will be passed as `null`:
 
-```java
-@TableTest("""
-    Scenario | Value
-    Present  | hello
-    Absent   |
-    """)
-void test(String value) {
-    // Row 2: value == null
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="null-values" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="null-values" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
-**Note:** Primitive types can't be null. Use wrapper types for nullable numbers:
+**Note:** Primitive Java types can't be null. Use wrapper types for nullable numbers:
 
 ```java
 void test(Integer value) {  // Not int - Integer allows null

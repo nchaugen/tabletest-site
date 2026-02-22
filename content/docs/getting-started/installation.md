@@ -76,22 +76,14 @@ TableTest works with popular Java frameworks:
 
 Create a simple test to verify TableTest is working:
 
-```java
-import org.tabletest.junit.TableTest;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public class VerificationTest {
-    @TableTest("""
-        Input | Expected
-        1     | 1
-        2     | 2
-        3     | 3
-        """)
-    public void verifyTableTestWorks(int input, int expected) {
-        assertEquals(expected, input);
-    }
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/getting_started/InstallationTest.java" id="verification" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/getting_started/InstallationKtTest.kt" id="verification" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 Run your tests. If you see three passing test executions, TableTest is correctly configured!
 

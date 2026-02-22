@@ -1,0 +1,65 @@
+{{- $file := .Get "file" -}}
+{{- $id := .Get "id" -}}
+{{- $lang := .Get "lang" -}}
+{{- $content := os.ReadFile $file -}}
+
+{{- if $id -}}
+  {{- $pattern := printf `(?s)// #region %s\n(.*?)// #endregion %s` $id $id -}}
+  {{- $match := findRE $pattern $content -}}
+  {{- if $match -}}
+    {{- $block := index $match 0 -}}
+    {{- $block = replaceRE (printf `// #region %s\n` $id) "" $block -}}
+    {{- $block = replaceRE (printf `// #endregion %s` $id) "" $block -}}
+    {{- $content = $block -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Dedent: find minimum leading whitespace across non-blank lines */ -}}
+{{- $lines := split $content "\n" -}}
+{{- $minIndent := 9999 -}}
+{{- range $lines -}}
+  {{- if findRE `\S` . -}}
+    {{- $leading := 0 -}}
+    {{- $trimmed := replaceRE `^\s+` "" . -}}
+    {{- $leading = sub (len .) (len $trimmed) -}}
+    {{- if lt $leading $minIndent -}}
+      {{- $minIndent = $leading -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if eq $minIndent 9999 -}}
+  {{- $minIndent = 0 -}}
+{{- end -}}
+{{- $dedented := slice -}}
+{{- range $lines -}}
+  {{- if ge (len .) $minIndent -}}
+    {{- $dedented = $dedented | append (substr . $minIndent) -}}
+  {{- else -}}
+    {{- $dedented = $dedented | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- $content = delimit $dedented "\n" -}}
+
+{{- /* Strip leading and trailing blank lines */ -}}
+{{- $content = replaceRE `^\s*\n` "" $content -}}
+{{- $content = replaceRE `\n\s*$` "" $content -}}
+
+{{- /* Determine language from param or file extension */ -}}
+{{- if not $lang -}}
+  {{- $ext := path.Ext $file -}}
+  {{- if eq $ext ".java" -}}
+    {{- $lang = "java" -}}
+  {{- else if eq $ext ".kt" -}}
+    {{- $lang = "kotlin" -}}
+  {{- else if eq $ext ".kts" -}}
+    {{- $lang = "kotlin" -}}
+  {{- else if eq $ext ".groovy" -}}
+    {{- $lang = "groovy" -}}
+  {{- else if eq $ext ".xml" -}}
+    {{- $lang = "xml" -}}
+  {{- else -}}
+    {{- $lang = "text" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- highlight $content $lang "" -}}

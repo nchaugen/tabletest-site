@@ -11,27 +11,14 @@ Much of software development involves evaluating inputs against rules: validatin
 
 Consider testing leap year logic:
 
-```java
-@Test
-public void testLeapYearNotDivisibleBy4() {
-    assertFalse(Year.isLeap(2001));
-}
-
-@Test
-public void testLeapYearDivisibleBy4() {
-    assertTrue(Year.isLeap(2004));
-}
-
-@Test
-public void testLeapYearDivisibleBy100ButNotBy400() {
-    assertFalse(Year.isLeap(2100));
-}
-
-@Test
-public void testLeapYearDivisibleBy400() {
-    assertTrue(Year.isLeap(2000));
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/getting_started/IntroductionTest.java" id="traditional-tests" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/getting_started/IntroductionKtTest.kt" id="traditional-tests" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 Four test methods, each testing a single scenario. As requirements grow, so does the repetition. What if we need to test 10 scenarios? 20? The code becomes unwieldy.
 
@@ -39,18 +26,14 @@ Four test methods, each testing a single scenario. As requirements grow, so does
 
 Table-driven testing consolidates test logic into a single parameterized method that executes multiple data rows:
 
-```java
-@TableTest("""
-    Scenario                        | Year | Is Leap Year?
-    Not divisible by 4              | 2001 | false
-    Divisible by 4                  | 2004 | true
-    Divisible by 100 but not by 400 | 2100 | false
-    Divisible by 400                | 2000 | true
-    """)
-public void testLeapYear(int year, boolean isLeapYear) {
-    assertEquals(isLeapYear, Year.isLeap(year));
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/getting_started/IntroductionTest.java" id="table-test" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/getting_started/IntroductionKtTest.kt" id="table-test" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 The test logic appears once. The test data – our examples – lives in the table. Each row represents one scenario that will be executed.
 
@@ -72,18 +55,14 @@ Well-structured tables serve as useful descriptions of how the system works. The
 
 Tables make it easy to test multiple inputs with the same expected outcome. Using value sets, you can group scenarios:
 
-```java
-@TableTest("""
-    Scenario                        | Year               | Is Leap Year?
-    Not divisible by 4              | {1, 2001, 30001}   | false
-    Divisible by 4                  | {4, 2004, 30008}   | true
-    Divisible by 100 but not by 400 | {100, 2100, 30300} | false
-    Divisible by 400                | {400, 2000, 30000} | true
-    """)
-public void testLeapYear(int year, boolean isLeapYear) {
-    assertEquals(isLeapYear, Year.isLeap(year));
-}
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/getting_started/IntroductionTest.java" id="value-sets" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/getting_started/IntroductionKtTest.kt" id="value-sets" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 This single table now tests 12 different years – triple the coverage with no additional code.
 
