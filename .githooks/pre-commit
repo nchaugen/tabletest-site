@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Check if any example files are staged
+if git diff --cached --name-only | grep -q '^examples/'; then
+    echo "Running spotlessCheck on examples..."
+    cd examples && ./gradlew spotlessCheck 2>&1
+    if [ $? -ne 0 ]; then
+        echo ""
+        echo "Formatting errors found. Run './gradlew spotlessApply' in examples/ to fix."
+        exit 1
+    fi
+fi
