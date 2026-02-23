@@ -14,14 +14,15 @@ Progress tracker for the website evolution plan (see PLAN.md).
 - [x] **Stage 5:** Review and publish type-conversion.md
 - [x] **Stage 5:** Review and publish advanced-features.md
 - [x] **Stage 5:** Review and publish realistic-example.md
+- [x] **Stage 5:** Fill type-conversion.md gaps (search order, chaining, @ConvertWith)
+- [x] **Stage 5:** Delete draft reference pages (redundant with guide)
+- [x] **Stage 5:** Delete draft tool detail pages (redundant with tools overview)
 
 ## Next Up
-- [ ] **Stage 5:** Review and publish reference pages (annotation, value-syntax, conversion-rules)
-- [ ] **Stage 5:** Review and publish tool detail pages (library, intellij-plugin, reporter, formatter)
 - [ ] **Stage 6:** CI script to pull documentation from tool repos
 
 ## Ideas
-- [ ] Verify examples as runnable tests
-- [ ] Provide both Kotlin and Java examples
+- [x] Verify examples as runnable tests
+- [x] Provide both Kotlin and Java examples
 - [ ] Page with example tables for visitors curious about how TableTests look like. Link from front page. 
 

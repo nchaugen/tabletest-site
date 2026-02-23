@@ -94,7 +94,7 @@ In Kotlin, `@TypeConverter` methods require `@JvmStatic` and can be declared in 
 
 ### Converter Parameter Types
 
-The converter parameter doesn't have to be `String`. It can be any type that TableTest knows how to convert. In the example below, the converter accepts a `double` — TableTest first converts the cell value from string to `double` using built-in conversion, then passes the result to `fromCelsius`.
+The converter parameter doesn't have to be `String`. It can be any type that TableTest knows how to convert. When the converter's parameter type doesn't match the parsed value, TableTest recursively attempts to convert the value to match — using custom converters or built-in conversion as needed. In the example below, the converter accepts a `double` — TableTest first converts the cell value from string to `double` using built-in conversion, then passes the result to `fromCelsius`.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
@@ -136,6 +136,10 @@ Since custom converters take priority over built-in conversion, you can override
 {{< /tab >}}
 {{< /tabs >}}
 
+### JUnit Explicit Argument Conversion
+
+JUnit's [explicit argument conversion](https://docs.junit.org/current/writing-tests/parameterized-classes-and-tests.html#argument-conversion-explicit) with `@ConvertWith` can also be used with TableTest methods. Note that the `ArgumentConverter` receives the parsed value (not the raw string).
+
 ## Custom Converter Sources
 
 To reuse converter methods across test classes, use the `@TypeConverterSources` annotation to list classes containing converters:
@@ -159,7 +163,34 @@ class ExampleTest {
 {{< /tab >}}
 {{< /tabs >}}
 
-In Kotlin, dedicated converter source classes should be declared as `object` with methods annotated with both `@JvmStatic` and `@TypeConverter`.
+A converter source class is a regular class with `public static` `@TypeConverter` methods. In Kotlin, use an `object` declaration with `@JvmStatic`:
+
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+```java
+public class SharedConverters {
+    @TypeConverter
+    public static Discount toDiscount(double rate) {
+        return new Discount(rate / 100);
+    }
+}
+```
+{{< /tab >}}
+{{< tab >}}
+```kotlin
+object SharedConverters {
+    @JvmStatic
+    @TypeConverter
+    fun toDiscount(rate: Double): Discount =
+        Discount(rate / 100)
+}
+```
+{{< /tab >}}
+{{< /tabs >}}
+
+### Converter Search Order
+
+TableTest searches for a matching custom converter in the test class first, then in classes listed by `@TypeConverterSources`, and stops at the first match. This means a converter defined in the test class always takes precedence over one in a shared source.
 
 ## Next Steps
 
