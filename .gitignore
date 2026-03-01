@@ -9,3 +9,12 @@ examples/build/
 
 # Editor
 .vscode/
+
+# macOS
+.DS_Store
+
+# Eclipse
+examples/.classpath
+examples/.project
+examples/.settings/
+examples/bin/
