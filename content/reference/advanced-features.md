@@ -124,4 +124,4 @@ If you need special characters in Kotlin or external table files, use actual cha
 
 ## Next Steps
 
-See all these features in action: [Realistic Example](/docs/guide/realistic-example/)
+See all these features in action: [Realistic Example](/learn/realistic-example/)

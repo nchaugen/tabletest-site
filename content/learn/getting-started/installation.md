@@ -98,4 +98,4 @@ Both provide automatic table formatting and syntax highlighting. The IntelliJ pl
 
 ## Next Steps
 
-With TableTest installed, you're ready to [write your first test&nbsp;→](/docs/getting-started/first-test)
+With TableTest installed, you're ready to [write your first test&nbsp;→](/learn/getting-started/first-test/)

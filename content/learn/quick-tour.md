@@ -1,9 +1,9 @@
 ---
-title: "Features Overview"
-weight: 4
+title: "Quick Tour"
+weight: 2
 ---
 
-A quick tour of what TableTest can do beyond the basics. Each section shows a brief example — follow the links to the [User Guide](/docs/guide/) for full details.
+A quick tour of what TableTest can do beyond the basics. Each section shows a brief example — follow the links to the [Reference](/reference/) for full details.
 
 ## Table Format
 
@@ -18,7 +18,7 @@ Tests are expressed as pipe-delimited tables inside a `@TableTest` annotation. T
 {{< /tab >}}
 {{< /tabs >}}
 
-See [Basic Usage](/docs/guide/basic-usage/) for a detailed walkthrough of table structure, column mapping, and execution.
+See [Basic Usage](/reference/basic-usage/) for a detailed walkthrough of table structure, column mapping, and execution.
 
 ## Collections
 
@@ -118,4 +118,4 @@ This keeps test methods concise and makes it easy to share table data across tes
 
 ---
 
-This overview covers the highlights. Dive deeper in the [User Guide](/docs/guide/) — starting with [Value Formats](/docs/guide/value-formats/).
+This overview covers the highlights. Dive deeper in the [Reference](/reference/) — starting with [Value Formats](/reference/value-formats/).

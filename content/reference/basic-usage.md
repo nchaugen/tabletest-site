@@ -264,6 +264,6 @@ void test(Integer value) {  // Not int - Integer allows null
 
 Now that you understand the basics:
 
-- **[Value Formats](/docs/guide/value-formats/)** — Lists, sets, maps, nested structures, and quoting rules
-- **[Type Conversion](/docs/guide/type-conversion/)** — Built-in and custom `@TypeConverter` methods
-- **[Advanced Features](/docs/guide/advanced-features/)** — Value sets, external files, parameter resolvers
+- **[Value Formats](/reference/value-formats/)** — Lists, sets, maps, nested structures, and quoting rules
+- **[Type Conversion](/reference/type-conversion/)** — Built-in and custom `@TypeConverter` methods
+- **[Advanced Features](/reference/advanced-features/)** — Value sets, external files, parameter resolvers

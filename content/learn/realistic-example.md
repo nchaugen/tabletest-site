@@ -1,9 +1,10 @@
 ---
-title: "Realistic Example"
+title: "Example: Developing a Discount System"
+description: "A complete worked example designing TableTests for a public transport discount system, showing how tables drive implementation and document business rules."
 weight: 5
 ---
 
-This guide walks through designing TableTests for a realistic problem: a public transport levelled discount system. You'll see how to develop tests iteratively and how investing in readable notation pays off.
+This article walks through designing TableTests for a realistic problem: a public transport levelled discount system. You'll see how to develop tests iteratively and how investing in readable notation pays off.
 
 ## The Business Problem
 

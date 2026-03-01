@@ -9,17 +9,17 @@ Congratulations! You've written your first TableTest. Here's where to go from he
 
 ### Learn the Fundamentals
 
-Work through the User Guide to understand TableTest deeply:
+Work through the Reference to understand TableTest deeply:
 
-1. **[Basic Usage](/docs/guide/basic-usage/)** — Table syntax, column mapping, scenario names
-2. **[Value Formats](/docs/guide/value-formats/)** — Lists, sets, maps, nested structures, and quoting rules
-3. **[Type Conversion](/docs/guide/type-conversion/)** — Built-in and custom `@TypeConverter` methods
-4. **[Advanced Features](/docs/guide/advanced-features/)** — Value sets, external files, parameter resolvers
-5. **[Realistic Example](/docs/guide/realistic-example/)** — Complete worked example
+1. **[Basic Usage](/reference/basic-usage/)** — Table syntax, column mapping, scenario names
+2. **[Value Formats](/reference/value-formats/)** — Lists, sets, maps, nested structures, and quoting rules
+3. **[Type Conversion](/reference/type-conversion/)** — Built-in and custom `@TypeConverter` methods
+4. **[Advanced Features](/reference/advanced-features/)** — Value sets, external files, parameter resolvers
+5. **[Realistic Example](/learn/realistic-example/)** — Complete worked example
 
 ### Explore the Ecosystem
 
-TableTest provides [tools](/docs/tools/) that enhance your development workflow — an IntelliJ plugin and VS Code extension for auto-formatting and syntax highlighting, a formatter for CI/CD enforcement, and a reporter for generating documentation from your tests.
+TableTest provides [tools](/tools/) that enhance your development workflow — an IntelliJ plugin and VS Code extension for auto-formatting and syntax highlighting, a formatter for CI/CD enforcement, and a reporter for generating documentation from your tests.
 
 ## Quick Tips
 
@@ -48,7 +48,7 @@ The [IntelliJ plugin](https://plugins.jetbrains.com/plugin/27334-tabletest) and 
 ## Common Questions
 
 **Q: Can I use TableTest with Kotlin?**
-A: Yes! TableTest fully supports Kotlin. See the [User Guide](/docs/guide/basic-usage/) for examples.
+A: Yes! TableTest fully supports Kotlin. See the [Reference](/reference/basic-usage/) for examples.
 
 **Q: How do I test exceptions?**
 A: Use standard JUnit assertions like `assertThrows`:
@@ -71,7 +71,7 @@ A: Use external files with the `resource` attribute:
 @TableTest(resource = "/test-data/large-dataset.table")
 ```
 
-See [Advanced Features](/docs/guide/advanced-features/#external-table-files) for details.
+See [Advanced Features](/reference/advanced-features/#external-table-files) for details.
 
 **Q: I get a conversion error but my values look correct?**
 A: Check that every parameter has a matching column. If the table has fewer columns than parameters, TableTest will try to map the scenario column as a value:
@@ -97,12 +97,12 @@ A: Ensure values in the table match the parameter types, or provide a custom `@T
 void test(int number) {  // Can't convert "abc" to int!
 ```
 
-See [Type Conversion](/docs/guide/type-conversion/) for how to write custom converters.
+See [Type Conversion](/reference/type-conversion/) for how to write custom converters.
 
 ## Get Help
 
 - **GitHub Issues:** [Report bugs or request features](https://github.com/nchaugen/tabletest/issues)
-- **Documentation:** Browse the [User Guide](/docs/guide/) or the [full User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md)
+- **Documentation:** Browse the [Reference](/reference/) or the [full User Guide on GitHub](https://github.com/nchaugen/tabletest/blob/main/USERGUIDE.md)
 - **Examples:** Check the repository for [example projects](https://github.com/nchaugen/tabletest/tree/main/examples)
 
 ## Contributing
@@ -113,4 +113,4 @@ TableTest is open source (Apache 2.0). Contributions are welcome!
 
 ---
 
-Ready to learn more? Start with [Basic Usage →](/docs/guide/basic-usage/)
+Ready to learn more? Start with [Basic Usage →](/reference/basic-usage/)

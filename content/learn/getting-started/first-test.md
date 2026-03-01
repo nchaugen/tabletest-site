@@ -153,7 +153,7 @@ When you run this test, TableTest will:
 1. **Parse the table** – Extract headers and data rows
 2. **Map columns to parameters** – By order, ignoring the additional scenario column
 3. **Convert values** – Transforms string `"2"` to int `2`, etc.
-4. **Pass converted values to JUnit** – Making JUnit run the test once for each row 
+4. **Pass converted values to JUnit** – Making JUnit run the test once for each row
 
 ## What You've Learned
 
@@ -164,4 +164,4 @@ When you run this test, TableTest will:
 
 ## Next Steps
 
-You now know the basics! See [what else TableTest can do&nbsp;→](/docs/getting-started/features/) or jump straight to [Next Steps&nbsp;→](/docs/getting-started/next-steps/)
+You now know the basics! Take the [Quick Tour&nbsp;→](/learn/quick-tour/) to see what else TableTest can do, or jump straight to [Next Steps&nbsp;→](/learn/getting-started/next-steps/)

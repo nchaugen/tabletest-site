@@ -194,4 +194,4 @@ TableTest searches for a matching custom converter in the test class first, then
 
 ## Next Steps
 
-Explore value sets, external table files, and more: [Advanced Features](/docs/guide/advanced-features/)
+Explore value sets, external table files, and more: [Advanced Features](/reference/advanced-features/)

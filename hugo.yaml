@@ -18,18 +18,24 @@ markup:
 
 menu:
   main:
-    - name: Documentation
-      pageRef: /docs
+    - name: Learn
+      pageRef: /learn
       weight: 1
-    - name: Tools
-      pageRef: /docs/tools
+    - name: Reference
+      pageRef: /reference
       weight: 2
-    - name: Search
+    - name: Tools
+      pageRef: /tools
       weight: 3
+    - name: Changelog
+      pageRef: /changelog
+      weight: 4
+    - name: Search
+      weight: 5
       params:
         type: search
     - name: GitHub
-      weight: 4
+      weight: 6
       url: "https://github.com/nchaugen/tabletest"
       params:
         icon: github
@@ -50,9 +56,9 @@ params:
       height: 10
 
   banner:
-#    key: 'announcement-xxx'
-#    message: |
-#      🎉 New version! [TableTest](https://github.com/nchaugen/tabletest) v0.5.9 was just released.
+    key: 'announcement-100'
+    message: |
+      🎉 [TableTest 1.0.0](https://github.com/nchaugen/tabletest/releases/tag/tabletest-junit-1.0.0) is out — read the [changelog](/changelog/).
 
   footer:
     displayCopyright: false

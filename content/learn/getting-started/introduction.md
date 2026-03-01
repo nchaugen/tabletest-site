@@ -86,4 +86,4 @@ Standard `@Test` methods work better when:
 
 ## Next Steps
 
-Now that you understand what TableTest is and when to use it, let's [set it up in your project&nbsp;→](/docs/getting-started/installation/)
+Now that you understand what TableTest is and when to use it, let's [set it up in your project&nbsp;→](/learn/getting-started/installation/)

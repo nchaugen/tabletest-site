@@ -50,7 +50,7 @@ Sets are enclosed in curly braces with comma-separated elements. Sets can contai
 
 {{% details title="Sets vs Value Sets" closed="true" %}}
 
-Curly braces have a dual role in TableTest. When the test parameter is declared as a `Set` type, the value is passed as a single set argument. When the parameter is *not* a `Set`, the values are expanded into separate test invocations — one per element. See [Value Sets](/docs/guide/advanced-features/#value-sets) for details.
+Curly braces have a dual role in TableTest. When the test parameter is declared as a `Set` type, the value is passed as a single set argument. When the parameter is *not* a `Set`, the values are expanded into separate test invocations — one per element. See [Value Sets](/reference/advanced-features/#value-sets) for details.
 
 {{% /details %}}
 
@@ -97,4 +97,4 @@ There is no `null` keyword — simply leave the cell blank.
 
 ## Next Steps
 
-Learn how TableTest converts these values to method parameters: [Type Conversion](/docs/guide/type-conversion/)
+Learn how TableTest converts these values to method parameters: [Type Conversion](/reference/type-conversion/)
