@@ -1,5 +1,6 @@
 ---
 title: Changelog
+toc: false
 ---
 
 Changes across the TableTest ecosystem, sorted newest first.
