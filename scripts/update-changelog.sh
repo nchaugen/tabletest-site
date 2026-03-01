@@ -9,6 +9,8 @@ REPOS=(
     "nchaugen/tabletest-formatter"
     "nchaugen/tabletest-reporter"
     "nchaugen/tabletest-intellij"
+    "nchaugen/tabletest-vscode"
+    "nchaugen/tabletest-claude-plugin"
 )
 
 REPO_NAMES=(
@@ -16,6 +18,8 @@ REPO_NAMES=(
     "TableTest Formatter"
     "TableTest Reporter"
     "TableTest IntelliJ Plugin"
+    "TableTest VS Code"
+    "TableTest Claude Code Plugin"
 )
 
 echo "Fetching GitHub releases..."
@@ -28,10 +32,19 @@ for i in "${!REPOS[@]}"; do
     echo "  → $repo"
 
     releases=$(gh api "repos/$repo/releases?per_page=100" \
-        --jq '[.[] | {tagName: .tag_name, name: .name, body: (.body // ""), publishedAt: .published_at}]' \
+        --jq '[.[] | {tagName: .tag_name, name: .name, body: (.body // "")}]' \
         2>/dev/null || echo '[]')
 
-    with_repo=$(echo "$releases" | jq \
+    # Replace publishedAt with the tag's commit date for accuracy
+    enriched='[]'
+    while IFS= read -r release; do
+        tagName=$(echo "$release" | jq -r '.tagName')
+        tagDate=$(gh api "repos/$repo/commits/$tagName" --jq '.commit.committer.date' 2>/dev/null || echo "")
+        release=$(echo "$release" | jq --arg d "${tagDate:-1970-01-01T00:00:00Z}" '. + {publishedAt: $d}')
+        enriched=$(jq -n --argjson a "$enriched" --argjson b "$release" '$a + [$b]')
+    done < <(echo "$releases" | jq -c '.[]')
+
+    with_repo=$(echo "$enriched" | jq \
         --arg repo "$repo" \
         --arg repoName "$name" \
         '[.[] | . + {repo: $repo, repoName: $repoName}]')
@@ -47,6 +60,7 @@ echo "Found $COUNT releases total."
     cat <<'FRONTMATTER'
 ---
 title: Changelog
+toc: false
 ---
 
 Changes across the TableTest ecosystem, sorted newest first.
@@ -54,7 +68,7 @@ Changes across the TableTest ecosystem, sorted newest first.
 FRONTMATTER
 
     echo "$SORTED" | jq -r '.[] |
-        "## " + .publishedAt[0:10] + " \u2014 " + .repoName + " " + .tagName + "\n\n" +
+        "## " + .publishedAt[0:10] + " \u2014 " + .repoName + " " + (.tagName | split("-") | last) + "\n\n" +
         (if (.body | length) > 0 then .body + "\n\n" else "" end) +
         "[GitHub Release](https://github.com/" + .repo + "/releases/tag/" + .tagName + ")\n\n---\n"
     '
