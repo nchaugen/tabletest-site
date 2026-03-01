@@ -101,7 +101,7 @@ void leapYear(int year, boolean leap) {
   >}}
   {{< hextra/feature-card
     title="Rich Tool Support"
-    subtitle="IntelliJ plugin and VS Code extension for formatting and syntax highlighting, plus a CLI formatter and test reporter."
+    subtitle="IntelliJ plugin, VS Code extension, Claude Code plugin, CLI formatter, and test reporter — all with auto-formatting and syntax highlighting."
   >}}
   {{< hextra/feature-card
     title="Built on JUnit"

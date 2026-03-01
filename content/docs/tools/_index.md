@@ -61,6 +61,23 @@ Generates documentation from your TableTest tests. Run your tests, then run the 
 
 **Available on:** [Maven Central](https://central.sonatype.com/search?q=org.tabletest+tabletest-reporter) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-reporter)
 
+## Claude Code Plugin
+
+Two guided skills for writing TableTest-style tests from inside [Claude Code](https://claude.ai/claude-code), the AI coding assistant from Anthropic.
+
+- **`/spec-by-example`** — clarify behaviour by working through concrete examples as a table, using business language throughout; the resulting table maps directly to a `@TableTest`
+- **`/tabletest`** — create `@TableTest` methods with guided table design, syntax reference, and a quality checklist; handles both new tests and converting similar `@Test` methods
+- **Auto-formatting** — tables are automatically aligned after every file edit via a PostToolUse hook
+
+Install from the Claude Code CLI:
+
+```shell
+/plugin marketplace add https://tabletest.org/marketplace.json
+/plugin install tabletest@tabletest.org
+```
+
+**Available on:** [Claude Code Marketplace](https://tabletest.org/marketplace.json) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-claude-plugin)
+
 ## Compatibility
 
 All tools support:
@@ -77,3 +94,4 @@ All tools are open source under Apache Licence 2.0:
 - [tabletest-vscode](https://github.com/nchaugen/tabletest-vscode) — VS Code extension
 - [tabletest-formatter](https://github.com/nchaugen/tabletest-formatter) — Formatting tool
 - [tabletest-reporter](https://github.com/nchaugen/tabletest-reporter) — Documentation generator
+- [tabletest-claude-plugin](https://github.com/nchaugen/tabletest-claude-plugin) — Claude Code plugin
