@@ -8,4 +8,7 @@
 - [x] Review final "Next steps" section in each article to consider if updates are needed
 - [x] Changelog looks cluttered, tool name is repeated in entry header for some tools, "On this page" should only show first level headers
 - [x] Activate announcement header pointing to TableTest 1.0.0 release in change log (the most important change recently)
+- [x] Favicons that work with Safari
+- [x] Include all tools in consolidated changelog page
+- [x] Upgrade to hextra 0.12 https://imfing.github.io/hextra/blog/v0.12/
 
