@@ -5,6 +5,30 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-03-03 — TableTest Formatter natively supported in Spotless
+
+TableTest Formatter is now built into [Spotless](https://github.com/diffplug/spotless) — no extra dependencies required.
+
+**Gradle** (Spotless plugin 8.3.0+):
+
+```groovy
+spotless {
+    java { tableTestFormatter() }
+    kotlin { tableTestFormatter() }
+}
+```
+
+**Maven** (Spotless plugin 3.3.0+):
+
+```xml
+<java><tableTestFormatter/></java>
+<kotlin><tableTestFormatter/></kotlin>
+```
+
+[Spotless Gradle Plugin](https://github.com/diffplug/spotless/tree/main/plugin-gradle) | [Spotless Maven Plugin](https://github.com/diffplug/spotless/tree/main/plugin-maven)
+
+---
+
 ## 2026-02-28 — TableTest Claude Code Plugin v1.2.0
 
 ### Added
