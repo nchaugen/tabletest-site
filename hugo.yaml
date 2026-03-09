@@ -41,8 +41,8 @@ menu:
         icon: github
 
 params:
-  currentVersion: "1.0.0"
-  currentTableTestVersion: "1.0.0"
+  currentVersion: "1.1.0"
+  currentTableTestVersion: "1.1.0"
   currentJUnitVersion: "6.0.3"
 
   navbar:
@@ -56,9 +56,9 @@ params:
       height: 10
 
   banner:
-    key: 'announcement-100'
+    key: 'announcement-110'
     message: |
-      🎉 [TableTest 1.0.0](https://github.com/nchaugen/tabletest/releases/tag/tabletest-junit-1.0.0) is out — read the [changelog](/changelog/).
+      🎉 [TableTest 1.1.0](https://github.com/nchaugen/tabletest/releases/tag/tabletest-junit-1.1.0) is out — now supports Java 8+. Read the [changelog](/changelog/).
 
   footer:
     displayCopyright: false

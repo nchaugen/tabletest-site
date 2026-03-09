@@ -20,6 +20,14 @@ Tests are expressed as pipe-delimited tables inside a `@TableTest` annotation. T
 
 See [Basic Usage](/reference/basic-usage/) for a detailed walkthrough of table structure, column mapping, and execution.
 
+### Java 8–14: String Array Syntax
+
+Java text blocks require Java 15+. On Java 8–14, pass the table rows as a string array instead:
+
+{{< codefile file="examples/src/test/java/getting_started/FeaturesTest.java" id="string-array-syntax" >}}
+
+Each string in the array is one row of the table. The syntax is otherwise identical — the same column mapping, type conversion, and value set rules apply.
+
 ## Collections
 
 Tables can contain lists, sets, and maps as cell values. Nested structures are also supported. Values are automatically converted to the parameterised type of the corresponding test parameter.

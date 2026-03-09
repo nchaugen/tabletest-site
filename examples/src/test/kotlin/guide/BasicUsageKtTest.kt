@@ -61,13 +61,11 @@ class BasicUsageKtTest {
     // #endregion implicit-scenario
 
     // #region explicit-scenario
-    @TableTest(
-        value = """
+    @TableTest("""
         Input | Description  | Expected
         5     | Small number | 10
         100   | Large number | 200
-        """
-    )
+        """)
     fun explicitScenario(input: Int, @Scenario description: String, expected: Int) {
         assertEquals(expected, input * 2)
     }

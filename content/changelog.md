@@ -5,6 +5,39 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-03-08 — TableTest IntelliJ Plugin v0.3.0
+
+### Added
+- Support for Java `@TableTest` string-array values (injection and formatting)
+
+[GitHub Release](https://github.com/nchaugen/tabletest-intellij/releases/tag/v0.3.0)
+
+---
+
+## 2026-03-08 — TableTest VS Code v0.0.6
+
+### Added
+- Support for Java `@TableTest` string-array table literals (parsing, formatting, highlighting, and diagnostics)
+
+[GitHub Release](https://github.com/nchaugen/tabletest-vscode/releases/tag/v0.0.6)
+
+---
+
+## 2026-03-08 — TableTest 1.1.0
+
+### Changed
+- Java requirement lowered from 21 to 8
+
+### Added
+- String array syntax (`@TableTest({"row1", "row2"})`) as an alternative to text blocks for Java 8–14
+
+### Upgrade note
+This release is binary-incompatible with 1.0.0. Java projects must do a clean rebuild (`mvn clean test` / `gradle clean test`). Kotlin projects are unaffected.
+
+[GitHub Release](https://github.com/nchaugen/tabletest/releases/tag/tabletest-junit-1.1.0)
+
+---
+
 ## 2026-03-03 — TableTest Formatter natively supported in Spotless
 
 TableTest Formatter is now built into [Spotless](https://github.com/diffplug/spotless) — no extra dependencies required.

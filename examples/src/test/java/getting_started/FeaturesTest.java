@@ -24,6 +24,19 @@ public class FeaturesTest {
     }
     // #endregion table-format
 
+    // #region string-array-syntax
+    @TableTest({
+        "Scenario                              | Year | Is leap year?",
+        "Years not divisible by 4              | 2001 | false        ",
+        "Years divisible by 4                  | 2004 | true         ",
+        "Years divisible by 100 but not by 400 | 2100 | false        ",
+        "Years divisible by 400                | 2000 | true         "
+    })
+    public void leapYearStringArray(Year year, boolean expectedResult) {
+        assertEquals(expectedResult, year.isLeap(), "Year " + year);
+    }
+    // #endregion string-array-syntax
+
     // #region collections
     @TableTest("""
         List      | size? | sum?

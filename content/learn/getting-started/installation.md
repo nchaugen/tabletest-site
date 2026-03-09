@@ -9,7 +9,7 @@ TableTest is available on Maven Central. Add it to your project as a test-scoped
 
 Before installing TableTest, ensure your project meets these requirements:
 
-- **Kotlin** or **Java** 21 or above
+- **Kotlin** or **Java** 8 or above (Java 15+ recommended for text block syntax)
 - **JUnit** 5.11 or above
 
 ## Setup
