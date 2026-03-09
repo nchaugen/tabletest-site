@@ -5,60 +5,84 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
-## 2026-03-08 — TableTest IntelliJ Plugin v0.3.0
+## 2026-03-09 — TableTest IntelliJ Plugin v0.3.1
 
-### Added
-- Support for Java `@TableTest` string-array values (injection and formatting)
+### Fixed
 
-[GitHub Release](https://github.com/nchaugen/tabletest-intellij/releases/tag/v0.3.0)
+- Kotlin plugin mode compatibility declaration is now loaded from the main plugin descriptor, removing K2 compatibility warnings in plugin verification.
+- Expected header styling now inherits from language defaults (`Static method`) by default.
+
+[GitHub Release](https://github.com/nchaugen/tabletest-intellij/releases/tag/v0.3.1)
 
 ---
 
-## 2026-03-08 — TableTest VS Code v0.0.6
+## 2026-03-08 — TableTest IntelliJ Plugin v0.3.0
 
 ### Added
-- Support for Java `@TableTest` string-array table literals (parsing, formatting, highlighting, and diagnostics)
 
-[GitHub Release](https://github.com/nchaugen/tabletest-vscode/releases/tag/v0.0.6)
+- Support Java `@TableTest` static string-array values for TableTest injection and table formatting.
+- Align closing quotes in Java `@TableTest` string arrays by normalising row lengths after formatting.
+
+### Changed
+
+- Expected header default fallback style is now `Classes -> Static method`.
+
+### Fixed
+
+- Fix Kotlin mode compatibility by aligning minimum build; keep Java implicit-usage when Kotlin plugin is disabled.
+- Prevent zero-length `COMMENT` token matches in the lexer (avoids potential non-termination warnings).
+
+
+[GitHub Release](https://github.com/nchaugen/tabletest-intellij/releases/tag/v0.3.0)
 
 ---
 
 ## 2026-03-08 — TableTest 1.1.0
 
 ### Changed
-- Java requirement lowered from 21 to 8
-
+- Minimum Java version lowered from 21 to 8
+- `@TableTest` value parameter accepts a string array to support Java versions without text blocks
 ### Added
-- String array syntax (`@TableTest({"row1", "row2"})`) as an alternative to text blocks for Java 8–14
+- Java 8 compatibility tests in CI
+### Upgrading from 1.0.0
+This release is **source compatible** but **binary incompatible** with 1.0.0.
 
-### Upgrade note
-This release is binary-incompatible with 1.0.0. Java projects must do a clean rebuild (`mvn clean test` / `gradle clean test`). Kotlin projects are unaffected.
+- **A clean rebuild is required**: run `mvn clean test` or `gradle clean test` after upgrading
+- Upgrading without a clean rebuild (e.g. `mvn test` alone) will fail with `AnnotationTypeMismatchException`
+- Recompiling without cleaning (e.g. `mvn compile test`) is also insufficient — Maven's incremental compiler does not detect annotation return type changes
+- **Kotlin projects are not affected**: the Kotlin incremental compiler handles the annotation change automatically
 
 [GitHub Release](https://github.com/nchaugen/tabletest/releases/tag/tabletest-junit-1.1.0)
 
 ---
 
-## 2026-03-03 — TableTest Formatter natively supported in Spotless
+## 2026-03-08 — TableTest VS Code v0.0.6
 
-TableTest Formatter is now built into [Spotless](https://github.com/diffplug/spotless) — no extra dependencies required.
+**Full Changelog**: https://github.com/nchaugen/tabletest-vscode/compare/v0.0.5...v0.0.6
 
-**Gradle** (Spotless plugin 8.3.0+):
+[GitHub Release](https://github.com/nchaugen/tabletest-vscode/releases/tag/v0.0.6)
 
-```groovy
-spotless {
-    java { tableTestFormatter() }
-    kotlin { tableTestFormatter() }
-}
-```
+---
 
-**Maven** (Spotless plugin 3.3.0+):
+## 2026-03-06 — TableTest Claude Code Plugin v1.3.0
 
-```xml
-<java><tableTestFormatter/></java>
-<kotlin><tableTestFormatter/></kotlin>
-```
+## Changes
 
-[Spotless Gradle Plugin](https://github.com/diffplug/spotless/tree/main/plugin-gradle) | [Spotless Maven Plugin](https://github.com/diffplug/spotless/tree/main/plugin-maven)
+### Changed
+- **tabletest**: Simplified pre-check — dependency and shape checks rewritten as readable prose rather than a prescriptive checklist
+- **tabletest**: Improved skill trigger description so the skill activates on value-set, type-converter, and column-design questions even when the user doesn't say "TableTest" explicitly
+- **tabletest**: Pair programming guidance extracted to `references/pair-programming.md`; SKILL.md retains the key habit (show a mockup first) with a pointer to the full cadence
+- **spec-by-example**: Improved skill trigger description — now activates on vague requirements and mid-implementation edge cases, not just upfront spec work
+- **spec-by-example**: Expanded value-set guidance with a dedicated state/status example (`{PENDING, CONFIRMED}`) and an explicit callout that blank and value-set mean different things and must not be conflated
+- **spec-by-example**: Clearer handoff section linking to `/tabletest` with column-translation notes
+
+### Added
+- **tabletest**: Date format limitation warning — built-in `LocalDate`/`LocalDateTime` conversion handles ISO 8601 only; non-standard formats require a `@TypeConverter`
+- **Plugin**: Updated description to cover both skills; keywords updated (`spec-by-example`, `example mapping` added; `fit`, `acceptance testing` removed)
+
+**Full changelog**: https://github.com/nchaugen/tabletest-claude-plugin/blob/main/CHANGELOG.md
+
+[GitHub Release](https://github.com/nchaugen/tabletest-claude-plugin/releases/tag/v1.3.0)
 
 ---
 
