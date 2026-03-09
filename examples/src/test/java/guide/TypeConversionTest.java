@@ -1,8 +1,6 @@
 package guide;
 
 import org.tabletest.junit.TableTest;
-import org.tabletest.junit.TypeConverter;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
