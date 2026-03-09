@@ -77,13 +77,6 @@ Install from the Claude Code CLI:
 
 **Available on:** [Claude Code Marketplace](https://tabletest.org/marketplace.json) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-claude-plugin)
 
-## Compatibility
-
-All tools support:
-- **Java:** 21 or above
-- **Build Tools:** Maven and Gradle
-- **Frameworks:** Spring Boot 3.4.0+, Quarkus 3.21.2+
-
 ## Source Code
 
 All tools are open source under Apache Licence 2.0:
