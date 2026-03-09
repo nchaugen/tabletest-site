@@ -100,4 +100,18 @@ public class AdvancedFeaturesTest {
         assertEquals(expectedLength, input.length());
     }
     // #endregion escape-sequences-java
+
+    // #region escape-sequences-java-array
+    @TableTest({
+        "Scenario                                | Input      | Length?",
+        "Tab character processed by compiler     | a\tb       | 3      ",
+        "Quote marks processed by compiler       | Say \"hi\" | 8      ",
+        "Backslash processed by compiler         | path\\file | 9      ",
+        "Unicode character processed by compiler | \u0041B    | 2      ",
+        "Octal character processed by compiler   | \101B      | 2      "
+    })
+    void testEscapeSequencesStringArray(String input, int expectedLength) {
+        assertEquals(expectedLength, input.length());
+    }
+    // #endregion escape-sequences-java-array
 }

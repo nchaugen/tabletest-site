@@ -110,6 +110,12 @@ In Java text blocks, all Java escape sequences (`\t`, `\"`, `\\`, `\uXXXX`, etc.
 
 {{< codefile file="examples/src/test/java/guide/AdvancedFeaturesTest.java" id="escape-sequences-java" >}}
 
+### Java String Arrays
+
+The same rules apply to Java string arrays — escape sequences are processed by the compiler:
+
+{{< codefile file="examples/src/test/java/guide/AdvancedFeaturesTest.java" id="escape-sequences-java-array" >}}
+
 ### Kotlin Raw Strings
 
 Using Kotlin raw strings, escape sequences are **not** processed. They remain as literal backslash characters:
