@@ -24,7 +24,7 @@ void leapYear(int year, boolean isLeapYear) {
 }
 ```
 
-The header name doesn't have to be "Scenario" — it can be anything. If you want a different column to serve as the scenario column, or you need more control, see [Basic Usage](/reference/basic-usage/#scenario-names) in the documentation.
+The header name doesn't have to be "Scenario" — it can be anything. If you want a different column to serve as the scenario column, or you need more control, see [Scenario Names](/reference/advanced-features/#scenario-names) in the documentation.
 
 ## Automatic Conversion
 

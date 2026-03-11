@@ -45,7 +45,7 @@ If there is one additional column than parameters, TableTest will use the leftmo
 {{< /tab >}}
 {{< /tabs >}}
 
-See [Scenario Names](#scenario-names) section below for more details.
+See [Scenario Names](/reference/advanced-features/#scenario-names) for more details.
 
 ### Data Rows
 
@@ -71,96 +71,6 @@ Pipes (`|`) separate columns. Pipes are only used between columns, not at the st
 
 Consistent formatting improves readability. The [IntelliJ plugin](https://plugins.jetbrains.com/plugin/27334-tabletest), [VS Code extension](https://marketplace.visualstudio.com/items?itemName=tabletest.tabletest), and [Formatter](https://github.com/nchaugen/tabletest-formatter) handle this automatically.
 
-
-## Scenario Names
-
-TableTest supports providing a description for each row through a *scenario column*. Scenario names help explain what is being tested and appear in test reports.
-
-### Implicit Scenario Column
-
-When the table contains one additional column than parameters, the leftmost column implicitly becomes the scenario column. The header name for this column can be anything you like.
-
-{{< tabs items="Java,Kotlin" >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="implicit-scenario" >}}
-{{< /tab >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="implicit-scenario" >}}
-{{< /tab >}}
-{{< /tabs >}}
-
-Scenario names appear in test reports, making it easy to identify problematic cases:
-```
-✓ ExampleTest
-  ✓ testDouble (int, int)
-    ✓ [1] Small number
-    ✓ [2] Large number
-    ✗ [3] Zero
-```
-
-### Explicit Scenario Column
-
-If you want another column to be the scenario column, you need to provide a parameter for all columns and annotate it with `@Scenario`:
-
-{{< tabs items="Java,Kotlin" >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="explicit-scenario" >}}
-{{< /tab >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="explicit-scenario" >}}
-{{< /tab >}}
-{{< /tabs >}}
-
-### Scenario Column When Using JUnit-Supplied Parameters
-
-If your test method has additional parameters supplied by JUnit like `TestInfo` or `@TempDir`, you will need to provide a parameter for the scenario column and annotate it with `@Scenario`, even if it is the leftmost one. The TableTest parameters must come first:
-
-{{< tabs items="Java,Kotlin" >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="junit-params" >}}
-{{< /tab >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="junit-params" >}}
-{{< /tab >}}
-{{< /tabs >}}
-
-### No Scenario Column
-
-When there is no implicit or explicit scenario column, TableTest will use the column values as a test description.
-
-{{< tabs items="Java,Kotlin" >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="no-scenario" >}}
-{{< /tab >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="no-scenario" >}}
-{{< /tab >}}
-{{< /tabs >}}
-
-When running this test:
-```
-✓ ExampleTest
-  ✓ testDouble (int, int)
-    ✓ [1] 5, 10
-    ✓ [2] 100, 200
-```
-
-
-## Comments and Blank Lines
-
-Use comments and blank lines to organize tables:
-
-{{< tabs items="Java,Kotlin" >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="comments-blank-lines" >}}
-{{< /tab >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="comments-blank-lines" >}}
-{{< /tab >}}
-{{< /tabs >}}
-
-- **Blank lines** – Ignored, use for visual grouping
-- **Comments** – Lines starting with `//` are ignored
 
 ## Execution Model
 
