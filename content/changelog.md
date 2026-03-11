@@ -5,6 +5,16 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-03-11 — TableTest 1.2.0
+
+### Added
+- Array parameter support: list syntax `[a, b, c]` now converts to array types —
+  `String[]`, `int[]`, `Map<K,V>[]`, nested arrays, and Kotlin `IntArray`/`Array<T>`.
+
+[GitHub Release](https://github.com/nchaugen/tabletest/releases/tag/tabletest-junit-1.2.0)
+
+---
+
 ## 2026-03-09 — TableTest IntelliJ Plugin v0.3.1
 
 ### Fixed

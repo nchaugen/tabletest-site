@@ -26,7 +26,7 @@ repositories {
 }
 
 // Keep in sync with hugo.yaml params
-val tabletestVersion = "1.1.0"
+val tabletestVersion = "1.2.0"
 val junitVersion = "6.0.3"
 
 dependencies {
