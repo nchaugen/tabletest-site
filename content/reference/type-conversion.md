@@ -18,7 +18,15 @@ Custom converters take priority, allowing you to override built-in conversion wh
 
 ### Single Values
 
-Out of the box, TableTest converts single values to many standard types using JUnit's built-in type converters. See the [JUnit documentation](https://docs.junit.org/current/writing-tests/parameterized-classes-and-tests.html#argument-conversion-implicit) for the full list.
+The parameter type controls conversion. A cell value like `42` converts to `int`, `long`, `double`, or any other numeric type depending on what the parameter declares. The commonly-used built-in conversions include:
+
+- **Numbers** — `int`, `long`, `short`, `byte`, `float`, `double`, and their wrapper types. The cell value is parsed according to the target type.
+- **Boolean and char** — `true`/`false` for booleans, single characters for `char`.
+- **Enums** — Converted by name (e.g. `MONDAY` for `DayOfWeek`).
+- **Time types** — `LocalDate`, `LocalDateTime`, `LocalTime`, `Instant`, `Duration`, `Period`, and other `java.time` types, parsed in their standard ISO formats.
+- **Paths and URIs** — `Path`, `File`, `URI`, and `URL`.
+
+See the [JUnit documentation](https://docs.junit.org/current/writing-tests/parameterized-classes-and-tests.html#argument-conversion-implicit) for the full list.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
@@ -31,7 +39,7 @@ Out of the box, TableTest converts single values to many standard types using JU
 
 ### Collections and Arrays
 
-Built-in conversion also applies to elements in lists and sets, and to values in maps, when the test method parameter is a parameterised type. Map keys remain `String` type and are not converted.
+When the parameter is a parameterised type like `List<Integer>` or `Map<String, LocalDate>`, TableTest uses the generic type information to convert each element individually. Map keys remain `String` type and are not converted.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
@@ -42,7 +50,7 @@ Built-in conversion also applies to elements in lists and sets, and to values in
 {{< /tab >}}
 {{< /tabs >}}
 
-The same list syntax `[a, b, c]` also converts to array types — declare the parameter as an array and TableTest handles the rest.
+The same `[a, b, c]` list syntax also works for array parameters — both object arrays (`String[]`) and primitive arrays (`int[]`). The parameter type determines the result.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
@@ -52,10 +60,6 @@ The same list syntax `[a, b, c]` also converts to array types — declare the pa
 {{< codefile file="examples/src/test/kotlin/guide/TypeConversionKtTest.kt" id="array-types" >}}
 {{< /tab >}}
 {{< /tabs >}}
-
-## Blank Cells
-
-A blank cell converts to `null` for all object types, including `String`, wrapper types, and object arrays. For primitive types and primitive arrays (`int`, `int[]`, etc.), a blank cell causes an error because primitives cannot represent `null`.
 
 ## Custom Converter Methods
 

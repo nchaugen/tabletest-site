@@ -39,12 +39,15 @@ public class TypeConversionDiscountTest {
         [5%, 15%]       | 15%
         """)
     void testCollectionsWithCustomTypes(List<Discount> discounts, Discount best) {
-        Discount actual = discounts.stream()
-            .max(Comparator.comparingInt(Discount::percentage))
-            .orElseThrow();
-        assertEquals(best, actual);
+        assertEquals(best, bestDiscount(discounts));
     }
     // #endregion collections-custom-types
+
+    private Discount bestDiscount(List<Discount> discounts) {
+        return discounts.stream()
+            .max(Comparator.comparingInt(Discount::percentage))
+            .orElseThrow();
+    }
 
     private Discount calculateDiscount(int purchases) {
         int percentage = Math.min((purchases / 5 + 1) * 5, 40);

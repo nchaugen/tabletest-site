@@ -42,10 +42,12 @@ class TypeConversionDiscountKtTest {
         """
     )
     fun testCollectionsWithCustomTypes(discounts: List<Discount>, best: Discount) {
-        val actual = discounts.maxBy { it.percentage }
-        assertEquals(best, actual)
+        assertEquals(best, bestDiscount(discounts))
     }
     // #endregion collections-custom-types
+
+    private fun bestDiscount(discounts: List<Discount>): Discount =
+        discounts.maxBy { it.percentage }
 
     private fun calculateDiscount(purchases: Int): Discount {
         val percentage = minOf((purchases / 5 + 1) * 5, 40)

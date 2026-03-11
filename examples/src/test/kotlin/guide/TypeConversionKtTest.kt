@@ -28,8 +28,24 @@ class TypeConversionKtTest {
     )
     fun testParameterizedTypes(grades: Map<String, List<Int>>,
                                expectedHighestGrade: Int) {
-        val highest = grades.values.flatten().max()
-        assertEquals(expectedHighestGrade, highest)
+        assertEquals(expectedHighestGrade, highestGrade(grades))
     }
     // #endregion parameterized-types
+
+    private fun highestGrade(grades: Map<String, List<Int>>): Int =
+        grades.values.flatten().max()
+
+    // #region array-types
+    @TableTest(
+        """
+        Numbers   | Sum?
+        [1, 2, 3] | 6
+        [10, 20]  | 30
+        []        | 0
+        """
+    )
+    fun sumArray(numbers: IntArray, expectedSum: Int) {
+        assertEquals(expectedSum, numbers.sum())
+    }
+    // #endregion array-types
 }

@@ -189,7 +189,7 @@ A blank cell represents the absence of a value — there is no `null` keyword. S
 {{< /tab >}}
 {{< /tabs >}}
 
-See [Blank Cells](/reference/type-conversion/#blank-cells) for how blank cells are converted to different parameter types.
+A blank cell converts to `null` for all object types, including `String`, wrapper types, and object arrays. Primitive types (`int`, `boolean`, etc.) and primitive arrays (`int[]`, etc.) cannot represent `null` — use their wrapper equivalents (`Integer`, `Boolean[]`) when a parameter may be blank.
 
 ## Next Steps
 

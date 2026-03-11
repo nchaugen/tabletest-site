@@ -4,6 +4,7 @@ import org.tabletest.junit.TableTest;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,11 +28,26 @@ public class TypeConversionTest {
         """)
     void testParameterizedTypes(Map<String, List<Integer>> grades,
                                 int expectedHighestGrade) {
-        int highest = grades.values().stream()
+        assertEquals(expectedHighestGrade, highestGrade(grades));
+    }
+    // #endregion parameterized-types
+
+    private int highestGrade(Map<String, List<Integer>> grades) {
+        return grades.values().stream()
             .flatMapToInt(g -> g.stream().mapToInt(Integer::intValue))
             .max()
             .orElse(0);
-        assertEquals(expectedHighestGrade, highest);
     }
-    // #endregion parameterized-types
+
+    // #region array-types
+    @TableTest("""
+        Numbers   | Sum?
+        [1, 2, 3] | 6
+        [10, 20]  | 30
+        []        | 0
+        """)
+    void sumArray(int[] numbers, int expectedSum) {
+        assertEquals(expectedSum, IntStream.of(numbers).sum());
+    }
+    // #endregion array-types
 }
