@@ -66,20 +66,21 @@ class ValueFormatsKtTest {
     // #region nested
     @TableTest(
         """
-        Student grades                                                  | Pass?
-        [Alice: [95, 87, 92], Bob: [78, 85, 90], Charlie: [98, 89, 91]] | {Alice, Bob, Charlie}
-        [David: [45, 60, 70], Emma: [65, 70, 75], Frank: [82, 78, 60]]  | {Emma, Frank}
-        [:]                                                             | {}
+        Scores                           | Top scorer?
+        [Alice: [90, 80], Bob: [70, 60]] | Alice
+        [Alice: [75, 85], Bob: [95, 90]] | Bob
         """
     )
     fun testNestedParameterizedTypes(
-        studentGrades: Map<String, List<Int>>,
-        expectedPass: Set<String>
+        scores: Map<String, List<Int>>,
+        expectedTopScorer: String
     ) {
-        val pass = studentGrades.filter { it.value.average() >= 60 }.map { it.key }.toSet()
-        assertEquals(expectedPass, pass)
+        assertEquals(expectedTopScorer, topScorer(scores))
     }
     // #endregion nested
+
+    private fun topScorer(scores: Map<String, List<Int>>): String =
+        scores.maxBy { it.value.sum() }.key
 
     // #region null-values
     @TableTest(

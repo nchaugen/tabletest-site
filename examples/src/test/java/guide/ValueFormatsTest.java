@@ -5,7 +5,6 @@ import org.tabletest.junit.TableTest;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -63,25 +62,25 @@ public class ValueFormatsTest {
 
     // #region nested
     @TableTest("""
-        Student grades                                                  | Pass?
-        [Alice: [95, 87, 92], Bob: [78, 85, 90], Charlie: [98, 89, 91]] | {Alice, Bob, Charlie}
-        [David: [45, 60, 70], Emma: [65, 70, 75], Frank: [82, 78, 60]]  | {Emma, Frank}
-        [:]                                                             | {}
+        Scores                           | Top scorer?
+        [Alice: [90, 80], Bob: [70, 60]] | Alice
+        [Alice: [75, 85], Bob: [95, 90]] | Bob
         """)
     void testNestedParameterizedTypes(
-        Map<String, List<Integer>> studentGrades,
-        Set<String> expectedPass
+        Map<String, List<Integer>> scores,
+        String expectedTopScorer
     ) {
-        Set<String> pass = studentGrades.entrySet().stream()
-            .filter(it ->
-                it.getValue().stream()
-                    .mapToInt(Integer::intValue)
-                    .average().orElse(0) >= 60)
-            .map(Map.Entry::getKey)
-            .collect(Collectors.toSet());
-        assertEquals(expectedPass, pass);
+        assertEquals(expectedTopScorer, topScorer(scores));
     }
     // #endregion nested
+
+    private String topScorer(Map<String, List<Integer>> scores) {
+        return scores.entrySet().stream()
+            .max(Map.Entry.comparingByValue(
+                (a, b) -> Integer.compare(a.stream().mapToInt(Integer::intValue).sum(),
+                    b.stream().mapToInt(Integer::intValue).sum())))
+            .map(Map.Entry::getKey).orElseThrow();
+    }
 
     // #region null-values
     @TableTest("""

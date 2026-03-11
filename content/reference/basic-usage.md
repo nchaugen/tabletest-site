@@ -7,11 +7,7 @@ This guide covers the fundamental concepts of TableTest: table structure, value 
 
 ## Table Structure
 
-A TableTest table consists of:
-
-1. **Header row** – Column names (first row)
-2. **Data rows** – Test cases (subsequent rows)
-3. **Pipe delimiters** – Separate columns
+A TableTest table is a pipe-delimited text block. Columns are separated by pipes (`|`), and each line is a row. Pipes are only used *between* columns — not at the start or end of a line.
 
 ```
 @TableTest("""
@@ -34,19 +30,6 @@ The first row defines column names. Columns map to method parameters by order, s
 {{< /tab >}}
 {{< /tabs >}}
 
-If there is one additional column than parameters, TableTest will use the leftmost column as the scenario column. In this situation, mapping to parameters will start from the second column:
-
-{{< tabs items="Java,Kotlin" >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="header-row-scenario" >}}
-{{< /tab >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="header-row-scenario" >}}
-{{< /tab >}}
-{{< /tabs >}}
-
-See [Scenario Names](/reference/advanced-features/#scenario-names) for more details.
-
 ### Data Rows
 
 Each data row represents one test execution. A table with 3 data rows produces 3 test executions.
@@ -60,16 +43,20 @@ Each data row represents one test execution. A table with 3 data rows produces 3
 {{< /tab >}}
 {{< /tabs >}}
 
-### Pipe Delimiters
+### Scenario Column
 
-Pipes (`|`) separate columns. Pipes are only used between columns, not at the start/end:
+If there is one additional column than parameters, TableTest will use the leftmost column as the scenario column. Scenario values appear as test display names in reports and are not passed to the method:
 
-```
-  A | B | C      // three columns ("A", "B", "C")
-| A | B | C |    // five columns (null, "A", "B", "C", null)
-```
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="header-row-scenario" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="header-row-scenario" >}}
+{{< /tab >}}
+{{< /tabs >}}
 
-Consistent formatting improves readability. The [IntelliJ plugin](https://plugins.jetbrains.com/plugin/27334-tabletest), [VS Code extension](https://marketplace.visualstudio.com/items?itemName=tabletest.tabletest), and [Formatter](https://github.com/nchaugen/tabletest-formatter) handle this automatically.
+See [Scenario Names](/reference/advanced-features/#scenario-names) for explicit scenario columns and other options.
 
 
 ## Execution Model
@@ -120,7 +107,9 @@ TableTest supports four value formats: single values, lists, sets, and maps. The
 
 ### Single Values
 
-Single values can appear with or without quotes. Surrounding single (`'`) or double (`"`) quotes are required when the value contains a `|` character, or starts with `[` or `{`. Whitespace around unquoted values is trimmed. To preserve leading or trailing whitespace, use quotes.
+Single values are converted to the corresponding parameter type — primitives, strings, enums, dates, and other types supported by [JUnit's built-in converters](https://docs.junit.org/current/writing-tests/parameterized-classes-and-tests.html#argument-conversion-implicit).
+
+Values can appear with or without quotes. Surrounding single (`'`) or double (`"`) quotes are required when the value contains characters that could be confused with table syntax (such as `|`, `[`, or `{`). Whitespace around unquoted values is trimmed. To preserve leading or trailing whitespace, use quotes.
 
 Empty values are represented by adjacent quote pairs (`""` or `''`).
 
@@ -133,11 +122,11 @@ Empty values are represented by adjacent quote pairs (`""` or `''`).
 {{< /tab >}}
 {{< /tabs >}}
 
-When single values appear as elements inside collections (lists, sets, or maps), the characters `,`, `:`, `]`, and `}` also require quoting.
+When single values appear as elements inside collections (lists, sets, or maps), collection syntax characters also require quoting.
 
 ### Lists
 
-Lists are enclosed in square brackets with comma-separated elements. Lists can contain single values or compound values (nested lists, sets, or maps). Empty lists are represented by `[]`.
+Lists convert to `List` or array parameter types. Lists are enclosed in square brackets with comma-separated elements. Lists can contain single values or compound values (nested lists, sets, or maps). Empty lists are represented by `[]`.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
@@ -150,7 +139,7 @@ Lists are enclosed in square brackets with comma-separated elements. Lists can c
 
 ### Sets
 
-Sets are enclosed in curly braces with comma-separated elements. Sets can contain single values or compound values. Empty sets are represented by `{}`.
+Sets convert to `Set` parameter types. When the parameter is *not* a `Set`, curly braces denote a [value set](/reference/advanced-features/#value-sets) instead — each element becomes a separate test invocation. Sets are enclosed in curly braces with comma-separated elements. Sets can contain single values or compound values. Empty sets are represented by `{}`.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
@@ -161,15 +150,9 @@ Sets are enclosed in curly braces with comma-separated elements. Sets can contai
 {{< /tab >}}
 {{< /tabs >}}
 
-{{% details title="Sets vs Value Sets" closed="true" %}}
-
-Curly braces have a dual role in TableTest. When the test parameter is declared as a `Set` type, the value is passed as a single set argument. When the parameter is *not* a `Set`, the values are expanded into separate test invocations — one per element. See [Value Sets](/reference/advanced-features/#value-sets) for details.
-
-{{% /details %}}
-
 ### Maps
 
-Maps use square brackets with comma-separated key-value pairs, where colons separate keys and values. Keys must be unquoted single values and cannot contain `,`, `:`, `|`, `[`, `]`, `{`, or `}`. Values can be single (unquoted or quoted) or compound (list, set, or map). Empty maps are represented by `[:]`.
+Maps convert to `Map` parameter types. Maps use square brackets with comma-separated key-value pairs, where colons separate keys and values. Keys must be unquoted single values without table or collection syntax characters. Values can be single (unquoted or quoted) or compound (list, set, or map). Empty maps are represented by `[:]`.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
