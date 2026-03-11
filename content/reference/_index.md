@@ -6,7 +6,6 @@ cascade:
 
 Detailed documentation of all TableTest features.
 
-- [Basic Usage](/reference/basic-usage/) — Table syntax, column mapping, scenario names
-- [Value Formats](/reference/value-formats/) — Single values, lists, sets, maps, and nesting
+- [Basic Usage](/reference/basic-usage/) — Table syntax, value formats, and execution model
 - [Type Conversion](/reference/type-conversion/) — Built-in and custom `@TypeConverter` methods
-- [Advanced Features](/reference/advanced-features/) — Value sets, external files, parameter resolvers
+- [Advanced Features](/reference/advanced-features/) — Scenario names, value sets, external files, parameter resolvers

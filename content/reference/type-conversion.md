@@ -1,6 +1,6 @@
 ---
 title: "Type Conversion"
-weight: 3
+weight: 2
 ---
 
 TableTest converts values from table cells to the types required by test method parameters. Understanding the conversion strategy helps you work with custom types and complex data effectively.
@@ -16,6 +16,8 @@ Custom converters take priority, allowing you to override built-in conversion wh
 
 ## Built-in Conversion
 
+### Single Values
+
 Out of the box, TableTest converts single values to many standard types using JUnit's built-in type converters. See the [JUnit documentation](https://docs.junit.org/current/writing-tests/parameterized-classes-and-tests.html#argument-conversion-implicit) for the full list.
 
 {{< tabs items="Java,Kotlin" >}}
@@ -27,6 +29,8 @@ Out of the box, TableTest converts single values to many standard types using JU
 {{< /tab >}}
 {{< /tabs >}}
 
+### Collections and Arrays
+
 Built-in conversion also applies to elements in lists and sets, and to values in maps, when the test method parameter is a parameterised type. Map keys remain `String` type and are not converted.
 
 {{< tabs items="Java,Kotlin" >}}
@@ -37,6 +41,21 @@ Built-in conversion also applies to elements in lists and sets, and to values in
 {{< codefile file="examples/src/test/kotlin/guide/TypeConversionKtTest.kt" id="parameterized-types" >}}
 {{< /tab >}}
 {{< /tabs >}}
+
+The same list syntax `[a, b, c]` also converts to array types — declare the parameter as an array and TableTest handles the rest.
+
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/TypeConversionTest.java" id="array-types" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/TypeConversionKtTest.kt" id="array-types" >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+## Blank Cells
+
+A blank cell converts to `null` for all object types, including `String`, wrapper types, and object arrays. For primitive types and primitive arrays (`int`, `int[]`, etc.), a blank cell causes an error because primitives cannot represent `null`.
 
 ## Custom Converter Methods
 

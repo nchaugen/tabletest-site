@@ -1,6 +1,6 @@
 ---
 title: "Advanced Features"
-weight: 4
+weight: 3
 ---
 
 TableTest provides features beyond the basics for expressing comprehensive examples: scenario names for labelling test cases, value sets for testing multiple inputs, comments for organising tables, external files for large datasets, parameter resolvers for dependency injection, and escape sequences for special characters.
