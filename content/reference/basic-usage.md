@@ -3,7 +3,7 @@ title: "Basic Usage"
 weight: 1
 ---
 
-This guide covers the fundamental concepts of TableTest: table structure, column mapping, scenario names, and execution model.
+This guide covers the fundamental concepts of TableTest: table structure, value formats, and execution model.
 
 ## Table Structure
 
@@ -114,66 +114,101 @@ For each row:
 
 JUnit lifecycle methods (`@BeforeEach`, `@AfterEach`) run for each row.
 
-## Simple Values
+## Value Formats
 
-TableTest automatically converts simple string values to common types:
+TableTest supports four value formats: single values, lists, sets, and maps. These can be nested to create complex data structures.
+
+### Single Values
+
+Single values can appear with or without quotes. Surrounding single (`'`) or double (`"`) quotes are required when the value contains a `|` character, or starts with `[` or `{`. Whitespace around unquoted values is trimmed. To preserve leading or trailing whitespace, use quotes.
+
+Empty values are represented by adjacent quote pairs (`""` or `''`).
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
-{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="simple-values" >}}
+{{< codefile file="examples/src/test/java/guide/ValueFormatsTest.java" id="single-values" >}}
 {{< /tab >}}
 {{< tab >}}
-{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="simple-values" >}}
+{{< codefile file="examples/src/test/kotlin/guide/ValueFormatsKtTest.kt" id="single-values" >}}
 {{< /tab >}}
 {{< /tabs >}}
 
-Supported primitive types:
-- `int`, `long`, `short`, `byte`
-- `float`, `double`
-- `boolean`
-- `char`
-- Wrapper types: `Integer`, `Long`, etc.
+When single values appear as elements inside collections (lists, sets, or maps), the characters `,`, `:`, `]`, and `}` also require quoting.
 
-TableTest supports all the [type converters built-in to JUnit](https://docs.junit.org/current/writing-tests/parameterized-classes-and-tests.html#argument-conversion-implicit).
+### Lists
 
-### String Values
-
-Strings don't need quotes unless they contain special characters:
+Lists are enclosed in square brackets with comma-separated elements. Lists can contain single values or compound values (nested lists, sets, or maps). Empty lists are represented by `[]`.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
-{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="string-values" >}}
+{{< codefile file="examples/src/test/java/guide/ValueFormatsTest.java" id="lists" >}}
 {{< /tab >}}
 {{< tab >}}
-{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="string-values" >}}
+{{< codefile file="examples/src/test/kotlin/guide/ValueFormatsKtTest.kt" id="lists" >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+### Sets
+
+Sets are enclosed in curly braces with comma-separated elements. Sets can contain single values or compound values. Empty sets are represented by `{}`.
+
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/ValueFormatsTest.java" id="sets" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/ValueFormatsKtTest.kt" id="sets" >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+{{% details title="Sets vs Value Sets" closed="true" %}}
+
+Curly braces have a dual role in TableTest. When the test parameter is declared as a `Set` type, the value is passed as a single set argument. When the parameter is *not* a `Set`, the values are expanded into separate test invocations — one per element. See [Value Sets](/reference/advanced-features/#value-sets) for details.
+
+{{% /details %}}
+
+### Maps
+
+Maps use square brackets with comma-separated key-value pairs, where colons separate keys and values. Keys must be unquoted single values and cannot contain `,`, `:`, `|`, `[`, `]`, `{`, or `}`. Values can be single (unquoted or quoted) or compound (list, set, or map). Empty maps are represented by `[:]`.
+
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/ValueFormatsTest.java" id="maps" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/ValueFormatsKtTest.kt" id="maps" >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+### Nested Structures
+
+Lists, sets, and maps can be nested to create complex data structures. TableTest converts nested values recursively using generic type information from the test method parameter.
+
+{{< tabs items="Java,Kotlin" >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/java/guide/ValueFormatsTest.java" id="nested" >}}
+{{< /tab >}}
+{{< tab >}}
+{{< codefile file="examples/src/test/kotlin/guide/ValueFormatsKtTest.kt" id="nested" >}}
 {{< /tab >}}
 {{< /tabs >}}
 
 ### Null Values
 
-An empty cell will be passed as `null`:
+A blank cell represents the absence of a value — there is no `null` keyword. Simply leave the cell empty.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
-{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="null-values" >}}
+{{< codefile file="examples/src/test/java/guide/ValueFormatsTest.java" id="null-values" >}}
 {{< /tab >}}
 {{< tab >}}
-{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="null-values" >}}
+{{< codefile file="examples/src/test/kotlin/guide/ValueFormatsKtTest.kt" id="null-values" >}}
 {{< /tab >}}
 {{< /tabs >}}
 
-**Note:** Primitive Java types can't be null. Use wrapper types for nullable numbers:
-
-```java
-void test(Integer value) {  // Not int - Integer allows null
-    // ...
-}
-```
+See [Blank Cells](/reference/type-conversion/#blank-cells) for how blank cells are converted to different parameter types.
 
 ## Next Steps
 
-Now that you understand the basics:
-
-- **[Value Formats](/reference/value-formats/)** — Lists, sets, maps, nested structures, and quoting rules
 - **[Type Conversion](/reference/type-conversion/)** — Built-in and custom `@TypeConverter` methods
-- **[Advanced Features](/reference/advanced-features/)** — Value sets, external files, parameter resolvers
+- **[Advanced Features](/reference/advanced-features/)** — Scenario names, value sets, external files, parameter resolvers

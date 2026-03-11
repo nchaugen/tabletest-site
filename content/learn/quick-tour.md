@@ -126,4 +126,4 @@ This keeps test methods concise and makes it easy to share table data across tes
 
 ---
 
-This overview covers the highlights. Dive deeper in the [Reference](/reference/) — starting with [Value Formats](/reference/value-formats/).
+This overview covers the highlights. Dive deeper in the [Reference](/reference/) — starting with [Basic Usage](/reference/basic-usage/).

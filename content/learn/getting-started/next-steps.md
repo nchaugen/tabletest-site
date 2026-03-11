@@ -11,10 +11,9 @@ Congratulations! You've written your first TableTest. Here's where to go from he
 
 Work through the Reference to understand TableTest deeply:
 
-1. **[Basic Usage](/reference/basic-usage/)** — Table syntax, column mapping, scenario names
-2. **[Value Formats](/reference/value-formats/)** — Lists, sets, maps, nested structures, and quoting rules
-3. **[Type Conversion](/reference/type-conversion/)** — Built-in and custom `@TypeConverter` methods
-4. **[Advanced Features](/reference/advanced-features/)** — Value sets, external files, parameter resolvers
+1. **[Basic Usage](/reference/basic-usage/)** — Table syntax, value formats, and execution model
+2. **[Type Conversion](/reference/type-conversion/)** — Built-in and custom `@TypeConverter` methods
+3. **[Advanced Features](/reference/advanced-features/)** — Scenario names, value sets, external files, parameter resolvers
 5. **[Realistic Example](/learn/realistic-example/)** — Complete worked example
 
 ### Explore the Ecosystem
