@@ -13,7 +13,7 @@ Work through the Reference to understand TableTest deeply:
 
 1. **[Basic Usage](/reference/basic-usage/)** — Table syntax, value formats, and execution model
 2. **[Type Conversion](/reference/type-conversion/)** — Built-in and custom `@TypeConverter` methods
-3. **[Advanced Features](/reference/advanced-features/)** — Scenario names, value sets, external files, parameter resolvers
+3. **[Advanced Features](/reference/advanced-features/)** — Scenario names, value sets, external files, JUnit-supplied parameters
 5. **[Realistic Example](/learn/realistic-example/)** — Complete worked example
 
 ### Explore the Ecosystem

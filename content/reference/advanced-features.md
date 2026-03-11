@@ -3,7 +3,7 @@ title: "Advanced Features"
 weight: 3
 ---
 
-TableTest provides features beyond the basics for expressing comprehensive examples: scenario names for labelling test cases, value sets for testing multiple inputs, comments for organising tables, external files for large datasets, parameter resolvers for dependency injection, and escape sequences for special characters.
+TableTest provides features beyond the basics for expressing comprehensive examples: scenario names for labelling test cases, value sets for testing multiple inputs, comments for organising tables, external files for large datasets, JUnit-supplied parameters, and escape sequences for special characters.
 
 ## Scenario Names
 
@@ -44,18 +44,7 @@ If you want another column to be the scenario column, you need to provide a para
 {{< /tab >}}
 {{< /tabs >}}
 
-### Scenario Column When Using JUnit-Supplied Parameters
-
-If your test method has additional parameters supplied by JUnit like `TestInfo` or `@TempDir`, you will need to provide a parameter for the scenario column and annotate it with `@Scenario`, even if it is the leftmost one. The TableTest parameters must come first:
-
-{{< tabs items="Java,Kotlin" >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/java/guide/BasicUsageTest.java" id="junit-params" >}}
-{{< /tab >}}
-{{< tab >}}
-{{< codefile file="examples/src/test/kotlin/guide/BasicUsageKtTest.kt" id="junit-params" >}}
-{{< /tab >}}
-{{< /tabs >}}
+When using JUnit-supplied parameters like `TestInfo` or `@TempDir`, the scenario column requires an explicit `@Scenario` annotation — see [JUnit-Supplied Parameters](#junit-supplied-parameters).
 
 ### No Scenario Column
 
@@ -158,11 +147,12 @@ void testExternalTableWithCustomEncoding(String string, int expectedLength) {
 }
 ```
 
-## Parameter Resolvers
+## JUnit-Supplied Parameters
 
-TableTest methods can receive additional arguments provided by JUnit `ParameterResolver` extensions (such as `TestInfo`, `TestReporter`, etc.). These resolver-provided parameters **must be declared last**, after all table columns.
+TableTest methods can receive additional parameters supplied by JUnit (such as `TestInfo`, `TestReporter`, `@TempDir`, etc.). Two rules apply:
 
-If the table includes a scenario name column and you use parameter resolvers, the scenario column now requires an explicit parameter with the `@Scenario` annotation:
+1. Resolver-provided parameters **must be declared last**, after all table columns.
+2. If the table includes a scenario column, it must have an explicit parameter annotated with `@Scenario` — the implicit scenario detection relies on the column-to-parameter count, which resolver parameters would disrupt.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}

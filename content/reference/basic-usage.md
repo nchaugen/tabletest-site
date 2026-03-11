@@ -194,4 +194,4 @@ A blank cell converts to `null` for all object types, including `String`, wrappe
 ## Next Steps
 
 - **[Type Conversion](/reference/type-conversion/)** — Built-in and custom `@TypeConverter` methods
-- **[Advanced Features](/reference/advanced-features/)** — Scenario names, value sets, external files, parameter resolvers
+- **[Advanced Features](/reference/advanced-features/)** — Scenario names, value sets, external files, JUnit-supplied parameters
