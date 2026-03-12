@@ -71,18 +71,8 @@ This single table now tests 12 different years – triple the coverage with no a
 TableTest excels when:
 
 - **Testing the same logic with multiple inputs** – Different data, same assertion structure
-- **You have 2+ similar test methods** – Methods that differ only in their input values
 - **Business rules involve multiple cases** – Discount tiers, validation rules, state transitions
 - **Adding test cases should be simple** – New scenarios should require adding a row, not writing code
-
-## When Not to Use TableTest
-
-Standard `@Test` methods work better when:
-
-- **Testing a single scenario** – One input, one expected output
-- **Test logic differs significantly** – Different assertions or setup for each case
-- **Complex setup varies per test** – Mocking behaviour changes between tests
-- **Tests aren't data-driven** – Testing interactions, exceptions, or behaviour rather than data transformations
 
 ## Next Steps
 
