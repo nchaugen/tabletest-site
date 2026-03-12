@@ -5,14 +5,14 @@ layout: hextra-home
 
 <div class="hx:mt-6 hx:mb-6">
 {{< hextra/hero-headline >}}
-  Tests That Document Your Application
+  Turn Test Methods into Rows
 {{< /hextra/hero-headline >}}
 </div>
 
 <div class="hx:mb-12">
 {{< hextra/hero-subtitle >}}
-  Make business rules explicit, not buried in code.&nbsp;<br class="sm:hx-block hx-hidden" />
-  One method, multiple scenarios.
+  A JUnit extension for table-driven tests in Java and Kotlin.&nbsp;<br class="sm:hx-block hx-hidden" />
+  Same coverage. Less code.
 {{< /hextra/hero-subtitle >}}
 </div>
 
@@ -36,7 +36,7 @@ layout: hextra-home
 }
 </style>
 
-<div style="margin: 4rem 0; width: 100%;">
+<div style="margin: 3rem 0; width: 100%;">
 
 <div class="before-after-grid">
 
@@ -85,35 +85,23 @@ void leapYear(int year, boolean leap) {
 </div>
 </div>
 
-<p style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem;" class="hx-text-gray-500 dark:hx-text-gray-400">Same coverage. Less code. Add test cases by adding rows.</p>
 
 </div>
 
 <div class="hx:w-full hx:max-w-screen-xl">
 {{< hextra/feature-grid >}}
   {{< hextra/feature-card
+    title="Adopt Incrementally"
+    subtitle="Convert one test class at a time. @TableTest lives alongside @Test and @ParameterizedTest in the same project."
+  >}}
+  {{< hextra/feature-card
+    title="First-Class IDE Experience"
+    subtitle="Syntax highlighting, auto-formatting, and scenario names in your test runner. IntelliJ and VS Code extensions available."
+  >}}
+  {{< hextra/feature-card
     title="Tests as Documentation"
-    subtitle="The table format makes test scenarios readable by anyone on the team. Business rules are explicit, not buried in code."
-  >}}
-  {{< hextra/feature-card
-    title="Effortless Coverage"
-    subtitle="Scannable tables reveal coverage gaps at a glance. Adding a scenario is just adding a row."
-  >}}
-  {{< hextra/feature-card
-    title="Rich Tool Support"
-    subtitle="IntelliJ plugin, VS Code extension, Claude Code plugin, CLI formatter, and test reporter — all with auto-formatting and syntax highlighting."
-  >}}
-  {{< hextra/feature-card
-    title="Built on JUnit"
-    subtitle="A JUnit extension, not a separate framework. Use the same assertions, mocking frameworks, and test utilities you already know."
-  >}}
-  {{< hextra/feature-card
-    title="Java and Kotlin"
-    subtitle="Write table-driven tests in either language. Same annotation, same table format."
-  >}}
-  {{< hextra/feature-card
-    title="Ready for Production"
-    subtitle="Works with your existing test runner and build tool. Supports Spring Boot and Quarkus."
+    subtitle="Scenario names describe the behaviour. Columns show the inputs and expected results. The test reads like a spec."
   >}}
 {{< /hextra/feature-grid >}}
 </div>
+
