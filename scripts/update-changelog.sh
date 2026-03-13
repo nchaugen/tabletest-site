@@ -72,6 +72,6 @@ FRONTMATTER
         (if (.body | length) > 0 then .body + "\n\n" else "" end) +
         "[GitHub Release](https://github.com/" + .repo + "/releases/tag/" + .tagName + ")\n\n---\n"
     '
-} > "$CHANGELOG_FILE"
+} | tr -d '\r' > "$CHANGELOG_FILE"
 
 echo "Done. Changelog written to $CHANGELOG_FILE"
