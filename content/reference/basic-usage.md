@@ -152,7 +152,7 @@ Sets convert to `Set` parameter types. When the parameter is *not* a `Set`, curl
 
 ### Maps
 
-Maps convert to `Map` parameter types. Maps use square brackets with comma-separated key-value pairs, where colons separate keys and values. Keys must be unquoted single values without table or collection syntax characters. Values can be single (unquoted or quoted) or compound (list, set, or map). Empty maps are represented by `[:]`.
+Maps convert to `Map` parameter types. Maps use square brackets with comma-separated key-value pairs, where colons separate keys and values. Keys can be unquoted or quoted. Unquoted keys cannot contain table or collection syntax characters. To use keys with those characters or whitespace, wrap the key in single or double quotes. Values can be single (unquoted or quoted) or compound (list, set, or map). Empty maps are represented by `[:]`.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}

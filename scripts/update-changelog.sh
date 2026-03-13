@@ -32,7 +32,7 @@ for i in "${!REPOS[@]}"; do
     echo "  → $repo"
 
     releases=$(gh api "repos/$repo/releases?per_page=100" \
-        --jq '[.[] | {tagName: .tag_name, name: .name, body: (.body // "")}]' \
+        --jq '[.[] | select(.tag_name | startswith("tabletest-parser") | not) | {tagName: .tag_name, name: .name, body: (.body // "")}]' \
         2>/dev/null || echo '[]')
 
     # Replace publishedAt with the tag's commit date for accuracy

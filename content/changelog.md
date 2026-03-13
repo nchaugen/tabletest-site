@@ -5,13 +5,54 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
-## 2026-03-11 — TableTest 1.2.0
+## 2026-03-12 — TableTest Formatter 1.1.1
 
 ### Added
-- Array parameter support: list syntax `[a, b, c]` now converts to array types —
-  `String[]`, `int[]`, `Map<K,V>[]`, nested arrays, and Kotlin `IntArray`/`Array<T>`.
+- Support quoted map keys, both single- and double-quoted
+
+[GitHub Release](https://github.com/nchaugen/tabletest-formatter/releases/tag/tabletest-formatter-1.1.1)
+
+---
+
+## 2026-03-12 — TableTest 1.2.1
+
+### Added
+- Quoted map keys: map keys can now be single or double quoted, enabling keys containing whitespace, colons, commas, brackets, and other special characters (e.g. `["key with spaces": value]`)
+
+[GitHub Release](https://github.com/nchaugen/tabletest/releases/tag/tabletest-junit-1.2.1)
+
+---
+
+## 2026-03-12 — TableTest IntelliJ Plugin v0.4.0
+
+### Added
+
+- Support for single and double quoted map keys in TableTest maps.
+- TableTest Code Style settings page under `Settings > Editor > Code Style > TableTest` with value spacing controls for commas, colons, and bracket/brace interiors.
+
+[GitHub Release](https://github.com/nchaugen/tabletest-intellij/releases/tag/v0.4.0)
+
+---
+
+## 2026-03-10 — TableTest 1.2.0
+
+### Added
+- Array parameter support: list syntax `[a, b, c]` now converts to array types, e.g. `String[]`, `int[]`, `Map<K,V>[]`, nested arrays. Thanks to @AlexeyKuznetsov-DD for the contribution!
 
 [GitHub Release](https://github.com/nchaugen/tabletest/releases/tag/tabletest-junit-1.2.0)
+
+---
+
+## 2026-03-09 — TableTest Formatter 1.1.0
+
+### Added
+- Support for Java string array syntax `@TableTest({"header | col", "val | val"})` alongside existing text block syntax
+### Changed
+- Lowered Java requirement from 21 to 17
+### Removed
+- `tabletest-formatter-spotless` module — TableTest formatting is now supported natively by [Spotless](https://github.com/diffplug/spotless)
+
+[GitHub Release](https://github.com/nchaugen/tabletest-formatter/releases/tag/tabletest-formatter-1.1.0)
 
 ---
 
