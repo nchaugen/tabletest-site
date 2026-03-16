@@ -5,6 +5,61 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-03-15 — TableTest VS Code v0.0.7
+
+### Added
+
+- Formatter and diagnostics support for quoted map keys in map literals (both `"key"` and `'key'`), while preserving key quoting style and normalising map spacing.
+- Diagnostics for invalid unquoted map keys in TableTest cells.
+- Formatting and diagnostics support for fully-qualified Java `@org.tabletest.junit.TableTest(...)` annotations.
+- Standalone `.table` range formatting support so `Format Selection` works as documented.
+- Distinct syntax highlighting for question-mark header cells, with stronger header emphasis across `.table`, Java, and Kotlin.
+
+### Changed
+
+- Table parsing and formatting now follow the canonical TableTest parser more closely for quoted-map-key cases and other edge-case bare values.
+- Comment indentation now normalises consistently to the table left edge in standalone files and Java/Kotlin host strings.
+- Local test entrypoints now mirror CI with `npm run test:unit`, `npm run test:integration:strict`, and `npm run test:full`.
+- Syntax highlighting now uses clearer, more consistent theme families for headers, separators, strings, and map keys across `.table`, Java, and Kotlin contexts.
+- Standalone `.table` files now suppress bracket-pair colour rotation for table content.
+
+### Fixed
+
+- Bare unquoted scalar values containing commas or colons no longer trigger diagnostics.
+- Header highlighting now correctly skips leading table comments before the real header row.
+- Quoted map keys no longer miscolour bracket, brace, or parenthesis characters as structural punctuation.
+- Java string-array escaping no longer breaks column alignment or leaks highlighting into surrounding annotation code.
+- Java text blocks with comments before the implicit value no longer pick up extra indentation during formatting.
+
+
+[GitHub Release](https://github.com/nchaugen/tabletest-vscode/releases/tag/v0.0.7)
+
+---
+
+## 2026-03-15 — TableTest IntelliJ Plugin v0.4.1
+
+### Added
+
+- Support for leading comments (comments at the very beginning of a table).
+- Support for escaped quotes (`\"`, `\'`) and backslashes (`\\`) in quoted strings and map keys.
+- Methods annotated with `@TableTest` are now recognized as entry points, suppressing "Unused declaration" inspections.
+
+### Changed
+
+- Upgraded `tabletest-parser` to 1.2.0.
+- Upgraded IntelliJ Platform Gradle Plugin to 2.13.0.
+
+### Fixed
+
+- Table formatting is now disabled for files with syntax errors to prevent accidental code corruption.
+- Map keys only require quotes if they contain spaces or commas.
+- Improved parsing of rows at the end of a file without a trailing newline.
+- Resolved a compatibility warning for IntelliJ 2026.1.
+
+[GitHub Release](https://github.com/nchaugen/tabletest-intellij/releases/tag/v0.4.1)
+
+---
+
 ## 2026-03-12 — TableTest Formatter 1.1.1
 
 ### Added
