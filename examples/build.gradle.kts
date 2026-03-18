@@ -1,23 +1,12 @@
-import org.tabletest.formatter.spotless.TableTestFormatterStep
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.tabletest:tabletest-formatter-spotless:1.0.0")
-    }
-}
-
 plugins {
     java
     kotlin("jvm") version "2.2.0"
-    id("com.diffplug.spotless") version "8.1.0"
+    id("com.diffplug.spotless") version "8.4.0"
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -26,7 +15,7 @@ repositories {
 }
 
 // Keep in sync with hugo.yaml params
-val tabletestVersion = "1.2.0"
+val tabletestVersion = "1.2.1"
 val junitVersion = "6.0.3"
 
 dependencies {
@@ -39,11 +28,15 @@ dependencies {
 spotless {
     java {
         target("src/**/*.java")
-        addStep(TableTestFormatterStep.create())
+        tableTestFormatter()
     }
     kotlin {
         target("src/**/*.kt")
-        addStep(TableTestFormatterStep.create())
+        tableTestFormatter()
+    }
+    tableTest {
+        target("src/**/*.table")
+        tableTestFormatter()
     }
 }
 

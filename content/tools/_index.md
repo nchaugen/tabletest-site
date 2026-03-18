@@ -41,7 +41,7 @@ IDE support for working with TableTest tables inside Visual Studio Code. The ext
 
 A formatting tool for consistent table layout across your codebase. Formats tables in Java files, Kotlin files, and standalone `.table` files.
 
-- **Spotless plugin** for Gradle and Maven — natively supported in Spotless Gradle 8.3.0+ and Maven 3.3.0+, no extra dependencies needed
+- **Spotless plugin** for Gradle and Maven — natively supported in Spotless Gradle 8.3.0+ and Maven 3.3.0+ (Java 21+), or Gradle 8.4.0+ and Maven 3.4.0+ (Java 17+ and `.table` file support)
 - **CLI tool** for standalone formatting or CI integration
 - **EditorConfig support** — reads indent style and size from `.editorconfig`
 
