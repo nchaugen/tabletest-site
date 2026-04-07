@@ -5,6 +5,27 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-04-06 — TableTest VS Code v0.1.0
+
+### Added
+
+- Web extension support for browser-hosted VS Code, including `.table` formatting, diagnostics, semantic tokens, and command support.
+- Browser smoke-test coverage using `@vscode/test-web`.
+
+### Changed
+
+- Extension runtime is now split into shared, desktop, and web entrypoints so the browser host stays free of Node-only APIs.
+- Build configuration updated for TypeScript 6 compatibility.
+
+### Fixed
+
+- Browser-hosted Java formatting now falls back cleanly when `java.format.settings.url` cannot be read instead of depending on Node file-system APIs.
+
+
+[GitHub Release](https://github.com/nchaugen/tabletest-vscode/releases/tag/v0.1.0)
+
+---
+
 ## 2026-03-15 — TableTest VS Code v0.0.7
 
 ### Added
