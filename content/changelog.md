@@ -5,6 +5,17 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-04-07 — TableTest Reporter 1.1.0
+
+### Changed
+- Compatible with tabletest-junit 1.2.1 (array parameter support, quoted map keys)
+### Fixed
+- Gradle `listFormats` task now supports build caching
+
+[GitHub Release](https://github.com/nchaugen/tabletest-reporter/releases/tag/tabletest-reporter-1.1.0)
+
+---
+
 ## 2026-04-06 — TableTest VS Code v0.1.0
 
 ### Added
