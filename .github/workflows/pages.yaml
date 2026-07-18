@@ -66,6 +66,11 @@ jobs:
         with:
           repository: nchaugen/tabletest-formatter
           path: spec-sources/tabletest-formatter
+      - name: Checkout tabletest-reporter
+        uses: actions/checkout@v4
+        with:
+          repository: nchaugen/tabletest-reporter
+          path: spec-sources/tabletest-reporter
       - name: Cache Maven repository
         uses: actions/cache@v4
         with:
@@ -78,6 +83,11 @@ jobs:
           mvn -Preport -pl tabletest-formatter-core
           test org.tabletest:tabletest-reporter-maven-plugin:report
           --no-transfer-progress
+      - name: Generate reporter living spec (self-hosted)
+        working-directory: spec-sources/tabletest-reporter
+        run: |
+          mvn install -DskipTests --no-transfer-progress
+          mvn -f tabletest-reporter-core -Preport test org.tabletest:tabletest-reporter-maven-plugin:report --no-transfer-progress
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
@@ -98,6 +108,7 @@ jobs:
         run: |
           mkdir -p public/spec
           cp -r spec-sources/tabletest-formatter/tabletest-formatter-core/target/generated-docs/tabletest public/spec/formatter
+          cp -r spec-sources/tabletest-reporter/tabletest-reporter-core/target/generated-docs/tabletest public/spec/reporter
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
