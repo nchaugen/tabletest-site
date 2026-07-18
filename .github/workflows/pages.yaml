@@ -55,6 +55,12 @@ jobs:
       - name: Verify examples
         working-directory: examples
         run: ./gradlew spotlessCheck test
+      - name: Setup Java for living specs
+        # tabletest-reporter-junit needs Java 21+; the examples above stay on 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '25'
       - name: Checkout tabletest-formatter
         uses: actions/checkout@v4
         with:
