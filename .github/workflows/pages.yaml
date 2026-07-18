@@ -6,6 +6,11 @@ on:
   push:
     branches: ["main"]
 
+  # Daily rebuild so the living specs track their product repos (they are
+  # generated from the product test suites at build time, not stored here)
+  schedule:
+    - cron: '30 6 * * *'
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -50,6 +55,23 @@ jobs:
       - name: Verify examples
         working-directory: examples
         run: ./gradlew spotlessCheck test
+      - name: Checkout tabletest-formatter
+        uses: actions/checkout@v4
+        with:
+          repository: nchaugen/tabletest-formatter
+          path: spec-sources/tabletest-formatter
+      - name: Cache Maven repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-spec-${{ hashFiles('spec-sources/**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-spec-
+      - name: Generate formatter living spec
+        working-directory: spec-sources/tabletest-formatter
+        run: >
+          mvn -Preport -pl tabletest-formatter-core
+          test org.tabletest:tabletest-reporter-maven-plugin:report
+          --no-transfer-progress
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
@@ -66,6 +88,10 @@ jobs:
           hugo \
             --gc --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
+      - name: Add living specs
+        run: |
+          mkdir -p public/spec
+          cp -r spec-sources/tabletest-formatter/tabletest-formatter-core/target/generated-docs/tabletest public/spec/formatter
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
