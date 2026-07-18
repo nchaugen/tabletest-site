@@ -99,6 +99,13 @@ jobs:
           mvn -Preport -pl tabletest-junit
           test org.tabletest:tabletest-reporter-maven-plugin:report
           --no-transfer-progress
+      - name: Generate parser living spec
+        # the parser is a module of the tabletest repo — same checkout as core
+        working-directory: spec-sources/tabletest
+        run: >
+          mvn -Preport -pl tabletest-parser
+          test org.tabletest:tabletest-reporter-maven-plugin:report
+          --no-transfer-progress
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
@@ -121,6 +128,7 @@ jobs:
           cp -r spec-sources/tabletest-formatter/tabletest-formatter-core/target/generated-docs/tabletest public/spec/formatter
           cp -r spec-sources/tabletest-reporter/tabletest-reporter-core/target/generated-docs/tabletest public/spec/reporter
           cp -r spec-sources/tabletest/tabletest-junit/target/generated-docs/tabletest public/spec/core
+          cp -r spec-sources/tabletest/tabletest-parser/target/generated-docs/tabletest public/spec/parser
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
