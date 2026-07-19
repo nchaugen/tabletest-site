@@ -5,6 +5,130 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-07-18 — TableTest IntelliJ Plugin v0.4.2
+
+### Changed
+
+- Removed support for escaped quotes (`\"`, `\'`) and backslashes (`\\`) in quoted strings and map keys, reversing the 0.4.1 feature. The TableTest format has no escape sequences: quote characters cannot be escaped inside quoted values, and backslashes are ordinary characters. The plugin now matches the core parser.
+
+### Fixed
+
+- An unclosed quote no longer swallows the rest of the row: the lenient literal now stops at the next pipe, and cells split the same way as the core parser. Inside lists, sets, and maps an unclosed quote is now highlighted as an error, matching the core parser's rejection.
+- Fixed a crash in the "Unused declaration" suppressor when the Kotlin plugin is disabled: Kotlin-aware suppression now loads only when the Kotlin plugin is available.
+
+[GitHub Release](https://github.com/nchaugen/tabletest-intellij/releases/tag/v0.4.2)
+
+---
+
+## 2026-07-18 — TableTest VS Code v0.1.1
+
+### Fixed
+
+- `@TableTest` annotations inside line comments, block comments, or string literals are no longer treated as real tables. Previously, formatting a file with a commented-out annotation rewrote the comment into multi-line code (breaking compilation), and diagnostics and header highlighting fired inside comments and Javadoc.
+- Formatting now preserves CRLF line endings. Previously, formatted text blocks and string arrays in CRLF documents were rewritten with LF, leaving mixed line endings, and an already-aligned CRLF table always produced an edit on the first format.
+- Block comments (`/* … */`) inside annotation arguments no longer prevent table detection; tables like `@TableTest(/* rows */ """…""")` are now formatted, with the comments kept in place.
+- Formatting no longer deletes comments around string-array tables: comments between the parenthesis and the array brace are preserved, and arrays with comments between entries keep diagnostics and highlighting but are left unformatted rather than having their comments silently removed.
+- Kotlin `@TableTest` with a positional table and named arguments (e.g. `@TableTest("""…""", encoding = "UTF-16")`) is now recognised for formatting, diagnostics, and highlighting. The unsupported Kotlin array forms of `value` are now documented as a limitation.
+- Formatting a string array whose opening brace sits on its own line now produces the canonical layout in a single pass; previously the first pass indented rows relative to the old brace position and only a second format settled the result.
+
+
+[GitHub Release](https://github.com/nchaugen/tabletest-vscode/releases/tag/v0.1.1)
+
+---
+
+## 2026-07-18 — TableTest Formatter 1.1.2
+
+### Fixed
+- String arrays: comments between entries are now preserved — commented-out rows were previously reinserted as live table rows and descriptive comments deleted
+- String arrays: empty-string entries are now kept as blank rows instead of being dropped
+- CLI: crash (NullPointerException) when a file was given as a bare relative path like `tabletest-format Foo.java`
+- CLI: a file that cannot be read (missing, unreadable, non-UTF-8) is now reported and skipped instead of aborting the whole run; directory walk errors report a friendly message instead of a stack trace
+- CLI: file permissions (e.g. executable bit) are preserved when a file is rewritten
+- CLI: `--version` now reports the actual build version instead of a stale hardcoded 0.1.0-SNAPSHOT
+- String arrays: closing-quote alignment now accounts for wide characters (CJK, emoji), consistent with cell alignment
+- Blank lines inside indented tables no longer get trailing whitespace, so the formatter stops fighting whitespace-trimming editors and hooks
+- Kotlin raw strings whose table content starts immediately after the opening `\"""` with quote characters no longer confuse the extractor
+
+[GitHub Release](https://github.com/nchaugen/tabletest-formatter/releases/tag/tabletest-formatter-1.1.2)
+
+---
+
+## 2026-07-18 — TableTest Reporter 1.2.0
+
+### Added
+- HTML format marks whitespace-significant literals with IDE-style per-character markers:
+  values with leading/trailing whitespace (on any line), tabs, runs of spaces, or pipes
+  (e.g. indent expectations, whitespace-only cells, formatted-row values) render in
+  monospace with a CSS-drawn dot per significant space and an arrow per tab, so space
+  counts and tab-vs-space composition are readable at a glance. Single spaces between
+  words stay unmarked, and the value text itself stays unaltered for copy/paste and
+  search.
+- Built-in `html` output format: self-contained, single-file-per-page living documentation
+  (inline CSS/JS, no external references) with autowidth tables, sticky header/first column,
+  nested-collection rendering, pass/fail badges and status colouring, collapsible failure
+  details, per-page row filter and "failing only" toggle, roles legend, light/dark toggle,
+  and a print stylesheet. Relative links throughout make the output tree GitHub Pages-ready.
+- HTML index pages roll pass/fail status up the tree: each nav item shows a status dot and
+  every index summarises its scenario pass rate ("N of M scenarios broken"/"All passing").
+- Every HTML page shows a breadcrumb trail of its ancestor pages (root package → class →
+  table), with relative links so the trail works from any subpath.
+- Every HTML page has a menu button opening a navigation drawer with the whole-report tree
+  (status dots included), the current page highlighted and all links relative to that page.
+  The drawer slides in over the content, so tables always get the full page width.
+- Whole-report search: a search box in the navigation drawer searches across every page's
+  title, description, headers and cell values, listing matching pages (with status dots) to
+  jump to. Backed by a single shared `tabletest-search-index.js` written once to the output
+  root and linked from every page by a relative prefix, so search works offline (`file://`)
+  and from any subpath without external requests.
+- Single-file HTML mode (`--single-file` / `-s` on the CLI): assembles the whole report into
+  one self-contained `.html` — every table inlined as an anchored section, sidebar navigation
+  and search targeting in-page anchors, search index inlined, no sibling assets. Ideal for
+  sharing as a release asset, email or ticket attachment. Multi-file stays the default.
+### Fixed
+- The Gradle `reportTableTests` task now tracks the TableTest YAML files as task inputs even
+  when no explicit `inputDir` is configured (default `build/junit-jupiter`, the JUnit output
+  dir override, and the `junit-platform.properties` location). Previously the task could stay
+  `UP-TO-DATE` — or restore a stale report from the build cache — after new test runs. The
+  task is also ordered to run after `Test` tasks when both are requested.
+- A table test whose display-name slug equals its class slug (e.g. the same `@DisplayName`
+  on both) no longer silently loses one of the two published YAML files: the table file now
+  gets a numeric suffix, keeping the class and table files distinct.
+- A row whose scenario value is a prefix of another row's scenario (e.g. "Add" and
+  "Add negative") no longer absorbs the other row's pass/fail results; and rows with
+  duplicated scenario values now get no pass/fail roles (as documented) instead of the
+  OR-ed result of all duplicates.
+- When the input directory accumulates YAML from several test runs (e.g. a
+  `junit.platform.reporting.output.dir` with `{uniqueNumber}`), the report now reflects the
+  most recently modified files instead of whichever run's files happened to sort first.
+- On Windows, index-page links and single-file anchors used backslashes (the platform file
+  separator) and were broken in browsers and Markdown/AsciiDoc renderers; generated links now
+  use `/` on every platform.
+
+[GitHub Release](https://github.com/nchaugen/tabletest-reporter/releases/tag/tabletest-reporter-1.2.0)
+
+---
+
+## 2026-07-18 — TableTest 1.2.2
+
+### Changed
+- When both a `@TypeConverter`-annotated method and non-annotated candidates match a target type, the annotated method is now selected instead of failing with "multiple type converters found"
+- Collection parameters must be declared using the interface types `List`, `Set`, or `Map`; concrete types like `TreeSet` or `ArrayList` now fail with a clear error instead of expanding value sets into scalars or failing obscurely at test invocation (custom converters can still produce concrete collection types)
+- Duplicate map keys (e.g. `[a: 1, a: 2]`) now fail with a parse error naming the key, instead of silently keeping the last value; quoted and unquoted spellings of the same key count as duplicates
+### Fixed
+- An empty value set (`{}`) for an expandable parameter now fails with an error naming the column, instead of silently generating zero test invocations for the row
+- Very long cell values and comment lines (roughly 15k characters and up) no longer crash parsing with `StackOverflowError`
+- A blank header cell now fails with a parse error naming the column, instead of a `NullPointerException`
+- A table input that is empty or holds only blank lines and comments now fails with `TableTestParseException` instead of `IllegalArgumentException`
+- Table rows with missing or extra cells now fail with an error naming the offending row, instead of silently shifting values to the wrong parameters or misreading the first cell as a scenario name
+- Type converter cycles (e.g. a public static method in the test class taking and returning the same type) now fail with a clear error instead of crashing the test with `StackOverflowError`
+- The `@TypeConverter` deprecation warning is only emitted for methods actually selected as converters, once per method, instead of for every public static single-parameter method (including `main`) on every conversion
+- Cyclic meta-annotations on a parameter no longer crash `@ConvertWith` detection with `StackOverflowError`
+- Conversion failure messages now separate the searched converter locations with commas; also fixed a typo in the parameter-count error message
+
+[GitHub Release](https://github.com/nchaugen/tabletest/releases/tag/tabletest-junit-1.2.2)
+
+---
+
 ## 2026-07-07 — TableTest Claude Code Plugin v1.6.0
 
 
