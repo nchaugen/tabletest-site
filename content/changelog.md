@@ -5,6 +5,86 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-07-23 — TableTest Reporter 1.3.0
+
+> [!IMPORTANT]
+> **Slug generation changed, and some published page names change with it.** A test or class
+> name containing a letter with no ASCII form (`ß æ ø ł þ ð œ đ`), a compatibility character
+> (`ﬁ`, fullwidth letters, `x²`, `Ⅻ`, `™`, `½`), or a non-Latin script now produces a different
+> filename and URL than earlier versions did — those characters used to be dropped, so `Grüße`
+> published as `grue` and now publishes as `grusse`. If you already publish your documentation,
+> the affected pages move and existing links to them break; regenerate the whole report rather
+> than an incremental subset, and expect to update any links you control. Names made only of
+> ASCII, and accented letters that already folded to a base letter (`ü ö ä é å ñ`), are
+> unaffected — their slugs are byte-for-byte what they were.
+
+### Fixed
+- A test named wholly in a non-Latin script no longer produces an empty filename: `Москва` now
+  publishes as `москва` rather than as nothing at all, and likewise for Greek, CJK, Devanagari
+  and every other script. Such a name keeps its own characters, which browsers percent-encode
+  and GitHub Pages serves as UTF-8; a name whose ASCII form is only a number it contained
+  (`Москва основана в 1147`) is treated the same way rather than published as `1147`. A name
+  with no letters or digits anywhere gets `unnamed-` plus a stable hash, so two of them still
+  get two files. Names that already produced a working slug are unaffected.
+
+### Changed
+- Compatibility characters now reduce to the characters they stand for instead of being dropped
+  from filenames and URLs: `ﬁle ﬂow` becomes `file-flow`, fullwidth `Ｆｕｌｌｗｉｄｔｈ` becomes
+  `fullwidth`, `x² area` becomes `x2-area`, `Chapter Ⅻ` becomes `chapter-xii`. A precomposed
+  accented ligature (`Ǽgir`) no longer loses its letter either. Names written in a script of
+  their own are composed the same way, so halfwidth and fullwidth katakana spellings of one
+  name (`ﾃｽﾄ`, `テスト`) give one slug rather than two.
+- Latin letters with no ASCII form now appear in filenames and URLs instead of vanishing from
+  them: `Grüße` becomes `grusse` where it used to become `grue`, and `ÆØÅ` becomes `aeoa` where
+  it used to become `a`. One rule decides the spelling — ligatures expand to their component
+  letters (`ß`→`ss`, `æ`→`ae`, `œ`→`oe`), stroked letters fold to their base letter (`ø`→`o`,
+  `ł`→`l`, `đ`→`d`, `ð`→`d`), and `þ`→`th` because thorn has no Latin base letter. Letters that
+  already folded (`ü ö ä é å ñ`) are untouched, so a name built only from those keeps the exact
+  slug it had; a name containing one of the newly spelled-out letters gets a new one.
+- The JUnit extension no longer depends on the Slugify library: filename slug generation is
+  now built in. Slugify required Java 21, which forced every project documenting its tests to
+  run them on a 21+ runtime; the extension now targets Java 17, so a Java 17 project can use
+  it on its own test runtime. Slug output is unchanged — the replacement is pinned by the same
+  characterisation table, extended with non-ASCII cases, and reproduces the library exactly.
+  This also removes Slugify and its SLF4J transitive from the test classpath, so they can no
+  longer conflict with versions a project uses itself. The build still requires Java 21+.
+
+### Added
+- Multi-module reports: several directories of TableTest output now merge into a single
+  spec, so the modules of a multi-module build publish one set of documentation. Maven gains
+  a `tabletest-reporter:aggregate` goal that walks the reactor and finds each module's output
+  by itself, plus `<inputDirectories>` on the `report` goal for naming them explicitly;
+  Gradle gains `inputDirs`, and the CLI accepts a repeated `-i`/`--input`. The report tree
+  comes from the test class names, so modules land in one package hierarchy; where two
+  modules published the same class the most recent output wins. A listed directory that does
+  not exist is skipped with a warning, so a partial build still publishes what it has.
+- Report-time publish selection: a `publish` section in `tabletest-reporter.yaml` decides
+  which pages the report holds, with `exclude` paths holding a page (and its subtree) back
+  and `include` paths re-admitting one below an excluded page, so a single rule table still
+  publishes from an otherwise internal class. Paths name pages as the report's URLs do
+  (`converting/convert-with`), with `*` for any part of a page name and `**` for any number
+  of levels. Selection happens when the report is generated, so what publishes is no longer
+  tied to how the suite was tagged or run, and re-curating a spec needs no new test run. A
+  feature page left with nothing published under it drops with its pages; a path matching no
+  page is logged and skipped. Without the section every table publishes, as before.
+- Spec-level metadata via an optional `tabletest-reporter.yaml` in the project directory:
+  give the whole spec a real title and intro paragraph on its root index (instead of the
+  leaked lowercase package segment like "junit" or "example"), retitle intermediate index
+  pages, and set an explicit feature reading order for the top-level sections and their
+  children — declared features lead, undeclared siblings follow alphabetically. The file is
+  read at report time and applied on top of the generated tree, so a project without it is
+  unaffected. Point elsewhere with Maven `<configFile>` / `-Dtabletest.report.configFile`,
+  Gradle `configFile`, or the CLI `--config` / `-c` option.
+- Every HTML page footer states when the report was generated ("Generated by
+  tabletest-reporter · 20 Jul 2026 14:32 UTC"), so a reader can tell whether published
+  documentation still tracks the code it came from. The timestamp is stated in UTC and
+  carries a machine-readable `<time datetime>` attribute; every page of a run shares the
+  one timestamp.
+
+[GitHub Release](https://github.com/nchaugen/tabletest-reporter/releases/tag/tabletest-reporter-1.3.0)
+
+---
+
 ## 2026-07-18 — TableTest IntelliJ Plugin v0.4.2
 
 ### Changed
