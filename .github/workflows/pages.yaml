@@ -127,7 +127,7 @@ jobs:
           mkdir -p public/spec
           cp -r spec-sources/tabletest-formatter/tabletest-formatter-core/target/generated-docs/tabletest public/spec/formatter
           cp -r spec-sources/tabletest-reporter/tabletest-reporter-core/target/generated-docs/tabletest public/spec/reporter
-          cp -r spec-sources/tabletest/tabletest-junit/target/generated-docs/tabletest public/spec/core
+          cp -r spec-sources/tabletest/tabletest-junit/target/generated-docs/tabletest public/spec/junit
           cp -r spec-sources/tabletest/tabletest-parser/target/generated-docs/tabletest public/spec/parser
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
