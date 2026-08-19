@@ -5,6 +5,114 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-08-18 — TableTest Claude Code Plugin v1.9.0
+
+
+The three skills now share one table-design core — the same rules, in the same words, illustrated in each skill's own notation. **Every entry below applies to all three skills unless it names one.**
+
+### Added
+
+- Tables that sit together are read together. Across one set, a concept takes one column name, a kind of value one notation, a failure one spelling, and the tables share their helpers instead of each carrying a copy
+- A compound cell value is judged by whether a reader can name each part, not by which punctuation it uses. `2 x 5 mg tablet` explains itself; `G3/HEAT/zone-2` needs a key that lives outside the table
+- A field no surface makes a claim about can be left out of a cell and supplied by a fixture — what keeps a cell readable when the object has twelve properties and the rule reads two
+- A seam you cannot add is named rather than passed over. Where a table fuses two rules because the intermediate value is not observable, one sentence says so, and it says whether the gap belongs in the code or in the test
+- **tabletest**: A shape for composite cell values, chosen by what a reader can name — a map where the parts need their keys, a domain notation where the values name themselves, the value alone for a single part, and a list of any of those for several objects
+- **tabletest**: The bundled `scripts/format-table.sh` is part of the workflow — run it to align columns before finishing. It doubles as a parse check: `--check` exits 1 when the table parses and 0 when it does not
+- **tabletest**: A list of what the notation cannot express, so the limits are read rather than met as a failing build — a value set cannot vary an expectation, its members split on commas, one converter serves a target type per class (matched on the erased type), and a collection cell cannot hold a null element
+- **tabletest**: A reference for two shapes a table cannot express directly — work handed to another thread that the assertions depend on, and positional output fields whose occupant depends on configuration
+- **tabletest**: Where the code under test has no type to pin a converter to, an object's parts may go in separate columns and be assembled in the method — named as the last resort it is, and declared in `@Description`
+
+### Changed
+
+- Table design is stated once and shared — one rule per table, the signs a table should be decomposed, value sets for inputs a rule ignores, covering every tier and both sides of every boundary, what the published surfaces carry, scenario and column naming, rejection as an expected column, blank meaning absent, black-box columns. Each skill previously stated an overlapping subset in its own wording, and the wordings had drifted, so the same table could be judged well designed by one skill and badly designed by another. `spec-by-example` and `table-driven-testing` gain the rules they never carried
+- **tabletest**: *Collapse Sparse Columns into a Map* is folded into *Putting a Composite Value in a Cell*, which stated the same rule; two checklist lines the shared rules had already replaced are gone
+- **spec-by-example**: Worked examples no longer illustrate with loan approval, discounts, order-status transitions, shipping zones, or subscription trial and loyalty columns
+
+### Fixed
+
+**Which rows a table owes**
+
+- The obligation list is derived from the inputs before any rows are counted. Take each input the rule reads and ask whether it is counted or read in bands, whether it charges per unit or once for having any, and whether its effect depends on another input. Each question names rows nothing else will
+- *Give each obligation exactly one row* reads as a floor as well as a ceiling. It listed only ways to spot a redundant row, so used as a checklist it could only ever remove
+- A rule that reads as one behaviour can still be several. "X holds only if C1 and C2 and C3" names cleanly in a single breath and is three independent claims, each owing its own table
+- A tier ladder shows every tier, and a formula behind it reduces neither the tiers nor the boundaries — nine tiers stay nine rows. A value set spanning a tier carries that tier's boundaries only when its first and last members are the tier's own edges
+- A boundary pair is written in the finest unit the rule distinguishes. Rows of 30 and 31 days straddle nothing where the rule turns on hours, so the column is `Hours Ago`
+- Where one ladder repeats across classes that share its boundary positions, the straddling pairs are written in one class and every other class carries one row per tier. The obligation previously read as boundaries × classes, and a four-class ladder had no stated way to be discharged
+- Two rows sharing an answer are one row when swapping one's differing input for the other's would not change an expectation cell *in this table*. The old test asked whether the values behaved alike everywhere, which blocked the collapse whenever any neighbouring rule told them apart
+- Collapsing means putting every collapsed value in the surviving cell, never deleting rows — a value set discharges every obligation its members carried, because it expands into one case per value
+- A row kept because it "reaches the answer by a different route" has to name a route this table's rule cares about. Three rows for three kinds of coupon, in a table whose rule reads only whether the code was valid, was the common false positive
+
+**Which values become columns**
+
+- A constant the outcome depends on is a column wherever it can be one, and a threshold or limit the rule turns on always can be. The title and description carry only what a column cannot — where the data came from, what the fixture fixes
+- A column blank for most of its rows is a column decision before it is a table decision. Sparse columns feeding one expectation column are a family and collapse into one column; columns feeding different expectation columns are different concerns and split the table
+- Where another rule derives an input, that rule keeps its own table and this one takes the derived value as an input column. Making a value visible is not a reason to absorb the rule that produces it
+- Inputs that are contributions to one combined answer stay in one table with a column each. Splitting them gives one table per contribution, each holding the others at nothing
+- The `?` suffix marks outputs only. An input column never takes it, however yes/no it looks — `Repeat Donor`, not `Repeat Donor?`
+- A reference point in its own column leaves the values measured from it readable as offsets, instead of absolutes restated in every row
+- The rule for an input a table's rule ignores is named for the property rather than the notation — *Show That an Input Does Not Change the Outcome* — and it names the two ways of losing that conclusion. Leaving the column out states nothing: it reads exactly like having forgotten the input. And where the operation does not take the input at all, that is the thing to fix before the table — a value a caller hands over with the request is an input, so it stays in the signature and the table varies it, even where the code will not read it
+- Value sets gained the sign that you want one — a column that could carry every one of its values on every row without changing anything is the rule saying, in data, that it does not read that column — and the limit that goes with it: a value set cannot vary an expectation
+- Collapsing a family of rules means one table, not necessarily one column. Where the family's members are separate inputs the system reads independently, each takes its own column and stays blank on the rows where it plays no part
+- A held constant declared as "and it makes no difference" is a claim, not apparatus. Vary the value across what it ignores rather than writing the sentence, because no row can contradict the sentence
+- **tabletest**: A policy constant the API does not expose still gets a column. The column binds to the *test method's* parameter list, not to the arguments of the code under test, so a hardcoded cutoff date or tier threshold takes a parameter like any other column and the body simply does not pass it on
+- **tabletest**: A parameter that is one object or one collection keeps one column even where the table moves only part of it — one map column in every table of the class, rather than a field-per-column spread blank in most cells
+
+**What a cell holds**
+
+- A compound expectation stays a native collection down to its keys. Nest one level per part, or give the key a type with a name; a key pasted together from several fields leaves the row one token whose parts the reader separates by eye
+- A shorthand cell keeps a slot for every field the description makes a claim about. Packing only the fields the rule reads pins the rest for every row with no column saying so
+- Cell values prefer what the system really produces — a sentinel, enum constant or error string that is part of the observable contract, rather than a tidier test-only label. Where a value is too long to scan, shorten the value and never the vocabulary
+- Identity and status varying together in one output position is named as the exception it is. `Primary OK` against `Secondary ERROR` is one domain value where both parts vary, and splitting it into two columns makes the reader join the halves back up
+- A value the rule ignores that sits inside a composite cell has two routes out, and the cheaper one is stated first: where the cell holds a list, vary the ignored value across its elements — one row, nothing reshaped
+- **tabletest**: An object with two collection-shaped parts is not the last-resort case for spreading a value across columns. A converter takes one cell, so an object holding a map and a set cannot be built from two columns — the table varies the one part the converter builds from, and the parts no row varies are fixed in the method and declared in `@Description`
+- **tabletest**: A custom `@TypeConverter` is reached for collection elements, at any depth, exactly as a built-in converter is. The skill said this of built-in conversion only, which left a list of domain objects looking unsupported
+
+**Rejected cases**
+
+- Whether accepted and rejected rows belong in one table is decidable rather than a matter of taste. Strike the rejected rows: if what remains still states a rule, the rejection was a separate concern and takes its own table
+- **table-driven-testing**: An accept/reject boundary is one rule and stays in one test, so the last accepted value sits beside the first rejected one. Five references to a section that had stopped existing now resolve
+- **tabletest**: The exception column in the rejection example holds `java.lang.IllegalArgumentException`. The bare name it carried cannot be converted to a `Class<?>` and fails every row with `ClassNotFoundException`
+
+**Titles and descriptions**
+
+- A value already shown as a column is fully declared and no other surface owes it anything. A column that never varies is declared as well as one that does, so being constant is not on its own a reason to add a row varying it
+- **tabletest**: `@Description` no longer offers "fixed values shared by all rows" as a reason to write one. A value that can be a column belongs in a column; the description carries what cannot
+- **tabletest** and **spec-by-example**: Column and scenario names are written in domain terms in the first draft, not deferred to a refinement pass after the tests go green. The table someone reads is the one you hand over
+
+**tabletest notation and tooling**
+
+- The table formatter installs and runs. It asked Maven Central for a `shaded` classifier that has never been published, so the download always failed and the script exited without formatting anything — including the bundled auto-formatting hook
+- The formatter is referenced by a path that resolves: `${CLAUDE_PLUGIN_ROOT}/skills/tabletest/scripts/format-table.sh`. It was written as if relative to your working directory, where it has never existed
+- The quoting rules were wrong about colons and are now decidable without running anything. A colon in a whole cell needs no quotes — `Alert: condensation risk` is a plain value — while a colon inside `[…]` or `{…}` does, because the parser reads brackets before it knows the parameter type
+- The one-converter-per-target-type rule says what it actually is: per *class*, matched on the *erased* type, so `Optional<String>` and `Optional<Boolean>` collide. That is also what forces several tables in one class onto one cell format
+- The from-existing-code workflow no longer asks for a mockup to be confirmed before implementing, which contradicted the ambiguity policy two branches above — choose the reasonable reading, record it, deliver
+- "A lone error case belongs in the table rather than a separate `@Test`" no longer reads as licence to merge two tables. It is about `@Test` methods, and never overrides the test that decides whether accepted and rejected rows share a table
+
+**spec-by-example**
+
+- A blank cell means one thing: the value is genuinely absent and the system under test decides what missing means. `0` says the value is present and is zero, and a test method must never convert a blank to a default on the way in
+- A `@Test` method is for a sequential path, not for re-running the rules end to end. A combination that behaves in a way neither rule shows alone earns a table of its own
+
+**table-driven-testing**
+
+- Inputs a rule ignores vary together in one case list instead of being stacked into a cartesian product. Two stacked `parametrize` decorators turn one claim into four visible cases, and a third input turns it into eight
+
+**Worked examples and wording**
+
+- Eighteen defects in the illustrations themselves, found by reading every example against the rules beside it — `[EMPTY]` where the empty map is `[:]`, boundary examples using comfortable values where the boundary value belongs, a hand-rolled separator inside the rule that forbids one, and a TDD example demonstrating the `ERROR+1` encoding the guidance names as the thing not to write. Illustrations also moved off borrowed business domains — the legend now reads `2 x 5 mg tablet` against `G3/HEAT/zone-2`
+- **spec-by-example** and **table-driven-testing**: Two sentences in *Assume the Table Is Published* rendered with a duplicated article — "A the note beneath the table sentence naming a value" — because the shared source was built around a bare noun for a surface both skills name with an article
+
+### Removed
+
+- **tabletest**: Five of the eight references — `column-design.md`, `common-patterns.md`, `table-design-advanced.md`, `pair-programming.md` and `testing-reveals-bugs.md`, about 1,300 of 1,746 lines. A reference is for a corner case whose trigger you can see in your own task before opening the file; "torn between maps and separate columns" is a judgement, not a trigger, and the table design behind it is in the skill file, which is always read. The patterns that did have a trigger moved into `type-converters.md` and a new short file
+- **tabletest**: The "iterative column evolution" and "progressive refinement" phases went with them. They described starting from parameter names and fixing them after the tests go green, which contradicts naming columns in domain terms in the first draft
+
+
+
+[GitHub Release](https://github.com/nchaugen/tabletest-claude-plugin/releases/tag/v1.9.0)
+
+---
+
 ## 2026-07-31 — TableTest Claude Code Plugin v1.8.0
 
 
