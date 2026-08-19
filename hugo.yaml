@@ -24,18 +24,21 @@ menu:
     - name: Reference
       pageRef: /reference
       weight: 2
+    - name: Specifications
+      pageRef: /spec
+      weight: 3
     - name: Tools
       pageRef: /tools
-      weight: 3
+      weight: 4
     - name: Changelog
       pageRef: /changelog
-      weight: 4
-    - name: Search
       weight: 5
+    - name: Search
+      weight: 6
       params:
         type: search
     - name: GitHub
-      weight: 6
+      weight: 7
       url: "https://github.com/nchaugen/tabletest"
       params:
         icon: github
