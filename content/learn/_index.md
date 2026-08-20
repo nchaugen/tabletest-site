@@ -1,5 +1,8 @@
 ---
 title: Learn
+description: >-
+  Learn TableTest step by step: install the JUnit extension, write your first table,
+  and grow one test method into a readable specification.
 cascade:
   type: docs
 ---

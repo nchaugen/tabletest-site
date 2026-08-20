@@ -44,6 +44,17 @@ Cloned as sibling directories — read source from disk rather than fetching fro
 Core library: groupId `org.tabletest`, artifact `tabletest-junit`. IntelliJ plugin:
 JetBrains Marketplace plugin 27334-tabletest.
 
+## Link previews
+
+Slack, LinkedIn and X read the Open Graph tags in the page head.
+
+- Every section `_index.md` carries a `description` in its front matter. Without one, the
+  preview falls back to the page summary, which on the landing page is the Java code.
+- `layouts/_partials/opengraph.html` and `twitter_cards.html` override the theme and the
+  Hugo internal templates. Both read `utils/social-description.html`.
+- The social card is `static/images/og-card.png`, set in `hugo.yaml` as `params.images`.
+  Its source is `scripts/og-card.html`, which carries the command that renders it.
+
 ## Content guidelines
 
 - Verify code examples against actual tool behaviour — the main repo's USERGUIDE.md is the

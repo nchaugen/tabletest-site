@@ -1,5 +1,8 @@
 ---
 title: "Tools"
+description: >-
+  The TableTest toolchain: the JUnit extension, the table formatter, the HTML reporter,
+  and the IntelliJ and VS Code extensions.
 weight: 4
 bookCollapseSection: false
 ---

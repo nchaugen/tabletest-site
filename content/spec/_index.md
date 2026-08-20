@@ -1,5 +1,8 @@
 ---
 title: Specifications
+description: >-
+  The living specification of TableTest. Every rule on these pages is generated from a
+  test suite, so each scenario you read is one row of a table that runs in CI.
 cascade:
   type: docs
 ---

@@ -44,6 +44,17 @@ menu:
         icon: github
 
 params:
+  description: >-
+    A JUnit extension for table-driven tests in Java and Kotlin. Write the test method
+    once, then add a row for each scenario. Same coverage. Less code.
+  images:
+    - images/og-card.png
+  imageWidth: 1200
+  imageHeight: 630
+  imageAlt: >-
+    A TableTest table with a Scenario, Year and Leap? column, and one row for each
+    leap year rule.
+
   currentVersion: "1.2.2"
   currentTableTestVersion: "1.2.2"
   currentJUnitVersion: "6.1.2"

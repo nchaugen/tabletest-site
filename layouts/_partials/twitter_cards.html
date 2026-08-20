@@ -1,0 +1,13 @@
+{{- /* Twitter card tags. Overrides the Hugo internal partial, which shows the whole
+       page text when a page has no description of its own. */ -}}
+{{- $images := .Params.images | default site.Params.images -}}
+
+<meta name="twitter:card" content="{{ if $images }}summary_large_image{{ else }}summary{{ end }}">
+<meta name="twitter:title" content="{{ .Title }}">
+<meta name="twitter:description" content="{{ partial "utils/social-description.html" . }}">
+{{- with $images }}
+<meta name="twitter:image" content="{{ index . 0 | absURL }}">
+{{- end }}
+{{- with site.Params.imageAlt }}
+<meta name="twitter:image:alt" content="{{ . }}">
+{{- end }}

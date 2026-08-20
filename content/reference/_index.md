@@ -1,5 +1,8 @@
 ---
 title: Reference
+description: >-
+  Reference documentation for TableTest: table syntax, value formats, type conversion,
+  scenario names, value sets, and external table files.
 cascade:
   type: docs
 ---

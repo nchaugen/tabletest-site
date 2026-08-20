@@ -1,0 +1,10 @@
+{{- /* The text a link preview shows: the page description, else the page summary,
+       else the site description. Collapsed to one line and cut to a length that
+       Slack, LinkedIn and X show in full. */ -}}
+{{- $description := "" -}}
+{{- if .IsHome -}}
+  {{- $description = .Description | default site.Params.description -}}
+{{- else -}}
+  {{- $description = .Description | default .Summary | default site.Params.description -}}
+{{- end -}}
+{{- return ($description | plainify | htmlUnescape | replaceRE "\\s+" " " | chomp | truncate 200) -}}

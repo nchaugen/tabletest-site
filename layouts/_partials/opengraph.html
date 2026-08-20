@@ -1,0 +1,34 @@
+{{- /* Open Graph tags. Overrides the Hextra partial, which emits the values
+       padded with newlines and cannot state the image size. */ -}}
+{{- $description := partial "utils/social-description.html" . -}}
+{{- $images := .Params.images | default site.Params.images -}}
+
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:locale" content="{{ site.Language.Lang | default "en" }}">
+{{- range first 6 $images }}
+<meta property="og:image" content="{{ . | absURL }}">
+{{- end }}
+{{- with site.Params.imageWidth }}
+<meta property="og:image:width" content="{{ . }}">
+{{- end }}
+{{- with site.Params.imageHeight }}
+<meta property="og:image:height" content="{{ . }}">
+{{- end }}
+{{- with site.Params.imageAlt }}
+<meta property="og:image:alt" content="{{ . }}">
+{{- end }}
+
+{{- if .IsPage }}
+{{- $iso8601 := "2006-01-02T15:04:05-07:00" }}
+<meta property="article:section" content="{{ .Section }}">
+{{- with .PublishDate }}
+<meta property="article:published_time" {{ .Format $iso8601 | printf "content=%q" | safeHTMLAttr }}>
+{{- end }}
+{{- with .Lastmod }}
+<meta property="article:modified_time" {{ .Format $iso8601 | printf "content=%q" | safeHTMLAttr }}>
+{{- end }}
+{{- end }}

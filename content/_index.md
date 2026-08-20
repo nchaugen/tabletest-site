@@ -1,6 +1,11 @@
 ---
 title: TableTest
 layout: hextra-home
+description: >-
+  A JUnit extension for table-driven tests in Java and Kotlin. Write the test method
+  once, then add a row for each scenario. Same coverage. Less code.
+images:
+  - images/og-card.png
 ---
 
 <div class="hx:mt-6 hx:mb-6">
