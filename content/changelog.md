@@ -5,6 +5,70 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-08-20 — TableTest Reporter 1.4.0
+
+
+### Added
+- An HTML template of your own can add to the built-in stylesheet through a new `extra_stylesheet`
+  block, without replacing it. A report carries its stylesheet inside the file, so until now a role
+  declared with `@ColumnRole` had nowhere to be styled from: the only way to reach the CSS was to
+  rewrite the whole sheet. The block is left by `table.html.peb`, `index.html.peb` and
+  `single.html.peb` alike.
+- `@Tree` marks a column whose cells hold a tree, written as a nested collection. The built-in HTML
+  report then opens each level below its parent rather than beside it, with a guide line down the
+  level and a connector on each entry. The default map rendering puts a key beside its value, which
+  walks a deep tree sideways across the page. The cell value is unchanged, so a reader still meets
+  the notation they would write.
+- A cell whose set expands its row is now marked `value-set` in the published report. A published
+  table shows no parameters, so `{a, b}` reads the same whether it expands the row into one run per
+  value or is a `Set` the test receives whole. The reporter tells them apart the way the runtime
+  does — a set value against a parameter that is not a set expands — and the built-in HTML
+  stylesheet labels the cell "any of". Markdown carries no roles, so the two stay alike there.
+- `@Lines` marks a column whose cells hold the lines of one block of text. The parameter receives
+  the lines joined by newlines (or the lines themselves, for a `List` parameter), and the HTML
+  report renders the cell as a stacked monospace block rather than a bulleted list, so text whose
+  alignment is the point reads as it was written. AsciiDoc publishes the role and keeps its bulleted
+  list; Markdown is unchanged.
+- A space run at the end of a line now carries a `trailing` class alongside `sp`, so a stylesheet can
+  tell the one run a whitespace-preserving layout cannot show from the ones it can. The built-in HTML
+  stylesheet uses it to drop the markers from alignment padding inside a `lines` column while keeping
+  a trailing run marked, and to leave a blank line in such a column unmarked — it is already visible
+  as a line of the block. Only the class is new — the marked runs and the characters in them are
+  unchanged.
+- A test parameter can now declare a role for its column, and the reporter publishes it on every
+  cell of that column. Annotate an annotation of your own with `@ColumnRole` and put it on the
+  parameter; the role is published as the annotation's simple name in kebab case, or as the token
+  `@ColumnRole("...")` names. Published roles reach the HTML report as CSS classes and the AsciiDoc
+  report as element roles, so a stylesheet of yours can style a column the reporter knows nothing
+  about. `scenario`, `expectation`, `passed` and `failed` are still derived by the reporter itself;
+  a declared role is published alongside them without being treated as one.
+- A table wide enough to scroll sideways now says so: the scroll box keeps a visible slim
+  scrollbar, and a shaded edge appears on whichever side has more table beyond it. Previously the
+  box scrolled silently — on a platform with overlay scrollbars a reader had no way to tell the
+  last column on screen was not the last column.
+- A feature in the `tabletest-reporter.yaml` `features:` tree can carry a `description`, rendered
+  under the feature's title on its own index page the way a test class's `@Description` is. An
+  intermediate index page could previously carry only a title, so anything true of a whole group
+  of features had to be repeated on every rule beneath it.
+
+### Fixed
+- A rule page now shows the description of the page it sits under, above its own. The class or
+  feature description is where the notation a rule's columns use is explained, and it rendered only
+  on the index page — but the sidebar links to rule pages and search returns rule pages, so a reader
+  met the columns without the explanation. All three formats show it.
+- A description with more than one paragraph now renders as more than one paragraph in HTML. HTML
+  collapses a blank line, so every paragraph of a `@Description` ran together into one block. The
+  Markdown and AsciiDoc reports were already correct. Line breaks inside a paragraph are still
+  dropped, so the text flows to the width of the page rather than to the width of the text block it
+  was written in.
+- Declaring a custom format with no name is now refused with `Format name cannot be missing`
+  instead of a message reading only `name`. The blank-name and leading-dot refusals are
+  unchanged.
+
+[GitHub Release](https://github.com/nchaugen/tabletest-reporter/releases/tag/tabletest-reporter-1.4.0)
+
+---
+
 ## 2026-08-18 — TableTest Claude Code Plugin v1.9.0
 
 
