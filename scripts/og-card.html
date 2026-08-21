@@ -1,0 +1,118 @@
+<!doctype html>
+<!--
+  Source of static/images/og-card.png — the 1200x630 social card that Slack, LinkedIn
+  and X show when someone links to tabletest.org.
+
+  The card is a frame with the TableTest wordmark, holding the leap year screenshot
+  from content/leap-year-table-old.png. The screenshot carries uneven white margins,
+  so the .shot box clips them and shows the code block alone.
+
+  Regenerate after editing (Playwright and macOS system fonts required):
+
+    npx playwright screenshot --viewport-size=1200,630 \
+      scripts/og-card.html static/images/og-card.png
+
+  Render at scale factor 1, so the screenshot keeps its own pixels. Scaling it up and
+  back down blurs the code. The frame uses Avenir Next, which ships with macOS.
+  Render on a Mac.
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --paper: #F4F6F8;
+    --card: #FFFFFF;
+    --rule: #6C707E;
+    --band: #EBECF0;
+    --ink: #1A1F26;
+    --muted: #6C707E;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  body {
+    background: var(--paper);
+    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    padding: 30px;
+  }
+  .card {
+    flex: 1;
+    background: var(--card);
+    border: 2px solid var(--rule);
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* top band — the strip above the first rule in the TableTest glyph */
+  .band {
+    height: 84px;
+    background: var(--band);
+    border-bottom: 2px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 44px;
+  }
+  .mark { display: flex; align-items: center; gap: 14px; }
+  .mark svg { display: block; }
+  .wordmark {
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+  .domain {
+    font-size: 21px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  .body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 44px;
+  }
+
+  /* the screenshot, with its own margins clipped away */
+  .shot {
+    width: 984px;
+    height: 421px;
+    overflow: hidden;
+  }
+  .shot img {
+    display: block;
+    width: 1044px;
+    margin: -48px 0 0 -60px;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="band">
+      <div class="mark">
+        <svg width="34" height="34" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 2.5H13C13.8284 2.5 14.5 3.17157 14.5 4V12C14.5 12.8284 13.8284 13.5 13 13.5H3C2.17157 13.5 1.5 12.8284 1.5 12V4C1.5 3.17157 2.17157 2.5 3 2.5Z" fill="#FFFFFF" stroke="#6C707E"/>
+          <path d="M5.5 3V13" stroke="#6C707E"/>
+          <path d="M10.5 3V13" stroke="#6C707E"/>
+          <path d="M2 5.5H14" stroke="#6C707E"/>
+        </svg>
+        <span class="wordmark">TableTest</span>
+      </div>
+      <span class="domain">tabletest.org</span>
+    </div>
+
+    <div class="body">
+      <div class="shot">
+        <img src="../content/leap-year-table-old.png" alt="">
+      </div>
+    </div>
+  </div>
+</body>
+</html>
