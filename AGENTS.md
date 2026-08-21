@@ -53,7 +53,8 @@ Slack, LinkedIn and X read the Open Graph tags in the page head.
 - `layouts/_partials/opengraph.html` and `twitter_cards.html` override the theme and the
   Hugo internal templates. Both read `utils/social-description.html`.
 - The social card is `static/images/og-card.png`, set in `hugo.yaml` as `params.images`.
-  Its source is `scripts/og-card.html`, which carries the command that renders it.
+  It is the `content/leap-year-table-old.png` screenshot, centred on a white 1200x630
+  canvas. Rebuild it with `python3 scripts/og-card.py` after the screenshot changes.
 
 ## Content guidelines
 

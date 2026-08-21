@@ -52,8 +52,8 @@ params:
   imageWidth: 1200
   imageHeight: 630
   imageAlt: >-
-    A TableTest table with a Scenario, Year and Leap? column, and one row for each
-    leap year rule.
+    A Java test method with a @TableTest table. The table has a Scenario, Year and Is
+    Leap Year? column, and one row for each leap year rule.
 
   currentVersion: "1.2.2"
   currentTableTestVersion: "1.2.2"
