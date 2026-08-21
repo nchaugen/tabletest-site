@@ -92,6 +92,7 @@ jobs:
         working-directory: spec-sources/tabletest-reporter
         run: |
           mvn install -DskipTests --no-transfer-progress
+          mvn -f tabletest-reporter-junit -Preport test --no-transfer-progress
           mvn -f tabletest-reporter-core -Preport test org.tabletest:tabletest-reporter-maven-plugin:report --no-transfer-progress
       - name: Generate core living docs
         working-directory: spec-sources/tabletest
