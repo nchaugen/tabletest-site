@@ -5,6 +5,185 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-08-23 — TableTest Reporter 1.5.0
+
+
+### Added
+- You can now read an HTML report from the keyboard. Tab reaches every row of the navigation,
+  Enter follows one, and Space opens or closes a feature. The browser does all of that, and no
+  script runs. These keys are new on top of it:
+  - <kbd>↓</kbd> <kbd>↑</kbd> move between the rows you can see
+  - <kbd>→</kbd> opens a feature, then steps into it
+  - <kbd>←</kbd> closes a feature, or steps out to the one above
+  - <kbd>/</kbd> opens the drawer and jumps to the search box
+  - <kbd>m</kbd> opens or closes the navigation drawer
+  - <kbd>Esc</kbd> leaves the search box, or closes the drawer
+  - <kbd>?</kbd> lists the keys on the page
+
+  The arrow keys act only on a row that already holds focus. They still scroll a long page
+  everywhere else.
+- Your build can now pin the instant a report states it was generated at. Set `generatedAt` on the
+  Maven plugin (`-Dtabletest.report.generatedAt`) or the Gradle extension, or pass `--generated-at`
+  on the CLI. The value is an ISO-8601 instant, and any other value fails the build.
+
+  Leave it unset and the reporter reads the clock, as before. Two runs of the same tests then write
+  two different pages, and a build that compares its own output sees a change every time. A pinned
+  instant gives you the same bytes from the same tests. The reporter does not read
+  `SOURCE_DATE_EPOCH` itself, because a report that changes with its environment is the fault being
+  fixed. Convert that value in your build and pass it in.
+- A report can now link back to the site that hosts it. Every other link a report holds stays
+  inside the report's own tree, so a reader who arrives from a site has no way back. Declare a
+  `site` section with a `label` and a `url` in `tabletest-reporter.yaml`. The link then opens the
+  footer of every HTML page: the table page, the index page and the single-file report alike.
+
+  The reporter uses the address exactly as you wrote it, and never resolves it against the
+  report's own tree. A root-relative address therefore works for a site that hosts the spec below
+  one of its own paths. A `url` without a `label` labels itself with the address. Without a `site`
+  section the footer does not change.
+- The three HTML page templates now leave a `footer` block, so a template of yours can replace the
+  footer without rewriting the page. The site link also has a `siteLink(site)` macro of its own,
+  which such a template can call to place the same link elsewhere.
+- Front matter is now a config section, and not only a template block. Declare `frontMatter:` in
+  `tabletest-reporter.yaml`. The reporter then writes it above every AsciiDoc and Markdown page: a
+  fenced YAML block for Markdown, and document attributes for AsciiDoc. An HTML page carries none,
+  because it is a finished page and not source for a site generator.
+
+  Keys keep the order you declared them in. The reporter quotes a value only where YAML would
+  otherwise read it back as something else.
+
+  Ask for one of three values by writing a token as the **value**, never as the key: `$title`,
+  `$position` or `$timestamp`. Site generators do not agree on what to call a page's position.
+  Hugo calls it `weight`, Docusaurus `sidebar_position`, a Jekyll theme `nav_order`, and Antora
+  `page-weight`. `$position` is the place the `features:` section declares, so a generator that
+  orders pages by it lists them as you curated them, and not alphabetically.
+
+  The `frontMatter` template block still works, and still wins, for anyone who wants full control.
+- `@NamedLines` marks a column whose cells hold several blocks of text, each under a name. Write
+  the cell as a map from name to lines. A file and its contents is the case it was built for, so
+  such a cell reads as a small directory. The HTML report draws each name as a caption over its own
+  block, indented behind a margin rule. It styles the blocks exactly as a `@Lines` cell, because
+  that is what they are.
+
+  There is no converter: the parameter is a plain `Map<String, List<String>>`. Note that TableTest
+  never converts a map key, so `Map<Path, List<String>>` compiles and then fails on first read.
+  Resolve the name where you write the files.
+- `@Numbered` numbers the lines of a block in the HTML report. It is a role of its own, so ask for
+  it beside `@Lines` or `@NamedLines`. It is off unless you ask for it: on a block of two or three
+  lines the digits are as wide as the text beside them.
+
+### Changed
+- The README's manual setup instructions are a section of their own, beside the Gradle and Maven
+  ones. They sat inside the Maven section, folded away, although they cover Maven, Gradle and the
+  CLI alike — a Gradle reader following the Gradle instructions never met the Gradle option they
+  hold.
+- The roles a test can declare open with a table of their own, matching the derived ones: what the
+  cell holds, and what the HTML report draws from it. The entry below each role now carries what a
+  table cannot — the parameter type, and why the shape is what it is.
+- The roles the reporter derives for itself are documented, in a table saying what each one marks
+  and where it comes from: `scenario`, `expectation`, `passed`, `failed` and `value-set`. There are
+  five of them, not the four the README and the `CellRole` javadoc both claimed — `value-set`
+  joined in 1.4.0 and neither count was updated. They are published exactly as a declared role is,
+  so the two styling routes apply to them without any difference.
+- The README's Column Roles section is now Styling Columns, and it is about styling. It opens with
+  a table saying what a role becomes in each format — a CSS class, an element role, or nothing —
+  and then splits into the roles a test can declare, a role of your own, and one subsection per
+  styling route: HTML through `extra_stylesheet`, AsciiDoc through the stylesheet you give
+  Asciidoctor. It also says how to *restyle* a built-in role, which was not written down: the
+  reporter emits `extra_stylesheet` after its own stylesheet, so a rule of equal specificity that
+  comes later wins. `@Tree` gained an entry of its own; it had only two passing mentions, while
+  every other role a test can declare had one. The section sits above Custom Templates, because
+  tweaking a format is the commoner errand.
+- Each built-in format has a section of the README to itself. AsciiDoc and Markdown are slim beside
+  HTML, which is the honest picture — the format tiering gives presentation to HTML alone — and
+  each now says what its own format carries: where a collection goes, how a pipe and significant
+  whitespace are written, what a column role becomes, and how front matter reaches the page.
+- The README's Formats section is regrouped. Choosing a format and listing the available ones sit
+  together, because both answer "which format?". Defining a format of your own moved in with the
+  templates, because a format *is* a pair of templates — name the pair after a format that exists
+  and you replace it, name it after one that does not and you have defined a format. The HTML
+  section is renamed "What the HTML report gives you", so it no longer implies AsciiDoc and
+  Markdown siblings that would be stubs: what those two formats carry is already the substance of
+  Choosing a format.
+- The README section on styling now says which format it serves. It was called "Styling HTML
+  Reports", but every word of it is about the `asciidoc` format after Asciidoctor has converted it
+  — a reader on the built-in `html` format would have configured a plugin that has no bearing on
+  their output. It is now "Styling an AsciiDoc report once it is HTML", sits with the formats, and
+  opens by pointing anyone on the built-in format at `extra_stylesheet` instead.
+- Column roles are a section of the README in their own right, and no longer a subsection of
+  writing tests. They change how the HTML report draws a column, so they sit with the presentation
+  material. The section now also shows how to build a rendering of your own: the built-in roles
+  have no privileged path — the reporter draws a value from its shape and puts the column's roles
+  on the cell as CSS classes, so `@Lines`, `@Tree`, `@NamedLines` and `@Numbered` are each an
+  annotation plus a stylesheet rule. A worked example declares an annotation and styles it through
+  the `extra_stylesheet` block, which the README mentioned but never showed in use.
+- Configuring the report sits beside publishing it. Front matter, the site link and the publish
+  selection are all preparation for publishing, so the section that holds them now leads into the
+  one that uses them, instead of interrupting the walkthrough.
+- The README is reorganised. The numbered walkthrough used to dissolve at "Step 4", which had
+  absorbed ten subsections of configuration reference and no fifth step. Getting started is now
+  four steps and stops there. The four sections of `tabletest-reporter.yaml` sit together under
+  the file they belong to, with the build's own options beside them rather than among them.
+  Choosing a format, the HTML report and custom formats are one section instead of three places.
+  "Advanced Topics" is gone, replaced by named sections. Two pairs of headings both called Maven
+  and Gradle no longer collide over the same anchors, and the file opens with a table of contents.
+- The README no longer opens with the notice about the move to `org.tabletest` coordinates. The
+  move shipped in 1.0.0, five releases back, and the relocation POMs on Maven Central still point
+  anyone on the old coordinates at the new ones.
+- An HTML index page and the sidebar now fold. The page still holds every level below it, but only
+  the top level is open. An entry that holds pages carries a chevron, and the reader opens the part
+  they want. You no longer choose one depth for every reader.
+
+  The fold is a plain `<details>`, so it needs no script. A folded entry stays in the page: a
+  browser search finds it, and a printed copy shows every level open. In the sidebar, the branches
+  on the trail to the page you are on arrive open. A reader following a deep link therefore sees
+  where they are.
+
+  `indexDepth` does not change. It stays the coarse override for writing fewer levels at all, which
+  a Markdown or AsciiDoc index still needs.
+- A row of a link tree carries its state on the link itself. The type, the verdict and the current
+  page used to sit on the list item around it, and a fold puts that link one level deeper. A
+  stylesheet of your own that targeted the navigation tree needs updating; the documented cell-role
+  classes — `.scenario`, `.expectation`, `.passed` and `.failed` — do not change.
+- A row of a link tree now reads as one thing. The chevron is grey, and the verdict dot beside it
+  keeps its colour. You can therefore tell the control you operate from the verdict next to it. The `–`
+  before a rule is gone, because the empty chevron column already tells a rule from a feature. The
+  dot now sits on a row's first line; a wrapped title used to leave it centred between two.
+- The sidebar now marks the whole trail down to the page you are on, and not the page alone. A rule
+  deep in a spec highlighted one leaf, and nothing said which feature held it. Every entry above the
+  page now reads at full ink, and an accent line runs beside its children.
+- An index page states a passing verdict in the same words a table page does: "All 4 scenarios
+  hold", where it used to say "passing". A reader moving from an index to a table page met the same
+  fact stated two ways.
+- A `@Tree` column now draws one connected tree, and not two overlapping ones. Every level used to
+  show two competing verticals, and no corner met the line it belonged to. Each entry now owns the
+  whole structure. It draws a stem the height of what sits under it, and a tick meeting its own
+  text. On the last entry the stem stops at the tick, which makes the corner. The reporter draws the
+  lines rather than typing them, so they connect exactly and scale with the font.
+
+### Fixed
+- A closed navigation drawer is no longer in the tab order. The drawer sits off-screen, but a
+  reader tabbing through a page still walked the whole hidden menu first. That took six stops on
+  the reporter's own spec, before anything they could see. The drawer is now `inert` until it opens.
+  Opening it moves focus into it, and closing it hands focus back to the menu button. While the
+  drawer is open, the page behind it is inert in turn.
+- A report now prints the same whichever colour scheme you view it in. Printing drops a dark
+  background but keeps the text colours, so a reader in dark mode printed pale grey on white. That
+  hit every cell, description and breadcrumb, and not only the footer. The print stylesheet now
+  replaces the whole palette with one meant for paper.
+
+  This also fixes the page footer. Its screen grey held a 2.2:1 contrast against white paper even
+  in light mode, so the attribution and the run timestamp printed as almost nothing.
+- A verdict dot now prints. A dot carries its colour as a background, and a browser drops that
+  colour when printing unless you ask it to keep it. A printed index tree therefore showed no
+  verdicts at all.
+- Choosing dark explicitly now sets every colour. The toggle's palette left one colour out. A page
+  switched to dark on a light-scheme system therefore kept the light shadow, which is what shows
+  that a table can scroll sideways.
+
+[GitHub Release](https://github.com/nchaugen/tabletest-reporter/releases/tag/tabletest-reporter-1.5.0)
+
+---
+
 ## 2026-08-20 — TableTest Reporter 1.4.0
 
 
