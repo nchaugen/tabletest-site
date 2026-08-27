@@ -70,9 +70,9 @@ params:
       height: 10
 
   banner:
-    key: 'announcement-ttr-120'
+    key: 'announcement-ttr-150'
     message: |
-      🎉 [TableTest Reporter 1.2.0](https://github.com/nchaugen/tabletest-reporter/releases/tag/tabletest-reporter-1.2.0) is out! Built-in HTML report format. Read the [changelog](/changelog/).
+      🎉 [TableTest Reporter 1.5.0](https://github.com/nchaugen/tabletest-reporter/releases/tag/tabletest-reporter-1.5.0) is out! Read an HTML report from the keyboard, in a navigation tree that folds. Read the [changelog](/changelog/).
 
   footer:
     displayCopyright: false
