@@ -62,6 +62,12 @@ Slack, LinkedIn and X read the Open Graph tags in the page head.
 - Verify code examples against actual tool behaviour — the main repo's USERGUIDE.md is the
   source of truth.
 - Published pages must not link to draft or deleted pages; link to GitHub repos instead.
-- Versions are parameterised in hugo.yaml (`currentTableTestVersion`, `currentJUnitVersion`) —
-  use `{{< param ... >}}` in content.
+- Versions are parameterised in hugo.yaml — use `{{< param ... >}}` in content. Every product
+  version (`currentReporterVersion`, `currentClaudePluginVersion`, and the rest) is written by
+  `scripts/update-versions.sh` from the newest GitHub release each day, so do not hand-edit one:
+  the job overwrites it. `currentJUnitVersion` is not ours and stays manual.
+- The banner is prose, so no job can write it. `scripts/check-banner.sh` runs daily and fails when
+  the banner announces something other than the newest release, or when its `key` does not carry
+  the announced version. Hextra stores the dismissal under that key, so a message that changes
+  under an unchanged key never reaches a reader who dismissed the one before it.
 - Omit the `Co-Authored-By` attribution footer in commits.

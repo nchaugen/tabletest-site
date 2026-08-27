@@ -74,7 +74,7 @@ params:
       height: 10
 
   banner:
-    key: 'announcement-ttr-150'
+    key: 'announcement-reporter-1.5.0'
     message: |
       🎉 [TableTest Reporter 1.5.0](https://github.com/nchaugen/tabletest-reporter/releases/tag/tabletest-reporter-1.5.0) is out! Read an HTML report from the keyboard, in a navigation tree that folds. Read the [changelog](/changelog/).
 

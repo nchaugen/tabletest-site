@@ -1,8 +1,9 @@
-name: Update Changelog
+name: Update Site from Releases
 
 on:
   schedule:
     - cron: '0 6 * * *'  # Every day at 06:00 UTC
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -20,17 +21,29 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bash scripts/update-changelog.sh
 
+      - name: Update version parameters
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/update-versions.sh
+
       - name: Commit and deploy if changed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet content/changelog.md; then
-            echo "No changes to changelog."
+          if git diff --quiet content/changelog.md hugo.yaml; then
+            echo "No changes to the changelog or the version parameters."
           else
-            git add content/changelog.md
-            git commit -m "chore: update changelog"
+            git add content/changelog.md hugo.yaml
+            git commit -m "chore: update from releases"
             git push
             gh workflow run pages.yaml
           fi
+
+      # Runs after the deploy: the banner is prose, so nobody can write it for
+      # us, and a stale banner must not hold back the parts that are derived.
+      - name: Check the banner against the newest release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/check-banner.sh
