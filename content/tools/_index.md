@@ -18,7 +18,7 @@ The foundation — a JUnit extension that enables table-driven testing with the 
 - **Standard JUnit** — runs alongside regular `@Test` methods with no special setup
 - **Extensible** — custom type converters, external table files, and value sets for advanced scenarios
 
-**Available on:** [Maven Central](https://central.sonatype.com/artifact/org.tabletest/tabletest-junit) | **Source:** [GitHub](https://github.com/nchaugen/tabletest)
+**Latest version:** {{< param currentTableTestVersion >}} | **Available on:** [Maven Central](https://central.sonatype.com/artifact/org.tabletest/tabletest-junit) | **Source:** [GitHub](https://github.com/nchaugen/tabletest)
 
 ## IntelliJ Plugin
 
@@ -28,7 +28,7 @@ IDE support for working with TableTest tables inside IntelliJ IDEA. The plugin p
 - **Syntax highlighting** — distinct colours for headers, delimiters, values, and comments
 - **Language injection** — automatic TableTest language support in `@TableTest` annotations
 
-**Available on:** [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/27334-tabletest) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-intellij)
+**Latest version:** {{< param currentIntelliJVersion >}} | **Available on:** [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/27334-tabletest) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-intellij)
 
 ## VS Code Extension
 
@@ -38,7 +38,7 @@ IDE support for working with TableTest tables inside Visual Studio Code. The ext
 - **Syntax highlighting** — distinct colours for headers, delimiters, values, and comments
 - **Language injection** — automatic TableTest language support in `@TableTest` annotations in Java and Kotlin
 
-**Available on:** [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=tabletest.tabletest) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-vscode)
+**Latest version:** {{< param currentVSCodeVersion >}} | **Available on:** [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=tabletest.tabletest) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-vscode)
 
 ## Formatter
 
@@ -50,25 +50,30 @@ A formatting tool for consistent table layout across your codebase. Formats tabl
 
 The formatter is safe by default: it returns input unchanged on parse errors, so it never breaks your build.
 
-**Available on:** [Maven Central](https://central.sonatype.com/search?q=org.tabletest+tabletest-formatter) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-formatter)
+**Latest version:** {{< param currentFormatterVersion >}} | **Available on:** [Maven Central](https://central.sonatype.com/search?q=org.tabletest+tabletest-formatter) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-formatter)
 
 ## Reporter
 
-Generates documentation from your TableTest tests. Run your tests, then run the reporter to turn test tables into readable AsciiDoc or Markdown documentation that you can publish alongside your project docs.
+Turns your TableTest tests into a specification anyone can read. Run your tests, then run the reporter to publish the tables as living documentation beside your project docs.
 
-- **Gradle plugin** and **Maven plugin** — integrates into your build
-- **Custom templates** — extend or replace built-in templates using Pebble
-- **Pass/fail indicators** — rows are marked with test results in the generated output
-- **Custom output formats** — define HTML, XML, or any format via templates
+- **Self-contained HTML** — a static site with no external reference: a navigation tree that folds, search across the whole report, keyboard control, and a light/dark theme
+- **Pass/fail throughout** — a status dot on every entry, per-row and per-cell colouring, and a scenario pass rate on each page
+- **Column roles** — mark a column as lines of text, a tree, or a role of your own, and the report styles it
+- **AsciiDoc and Markdown** — for a site generator you already run, with front matter you configure
+- **Gradle plugin**, **Maven plugin** and **CLI** — integrates into your build
+- **Custom templates** — extend or replace the built-in templates with Pebble, or define a format of your own
 
-**Available on:** [Maven Central](https://central.sonatype.com/search?q=org.tabletest+tabletest-reporter) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-reporter)
+Every page under [Specifications](/spec/) is a reporter HTML report, generated from the test suite of the tool it describes.
+
+**Latest version:** {{< param currentReporterVersion >}} | **Available on:** [Maven Central](https://central.sonatype.com/search?q=org.tabletest+tabletest-reporter) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-reporter)
 
 ## Claude Code Plugin
 
-Two guided skills for writing TableTest-style tests from inside [Claude Code](https://claude.ai/claude-code), the AI coding assistant from Anthropic.
+Three guided skills for writing table-driven tests from inside [Claude Code](https://claude.ai/claude-code), the AI coding assistant from Anthropic.
 
 - **`/spec-by-example`** — clarify behaviour by working through concrete examples as a table, using business language throughout; the resulting table maps directly to a `@TableTest`
 - **`/tabletest`** — create `@TableTest` methods with guided table design, syntax reference, and a quality checklist; handles both new tests and converting similar `@Test` methods
+- **Table-driven testing** — the same table design rules outside the JVM: pytest `parametrize`, Swift Testing `@Test(arguments:)`, Jest and Vitest `test.each`, Go table-driven subtests, and xUnit `[Theory]`. Claude reaches for this skill on its own when the project is not Java or Kotlin
 - **Auto-formatting** — tables are automatically aligned after every file edit via a PostToolUse hook
 
 Install from the Claude Code CLI:
@@ -78,7 +83,7 @@ Install from the Claude Code CLI:
 /plugin install tabletest@tabletest.org
 ```
 
-**Available on:** [Claude Code Marketplace](https://tabletest.org/marketplace.json) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-claude-plugin)
+**Latest version:** {{< param currentClaudePluginVersion >}} | **Available on:** [Claude Code Marketplace](https://tabletest.org/marketplace.json) | **Source:** [GitHub](https://github.com/nchaugen/tabletest-claude-plugin)
 
 ## Source Code
 
