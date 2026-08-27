@@ -55,9 +55,13 @@ params:
     A Java test method with a @TableTest table. The table has a Scenario, Year and Is
     Leap Year? column, and one row for each leap year rule.
 
-  currentVersion: "1.2.2"
   currentTableTestVersion: "1.2.2"
   currentJUnitVersion: "6.1.2"
+  currentReporterVersion: "1.5.0"
+  currentFormatterVersion: "1.1.2"
+  currentIntelliJVersion: "0.4.2"
+  currentVSCodeVersion: "0.1.1"
+  currentClaudePluginVersion: "1.9.0"
 
   navbar:
     displayTitle: true
