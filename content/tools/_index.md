@@ -73,7 +73,7 @@ Three guided skills for writing table-driven tests from inside [Claude Code](htt
 
 - **`/spec-by-example`** — clarify behaviour by working through concrete examples as a table, using business language throughout; the resulting table maps directly to a `@TableTest`
 - **`/tabletest`** — create `@TableTest` methods with guided table design, syntax reference, and a quality checklist; handles both new tests and converting similar `@Test` methods
-- **Table-driven testing** — the same table design rules outside the JVM: pytest `parametrize`, Swift Testing `@Test(arguments:)`, Jest and Vitest `test.each`, Go table-driven subtests, and xUnit `[Theory]`. Claude reaches for this skill on its own when the project is not Java or Kotlin
+- **`/table-driven-testing`** — apply the same table design rules where the TableTest library is not available: pytest `parametrize`, Swift Testing `@Test(arguments:)`, Jest and Vitest `test.each`, Go table-driven subtests, and xUnit `[Theory]`; on Java and Kotlin projects the TableTest skill takes over
 - **Auto-formatting** — tables are automatically aligned after every file edit via a PostToolUse hook
 
 Install from the Claude Code CLI:
