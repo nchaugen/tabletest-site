@@ -139,7 +139,6 @@ These features compose well. A table can have a scenario column for readability,
 
 For more detail on all of these topics, see:
 
-- [Advanced Features](/reference/advanced-features/) — Scenario names, value sets, external table files
 - [Basic Usage](/reference/basic-usage/) — Table syntax, value formats, quoting rules
 - [Type Conversion](/reference/type-conversion/) — Full reference for all conversion options
-- [Advanced Features](/reference/advanced-features/) — Value sets, external table files
+- [Advanced Features](/reference/advanced-features/) — Scenario names, value sets, external table files

@@ -41,6 +41,8 @@ See the [JUnit documentation](https://docs.junit.org/current/writing-tests/param
 
 When the parameter is a parameterised type like `List<Integer>` or `Map<String, LocalDate>`, TableTest uses the generic type information to convert each element individually. Map keys remain `String` type and are not converted.
 
+Declare the parameter as the interface type `List`, `Set`, or `Map`. A concrete type such as `ArrayList`, `TreeSet`, or `LinkedHashMap` is rejected with an error, because a converted collection implements only the interface. A [custom converter](#custom-converter-methods) can return a specific implementation.
+
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
 {{< codefile file="examples/src/test/java/guide/TypeConversionTest.java" id="parameterized-types" >}}

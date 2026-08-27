@@ -82,6 +82,8 @@ Value sets let you test multiple inputs with the same expected outcome, expresse
 
 This table produces **12 test executions** — three per row, one for each value in the set. With scenario names, the display name includes both the scenario and the actual value used, making it easy to pinpoint failures.
 
+A value set must hold at least one value. An empty set (`{}`) would produce no invocation for the row, so it fails with an error naming the column. To pass `null`, leave the cell blank.
+
 ### Cartesian Product
 
 When multiple columns contain value sets, TableTest generates the Cartesian product — all combinations of values:

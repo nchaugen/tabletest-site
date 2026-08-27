@@ -105,6 +105,8 @@ JUnit lifecycle methods (`@BeforeEach`, `@AfterEach`) run for each row.
 
 TableTest supports four value formats: single values, lists, sets, and maps. These can be nested to create complex data structures.
 
+Declare a collection parameter as the interface type `List`, `Set`, or `Map` (or a supertype such as `Collection`). A concrete type such as `ArrayList`, `TreeSet`, or `LinkedHashMap` fails with an error, because a converted collection implements only the interface. To receive a specific implementation, declare a [custom converter](/reference/type-conversion/#custom-converter-methods) that produces it.
+
 ### Single Values
 
 Single values are converted to the corresponding parameter type — primitives, strings, enums, dates, and other types supported by [JUnit's built-in converters](https://docs.junit.org/current/writing-tests/parameterized-classes-and-tests.html#argument-conversion-implicit).
@@ -126,7 +128,7 @@ When single values appear as elements inside collections (lists, sets, or maps),
 
 ### Lists
 
-Lists convert to `List` or array parameter types. Lists are enclosed in square brackets with comma-separated elements. Lists can contain single values or compound values (nested lists, sets, or maps). Empty lists are represented by `[]`.
+Lists convert to `List` or array parameter types. Lists are enclosed in square brackets with comma-separated elements. Lists can contain single values or compound values (nested lists, sets, or maps). Empty lists are represented by `[]`. A list parameter iterates in the order the cell wrote its elements.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
@@ -139,7 +141,7 @@ Lists convert to `List` or array parameter types. Lists are enclosed in square b
 
 ### Sets
 
-Sets convert to `Set` parameter types. When the parameter is *not* a `Set`, curly braces denote a [value set](/reference/advanced-features/#value-sets) instead — each element becomes a separate test invocation. Sets are enclosed in curly braces with comma-separated elements. Sets can contain single values or compound values. Empty sets are represented by `{}`.
+Sets convert to `Set` parameter types. When the parameter is *not* a `Set`, curly braces denote a [value set](/reference/advanced-features/#value-sets) instead — each element becomes a separate test invocation. Sets are enclosed in curly braces with comma-separated elements. Sets can contain single values or compound values. Empty sets are represented by `{}`, which a `Set` parameter accepts and a value set rejects. A set parameter iterates in the order the cell wrote its elements — they are neither sorted nor reordered by hashing — so an order-sensitive assertion on a `Set` parameter is safe.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
@@ -152,7 +154,7 @@ Sets convert to `Set` parameter types. When the parameter is *not* a `Set`, curl
 
 ### Maps
 
-Maps convert to `Map` parameter types. Maps use square brackets with comma-separated key-value pairs, where colons separate keys and values. Keys can be unquoted or quoted. Unquoted keys cannot contain table or collection syntax characters. To use keys with those characters or whitespace, wrap the key in single or double quotes. Values can be single (unquoted or quoted) or compound (list, set, or map). Empty maps are represented by `[:]`.
+Maps convert to `Map` parameter types. Maps use square brackets with comma-separated key-value pairs, where colons separate keys and values. Keys can be unquoted or quoted. Unquoted keys cannot contain table or collection syntax characters. To use keys with those characters or whitespace, wrap the key in single or double quotes. Keys must be unique within a map: a repeated key is a parse error naming the key, and quoted and unquoted spellings of the same key count as the same key. Values can be single (unquoted or quoted) or compound (list, set, or map). Empty maps are represented by `[:]`. A map parameter iterates its entries in the order the cell wrote them.
 
 {{< tabs items="Java,Kotlin" >}}
 {{< tab >}}
