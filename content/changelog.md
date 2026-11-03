@@ -5,6 +5,15 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-11-02 — TableTest Formatter 1.1.3
+
+### Fixed
+- String arrays: rows built from concatenated strings or constants are now left unchanged instead of being split into separate rows, which changed the test data (#55, thanks @bric3)
+
+[GitHub Release](https://github.com/nchaugen/tabletest-formatter/releases/tag/tabletest-formatter-1.1.3)
+
+---
+
 ## 2026-08-23 — TableTest Reporter 1.5.0
 
 
