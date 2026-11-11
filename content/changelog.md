@@ -5,6 +5,27 @@ toc: false
 
 Changes across the TableTest ecosystem, sorted newest first.
 
+## 2026-11-11 — TableTest Claude Code Plugin v1.10.0
+
+
+### Added
+
+- **tabletest-swift**: A new skill that writes and converts Swift tests as `@TableTest` tables, for a Swift project that uses [TableTest for Swift](https://github.com/nchaugen/tabletest-swift) or a user who asks for it. It carries the shared table-design rules with Swift examples, and adds:
+  - where the conversion code for a cell goes: one synthesised word (`Codable`, `CaseIterable`) on the app type first, hand-written `TableValueDecodable` or `TableTextDecodable` in the test target only for a form the app never decodes, never an `init(from:)` in the app
+  - input columns chosen by what the code reads to decide the result — the situation, the user's action, or the data the rule judges — with test-local enums that build the fixture from a domain word
+  - an enum result with data as one cell, spelled as Swift spells it (`restRequired(hours: 10)`)
+  - converting plain `@Test` functions, `@Test(arguments:)` and XCTest, with the case count kept; a `@Test(arguments:)` over a collection from the app stays
+
+### Changed
+
+- **table-driven-testing**: A Swift project that already uses TableTest, or a request that asks for TableTest, goes to the `tabletest-swift` skill — also when the request says "table-driven" or "Swift Testing" tests
+
+
+
+[GitHub Release](https://github.com/nchaugen/tabletest-claude-plugin/releases/tag/v1.10.0)
+
+---
+
 ## 2026-11-02 — TableTest Formatter 1.1.3
 
 ### Fixed
